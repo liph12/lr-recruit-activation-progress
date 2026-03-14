@@ -446,6 +446,7 @@ export default function Welcome() {
             flexDirection: "column",
             justifyContent: "flex-start",
             position: "relative",
+            background: "#e0dddd",
             overflow: "hidden",
             borderRight: "1px solid rgba(201,168,76,0.18)",
             boxShadow: "4px 0 40px rgba(0,0,0,0.4)",
