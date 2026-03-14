@@ -1,0 +1,451 @@
+{
+  "course": {
+    "id": 1,
+    "title": "RESA LAW",
+    "description": "The Real Estate Service Act of the Philippines or Republic Act No. 9646. This course will tackle the basics and the acts that focus primarily its Implementing Rules and Regulations. After taking this module, you will be able to fully understand the use and importance of the RESA law in the real estate industry.  The course will use webinar videos and a Powerpoint presentation.  In order to assess this module, an online quiz and end of the module assignment will be given to the students.",
+    "learning_descriptions": [
+      "Introduction of the RESA Law. Students will use the video and powerpoint provided",
+      "Know the key responsibilities and ethical standards for real estate professionals.",
+      "Be familiar with the required continuing education for license renewal."
+    ],
+    "speaker": {
+      "name": "DR. EDUARDO G. ONG",
+      "avatar": "https://realestatetraining.ph/profile/presentation/DR. EDUARDO G. ONG.png",
+      "contact": "01234567890"
+    },
+    "presentation": "https://realestatetraining.ph/pdf/resalaw.pdf",
+    "scores": []
+  },
+  "exam": [
+    {
+      "id": 1,
+      "courseid": 1,
+      "questionNo": 1,
+      "question": "A duly registered and licensed - natural person who, for a professional fee, compensation or other valuable consideration, performs or renders, or offers to perform services in estimating and arriving at an opinion of or acts as an expert on real estate values, such services of which shall be finally rendered by the preparation of the report in acceptable written form.",
+      "answer": "B",
+      "c_status": 1,
+      "dateadded": "2020-06-02",
+      "choices": [
+        {
+          "id": 1,
+          "courseID": 1,
+          "questionNo": 1,
+          "choice": "A",
+          "choiceDesc": "Consultant",
+          "correct": 0
+        },
+        {
+          "id": 2,
+          "courseID": 1,
+          "questionNo": 1,
+          "choice": "B",
+          "choiceDesc": "Appraiser",
+          "correct": 1
+        },
+        {
+          "id": 3,
+          "courseID": 1,
+          "questionNo": 1,
+          "choice": "C",
+          "choiceDesc": "Assessor",
+          "correct": 0
+        },
+        {
+          "id": 4,
+          "courseID": 1,
+          "questionNo": 1,
+          "choice": "D",
+          "choiceDesc": "Salesperson",
+          "correct": 0
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "courseid": 1,
+      "questionNo": 2,
+      "question": "RESA Law stands for:",
+      "answer": "A",
+      "c_status": 1,
+      "dateadded": "2020-06-02",
+      "choices": [
+        {
+          "id": 5,
+          "courseID": 1,
+          "questionNo": 2,
+          "choice": "A",
+          "choiceDesc": "Real Estate Service Act",
+          "correct": 1
+        },
+        {
+          "id": 6,
+          "courseID": 1,
+          "questionNo": 2,
+          "choice": "B",
+          "choiceDesc": "Real Estate Signed Action",
+          "correct": 0
+        },
+        {
+          "id": 7,
+          "courseID": 1,
+          "questionNo": 2,
+          "choice": "C",
+          "choiceDesc": "Regulations Estate Signed Law",
+          "correct": 0
+        },
+        {
+          "id": 8,
+          "courseID": 1,
+          "questionNo": 2,
+          "choice": "D",
+          "choiceDesc": "Real Estate Service Action",
+          "correct": 0
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "courseid": 1,
+      "questionNo": 3,
+      "question": "Which one is not a Real Estate Service Practitioner?",
+      "answer": "D",
+      "c_status": 1,
+      "dateadded": "2020-06-02",
+      "choices": [
+        {
+          "id": 9,
+          "courseID": 1,
+          "questionNo": 3,
+          "choice": "A",
+          "choiceDesc": "Real estate consultant",
+          "correct": 0
+        },
+        {
+          "id": 10,
+          "courseID": 1,
+          "questionNo": 3,
+          "choice": "B",
+          "choiceDesc": "Real estate broker",
+          "correct": 0
+        },
+        {
+          "id": 11,
+          "courseID": 1,
+          "questionNo": 3,
+          "choice": "C",
+          "choiceDesc": "Real estate assessor",
+          "correct": 0
+        },
+        {
+          "id": 12,
+          "courseID": 1,
+          "questionNo": 3,
+          "choice": "D",
+          "choiceDesc": "Real estate director",
+          "correct": 1
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "courseid": 1,
+      "questionNo": 4,
+      "question": "R.A. No. 9646 was signed on _____________.",
+      "answer": "C",
+      "c_status": 1,
+      "dateadded": "2020-06-02",
+      "choices": [
+        {
+          "id": 13,
+          "courseID": 1,
+          "questionNo": 4,
+          "choice": "A",
+          "choiceDesc": "June 23, 2009",
+          "correct": 0
+        },
+        {
+          "id": 14,
+          "courseID": 1,
+          "questionNo": 4,
+          "choice": "B",
+          "choiceDesc": "June 20, 2009",
+          "correct": 0
+        },
+        {
+          "id": 15,
+          "courseID": 1,
+          "questionNo": 4,
+          "choice": "C",
+          "choiceDesc": "June 29, 2009",
+          "correct": 1
+        },
+        {
+          "id": 16,
+          "courseID": 1,
+          "questionNo": 4,
+          "choice": "D",
+          "choiceDesc": "June 09, 2009",
+          "correct": 0
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "courseid": 1,
+      "questionNo": 5,
+      "question": "A duly registered and licensed - natural person who, for a professional fee, compensation or other valuable consideration, offer or renders professional advice and judgement on: (i) the acquisition or disposition of lands or improvements thereon; and (ii) the conception, planning, management and development of real estate projects.",
+      "answer": "B",
+      "c_status": 1,
+      "dateadded": "2020-06-02",
+      "choices": [
+        {
+          "id": 17,
+          "courseID": 1,
+          "questionNo": 5,
+          "choice": "A",
+          "choiceDesc": "Consultant",
+          "correct": 0
+        },
+        {
+          "id": 18,
+          "courseID": 1,
+          "questionNo": 5,
+          "choice": "B",
+          "choiceDesc": "Appraiser",
+          "correct": 1
+        },
+        {
+          "id": 19,
+          "courseID": 1,
+          "questionNo": 5,
+          "choice": "C",
+          "choiceDesc": "Assessor",
+          "correct": 0
+        },
+        {
+          "id": 20,
+          "courseID": 1,
+          "questionNo": 5,
+          "choice": "D",
+          "choiceDesc": "Salesperson",
+          "correct": 0
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "courseid": 1,
+      "questionNo": 6,
+      "question": "A qualification in becoming an applicant for the licensure examination requires the candidate to be ___________________.",
+      "answer": "D",
+      "c_status": 1,
+      "dateadded": "2020-06-02",
+      "choices": [
+        {
+          "id": 21,
+          "courseID": 1,
+          "questionNo": 6,
+          "choice": "A",
+          "choiceDesc": "A citizen of the Philippines",
+          "correct": 0
+        },
+        {
+          "id": 22,
+          "courseID": 1,
+          "questionNo": 6,
+          "choice": "B",
+          "choiceDesc": "A person of good moral character free of any crime",
+          "correct": 0
+        },
+        {
+          "id": 23,
+          "courseID": 1,
+          "questionNo": 6,
+          "choice": "C",
+          "choiceDesc": "A holder of a relevant bachelors degree from a university or state or any institution recognized by CHED.",
+          "correct": 0
+        },
+        {
+          "id": 24,
+          "courseID": 1,
+          "questionNo": 6,
+          "choice": "D",
+          "choiceDesc": "All of the above",
+          "correct": 1
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "courseid": 1,
+      "questionNo": 7,
+      "question": "The professional Identification Card/ certification/ temporary permit may be cancelled or suspended if a practitioner is:",
+      "answer": "D",
+      "c_status": 1,
+      "dateadded": "2020-06-02",
+      "choices": [
+        {
+          "id": 25,
+          "courseID": 1,
+          "questionNo": 7,
+          "choice": "A",
+          "choiceDesc": "Unprofessional or has conducted unethically",
+          "correct": 0
+        },
+        {
+          "id": 26,
+          "courseID": 1,
+          "questionNo": 7,
+          "choice": "B",
+          "choiceDesc": "Found to have done malpractice of any of the provisions",
+          "correct": 0
+        },
+        {
+          "id": 27,
+          "courseID": 1,
+          "questionNo": 7,
+          "choice": "C",
+          "choiceDesc": "Engaging in the profession whilst on suspension",
+          "correct": 0
+        },
+        {
+          "id": 28,
+          "courseID": 1,
+          "questionNo": 7,
+          "choice": "D",
+          "choiceDesc": "All of the above",
+          "correct": 1
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "courseid": 1,
+      "questionNo": 8,
+      "question": "The people responsible for the examination, registration, licensing, regulation, development and continuing professional education and training for real estate service practitioners:",
+      "answer": "B",
+      "c_status": 1,
+      "dateadded": "2020-06-02",
+      "choices": [
+        {
+          "id": 29,
+          "courseID": 1,
+          "questionNo": 8,
+          "choice": "A",
+          "choiceDesc": "Philippine Regulatory Board of Real Estate Service",
+          "correct": 0
+        },
+        {
+          "id": 30,
+          "courseID": 1,
+          "questionNo": 8,
+          "choice": "B",
+          "choiceDesc": "Professional Regulatory Board of Real Estate Service",
+          "correct": 1
+        },
+        {
+          "id": 31,
+          "courseID": 1,
+          "questionNo": 8,
+          "choice": "C",
+          "choiceDesc": "Philippine Association of Real Estate Boards, Inc.",
+          "correct": 0
+        },
+        {
+          "id": 32,
+          "courseID": 1,
+          "questionNo": 8,
+          "choice": "D",
+          "choiceDesc": "Professional Association of Real Estate Boards, Inc.",
+          "correct": 0
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "courseid": 1,
+      "questionNo": 9,
+      "question": "A duly registered and licensed natural person who works in a local government unit and performs appraisal and assessment of real properties including plants, equipment, and machineries, essentially for taxation purposes.",
+      "answer": "A",
+      "c_status": 1,
+      "dateadded": "2020-06-02",
+      "choices": [
+        {
+          "id": 33,
+          "courseID": 1,
+          "questionNo": 9,
+          "choice": "A",
+          "choiceDesc": "Assessor",
+          "correct": 1
+        },
+        {
+          "id": 34,
+          "courseID": 1,
+          "questionNo": 9,
+          "choice": "B",
+          "choiceDesc": "Broker",
+          "correct": 0
+        },
+        {
+          "id": 35,
+          "courseID": 1,
+          "questionNo": 9,
+          "choice": "C",
+          "choiceDesc": "Salesperson",
+          "correct": 0
+        },
+        {
+          "id": 36,
+          "courseID": 1,
+          "questionNo": 9,
+          "choice": "D",
+          "choiceDesc": "Consultant",
+          "correct": 0
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "courseid": 1,
+      "questionNo": 10,
+      "question": "A duly accredited natural person who performs service for, and in behalf of a real estate broker who is registered and licensed by the Professional Regulatory Board of Real Estate Service for or in expectation of a share in the commission, professional fee, compensation or other valuable consideration.",
+      "answer": "C",
+      "c_status": 1,
+      "dateadded": "2020-06-02",
+      "choices": [
+        {
+          "id": 37,
+          "courseID": 1,
+          "questionNo": 10,
+          "choice": "A",
+          "choiceDesc": "Assessor",
+          "correct": 0
+        },
+        {
+          "id": 38,
+          "courseID": 1,
+          "questionNo": 10,
+          "choice": "B",
+          "choiceDesc": "Broker",
+          "correct": 0
+        },
+        {
+          "id": 39,
+          "courseID": 1,
+          "questionNo": 10,
+          "choice": "C",
+          "choiceDesc": "Salesperson",
+          "correct": 1
+        },
+        {
+          "id": 40,
+          "courseID": 1,
+          "questionNo": 10,
+          "choice": "D",
+          "choiceDesc": "Consultant",
+          "correct": 0
+        }
+      ]
+    }
+  ]
+}
