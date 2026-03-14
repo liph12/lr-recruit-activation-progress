@@ -32,19 +32,18 @@ export default function TrainingExam() {
         const response = await axios.get(
           `/integration/agent/course-exam?id=${course_id}&email=${user?.email}`
         );
+
         const { exam, course } = response.data;
 
         setCourse(course);
         setExam(exam);
-      } catch (e) {
-        // to do
-      } finally {
-        // to do
+      } catch (error) {
+        console.error("Failed to fetch exam:", error);
       }
     };
 
     fetchExamAsync();
-  }, []);
+  }, [axios, course_id, user?.email]);
 
   if (!course) {
     return <PageLoader title="getting module ready" />;
