@@ -20,6 +20,7 @@ export interface Course {
   learning_descriptions: string[];
   speaker: Speaker;
   presentation: string;
+  video: string;
   status: Status;
   scores: Score[];
 }

@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography, IconButton } from "@mui/material";
+import { ChevronLeft, ChevronRight } from "@mui/icons-material";
+import { useAppProvider } from "../providers/AppProvider";
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url
-).toString();
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 type PDFLoadSuccess = {
   numPages: number;
 };
 
 export default function PresentationPDF({ document }: { document: string }) {
+  const { desktop } = useAppProvider();
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(1);
 
@@ -29,37 +29,42 @@ export default function PresentationPDF({ document }: { document: string }) {
 
   return (
     <Box textAlign="center">
-      <Document file={document} onLoadSuccess={onDocumentLoadSuccess}>
-        <Page pageNumber={pageNumber} />
-      </Document>
-
-      <Typography sx={{ mt: 2 }}>
-        Page {pageNumber} of {numPages}
-      </Typography>
-
       <Box
         sx={{
-          mt: 2,
+          my: 2,
           display: "flex",
           gap: 2,
+          alignItems: "center",
           justifyContent: "center",
         }}
       >
-        <Button
-          variant="contained"
-          disabled={pageNumber <= 1}
-          onClick={prevPage}
-        >
-          Previous
-        </Button>
-
-        <Button
-          variant="contained"
-          disabled={pageNumber >= numPages}
-          onClick={nextPage}
-        >
-          Next
-        </Button>
+        <IconButton onClick={prevPage}>
+          <ChevronLeft />
+        </IconButton>
+        <Typography>
+          Page {pageNumber} of {numPages}
+        </Typography>
+        <IconButton onClick={nextPage}>
+          <ChevronRight />
+        </IconButton>
+      </Box>
+      <Box
+        sx={{
+          width: desktop ? 600 : 320,
+          height: desktop ? 400 : 220,
+          mx: "auto",
+          overflow: "hidden",
+          border: "1px solid #ddd",
+        }}
+      >
+        <Document file={document} onLoadSuccess={onDocumentLoadSuccess}>
+          <Page
+            pageNumber={pageNumber}
+            width={desktop ? 600 : 320}
+            renderAnnotationLayer={false}
+            renderTextLayer={false}
+          />
+        </Document>
       </Box>
     </Box>
   );

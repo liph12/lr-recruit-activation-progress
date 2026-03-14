@@ -24,9 +24,12 @@ interface CourseProps {
 export default function TrainingCourse({ course, takeCourse }: CourseProps) {
   const { desktop, user } = useAppProvider();
   const [isVideo, setIsVideo] = useState(true);
+  const iframeString = course.video
+    .replace(/width="\d+px"/, 'width="100%"')
+    .replace(/height="\d+px"/, 'height="100%"');
 
   return (
-    <>
+    <Box sx={{ height: "50vh" }}>
       <Container maxWidth="lg">
         <Box
           sx={{
@@ -73,11 +76,26 @@ export default function TrainingCourse({ course, takeCourse }: CourseProps) {
           </ButtonGroup>
         </Box>
         {isVideo ? (
-          <></>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "60vh",
+            }}
+          >
+            <div
+              dangerouslySetInnerHTML={{ __html: iframeString }}
+              style={{
+                width: 700,
+                height: desktop ? 350 : 300,
+              }}
+            />
+          </Box>
         ) : (
           <>
             <PresentationPDF
-              document={`http://socket.leuteriorealty.com/proxy?url=${course.presentation}`}
+              document={`https://socket.leuteriorealty.com/proxy?url=${course.presentation}`}
             />
           </>
         )}
@@ -95,6 +113,6 @@ export default function TrainingCourse({ course, takeCourse }: CourseProps) {
           </Box>
         )}
       </Container>
-    </>
+    </Box>
   );
 }
