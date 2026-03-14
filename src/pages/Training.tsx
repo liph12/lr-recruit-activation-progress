@@ -19,7 +19,7 @@ type OutletContextProps = {
   course_id: string;
 };
 
-export default function TrainingExam() {
+export default function Course() {
   const { course_id } = useOutletContext<OutletContextProps>();
   const axios = useExternalAxios();
   const [exam, setExam] = useState<Questionaire[]>([]);
