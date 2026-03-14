@@ -53,7 +53,7 @@ export default function PresentationPDF({ document }: { document: string }) {
           width: desktop ? 600 : 320,
           height: desktop ? 400 : 220,
           mx: "auto",
-          overflow: "hidden",
+          overflow: "auto",
           border: "1px solid #ddd",
         }}
       >

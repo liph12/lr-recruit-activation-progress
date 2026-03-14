@@ -388,7 +388,7 @@ export default function Welcome() {
             <Box className="content-left">
               {/* Badge */}
               <Box className="anim-2" sx={{ mb: { xs: 1.5, lg: 2 } }}>
-             <span className="badge-pil">
+                <span className="badge-pil">
                   {/* <span className="badge-dot" /> */}
                   {/* Smart Property Dashboard */}
                 </span>
@@ -440,7 +440,7 @@ export default function Welcome() {
                 >
                   Congratulations! You've successfully accessed the Leuterio
                   Realty Portal. We're excited to support you on your real
-                  estate journey and help you achieve your property goals.
+                  estate journey and help you achieved your dreams.
                 </Typography>
               </Box>
             </Box>
