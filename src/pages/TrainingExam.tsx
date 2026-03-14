@@ -1,9 +1,19 @@
-import { Box, Typography, Divider } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Divider,
+  Container,
+  Avatar,
+  Grid,
+} from "@mui/material";
 import { useAppProvider } from "../providers/AppProvider";
 import useExternalAxios from "../hooks/useExternalAxios";
 import { useEffect, useState } from "react";
 import type { Course, Questionaire } from "../types/course";
 import { useOutletContext } from "react-router-dom";
+import PageLoader from "../components/PageLoader";
+import { CheckCircleRounded, StartRounded } from "@mui/icons-material";
+import StyledButton from "../components/utils/StyledButton";
 
 type OutletContextProps = {
   course_id: string;
@@ -20,7 +30,7 @@ export default function TrainingExam() {
     const fetchExamAsync = async () => {
       try {
         const response = await axios.get(
-          `/integration/agent/course-exam?id=${course_id}&email=${user?.email}`,
+          `/integration/agent/course-exam?id=${course_id}&email=${user?.email}`
         );
 
         const { exam, course } = response.data;
@@ -35,36 +45,88 @@ export default function TrainingExam() {
     fetchExamAsync();
   }, [axios, course_id, user?.email]);
 
+  if (!course) {
+    return <PageLoader title="getting module ready" />;
+  }
+
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        height: desktop ? "50vh" : "100vh",
-        width: "100%",
-        p: 3,
-      }}
-    >
-      {/* Course Title */}
-      <Typography variant="h5" fontWeight="bold">
-        {course ? "Course Exam" : "Loading Exam..."}
-      </Typography>
-
-      <Divider sx={{ width: "100%", my: 2 }} />
-
-      {/* Questions */}
-      {exam.length === 0 ? (
-        <Typography>No exam questions available.</Typography>
-      ) : (
-        exam.map((q, index) => (
-          <Box key={index} sx={{ width: "100%", mb: 2 }}>
-            <Typography variant="subtitle1">
-              {index + 1}. {q.question}
+    <>
+      <Container maxWidth="lg">
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Box>
+            <Typography variant={desktop ? "h4" : "h5"}>
+              You are taking Module {course?.id}
             </Typography>
           </Box>
-        ))
-      )}
-    </Box>
+          {desktop && (
+            <Box>
+              <StyledButton
+                variant="contained"
+                size="large"
+                endIcon={<StartRounded />}
+              >
+                Start Learning Now
+              </StyledButton>
+            </Box>
+          )}
+        </Box>
+        <Divider sx={{ my: 2 }} />
+        <Grid container spacing={4}>
+          <Grid size={{ lg: 8, md: 12, xs: 12 }}>
+            <Box>
+              <Typography variant="h4">{course.title}</Typography>
+              <Typography sx={{ textAlign: "justify" }}>
+                {course.description}
+              </Typography>
+              <Box
+                sx={{ mt: 2, display: "flex", gap: 2, alignItems: "center" }}
+              >
+                <Avatar
+                  src={course.speaker.avatar}
+                  sx={{ height: "auto", width: 60 }}
+                />
+                <Box>
+                  <Typography variant="h6">{course.speaker.name}</Typography>
+                  <Typography variant="h6" color="textSecondary">
+                    Speaker
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+          </Grid>
+          <Grid size={{ lg: 4, md: 12, xs: 12 }}>
+            <Typography variant="h5">What you'll learn</Typography>
+            <Box>
+              {course.learning_descriptions.map((d) => (
+                <Box
+                  sx={{ mb: 2, display: "flex", gap: 2, alignItems: "center" }}
+                >
+                  <CheckCircleRounded color="info" />
+                  <Typography>{d}</Typography>
+                </Box>
+              ))}
+            </Box>
+          </Grid>
+        </Grid>
+        {!desktop && (
+          <Box sx={{ my: 2 }}>
+            <StyledButton
+              variant="contained"
+              size="large"
+              endIcon={<StartRounded />}
+              fullWidth
+            >
+              Start Learning Now
+            </StyledButton>
+          </Box>
+        )}
+      </Container>
+    </>
   );
 }
