@@ -294,7 +294,7 @@ export default function TrainingCourses() {
                       >
                         <Box
                           component={Link}
-                          to={`/welcome/get-started/exam/${c.id}`}
+                          to={`/welcome/get-started/training/${c.id}`}
                           sx={{
                             width: "100%",
                           }}

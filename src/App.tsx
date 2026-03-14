@@ -11,10 +11,10 @@ function App() {
       <Route path="welcome" element={<MainLayout />}>
         <Route index element={<Welcome />} />
         <Route path="get-started" element={<GetStarted />}>
-          <Route path="exam/:course_id" element={<TrainingExam />} />
+          <Route path="training/:course_id" element={<TrainingExam />} />
         </Route>
       </Route>
-        <Route path="exam" element={<Exam />} />
+      <Route path="exam" element={<Exam />} />
     </Routes>
   );
 }
