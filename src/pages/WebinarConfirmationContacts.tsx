@@ -1,12 +1,7 @@
 import { Box, Typography, Paper, Divider, Avatar } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { useAppProvider } from "../providers/AppProvider";
-import {
-  CheckCircleRounded,
-  ContactPhoneRounded,
-  MailRounded,
-  PhoneIphoneRounded,
-} from "@mui/icons-material";
+import { CheckCircleRounded, ContactPhoneRounded } from "@mui/icons-material";
 
 export default function WebinarConfirmationContacts() {
   const { desktop, user } = useAppProvider();
@@ -22,175 +17,144 @@ export default function WebinarConfirmationContacts() {
   return (
     <Box
       sx={{
+        minHeight: "100vh",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: desktop ? "80vh" : "90vh",
-        py: 4,
         px: 2,
         fontFamily: "'Poppins', sans-serif",
+        background:
+          "linear-gradient(135deg,#f5f7ff 0%,#ffffff 50%,#f0f9ff 100%)",
+        overflow: "hidden",
+        "@keyframes pop": {
+          "0%": { transform: "scale(.7)", opacity: 0 },
+          "70%": { transform: "scale(1.1)" },
+          "100%": { transform: "scale(1)", opacity: 1 },
+        },
+        "@keyframes float": {
+          "0%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-15px)" },
+          "100%": { transform: "translateY(0)" },
+        },
+        "@keyframes fadeUp": {
+          from: { opacity: 0, transform: "translateY(30px)" },
+          to: { opacity: 1, transform: "translateY(0)" },
+        },
       }}
     >
       <Grid
         container
-        spacing={5}
-        sx={{ maxWidth: "1200px", alignItems: "center" }}
+        spacing={6}
+        sx={{
+          maxWidth: 1100,
+          alignItems: "center",
+        }}
       >
-        <Grid
-          size={{ xs: 12, md: 7 }}
-          sx={{ textAlign: desktop ? "left" : "center" }}
-        >
-          <Box sx={{ mb: 4 }}>
-            <Box
+        {/* LEFT CONTENT */}
+        <Grid size={{ xs: 12, md: 6 }} textAlign={desktop ? "left" : "center"}>
+          {/* SUCCESS ICON + Title in one line */}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: desktop ? "flex-start" : "center",
+              gap: 1.5,
+              mb: 3,
+              flexWrap: "nowrap",
+              animation: "fadeUp .8s ease",
+            }}
+          >
+            <CheckCircleRounded
               sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 2,
-                justifyContent: desktop ? "flex-start" : "center",
-                mb: 2,
+                fontSize: 40,
+                color: "#2e7d32",
+                flexShrink: 0,
+                animation: "pop .6s ease",
+              }}
+            />
+            <Typography
+              variant={desktop ? "h4" : "h5"}
+              fontWeight={800}
+              sx={{
+                letterSpacing: "-0.5px",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
               }}
             >
-              <CheckCircleRounded sx={{ fontSize: 50, color: "#2e7d32" }} />
-              <Typography
-                variant={desktop ? "h3" : "h4"}
-                fontWeight="800"
-                sx={{ color: "#1a1a1a", letterSpacing: "-1px" }}
-              >
-                Attendance Uploaded!
-              </Typography>
-            </Box>
-
-            <Typography
-              variant="body1"
-              sx={{ color: "#666", maxWidth: "600px" }}
-            >
-              Please contact your <b>{contactRole}</b> to assist you with your
-              attendance approval. They will send you a status notification once
-              they approved or reviewed it.
+              Attendance Uploaded!
             </Typography>
           </Box>
 
+          {/* Subtitle */}
+          <Typography
+            sx={{
+              color: "#666",
+              maxWidth: 520,
+              mb: 4,
+              lineHeight: 1.7,
+              mx: desktop ? 0 : "auto",
+              animation: "fadeUp 1s ease",
+            }}
+          >
+            Please contact your <b>{contactRole}</b> for attendance approval.
+            They will notify you once your request has been reviewed.
+          </Typography>
+
+          {/* CONTACT CARD */}
           <Paper
             elevation={0}
             sx={{
               p: 4,
-              width: "100%",
-              maxWidth: "500px",
-              borderRadius: "20px",
-              backdropFilter: "blur(12px)",
-
-              // border: "1px solid #eee",
-              border: "1px solid rgba(255, 255, 255, 0.3)",
-              // bgcolor: "#fdfdfd",
-              bgcolor: "rgba(255, 255, 255, 0.1)",
-              // boxShadow: "0px 10px 30px rgba(0,0,0,0.04)",
-              boxShadow: "0px 10px 30px rgba(0,0,0,0.05)",
-
-              position: "relative",
-              overflow: "hidden",
+              maxWidth: 480,
+              borderRadius: "22px",
+              backdropFilter: "blur(10px)",
+              border: "1px solid rgba(0,0,0,0.05)",
+              boxShadow: "0 20px 40px rgba(0,0,0,0.08)",
               mx: desktop ? 0 : "auto",
+              animation: "fadeUp 1.2s ease",
             }}
           >
-            <Box sx={{ position: "relative", zIndex: 1 }}>
-              <Box
-                sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2.5 }}
-              >
-                <Avatar
-                  sx={{
-                    bgcolor: "#1976d2",
-                    width: 50,
-                    height: 50,
-                    boxShadow: "0px 4px 12px rgba(25, 118, 210, 0.3)",
-                  }}
-                >
-                  <ContactPhoneRounded />
-                </Avatar>
-                <Box>
-                  <Typography
-                    variant="h5"
-                    fontWeight="bold"
-                    sx={{ color: "#1a1a1a" }}
-                  >
-                    {contactName}
-                  </Typography>
-                  <Typography
-                    variant="caption"
-                    fontWeight="700"
-                    sx={{
-                      color: "#1976d2",
-                      textTransform: "uppercase",
-                      letterSpacing: "1px",
-                    }}
-                  >
-                    {contactRole}
-                  </Typography>
-                </Box>
-              </Box>
-
-              <Divider sx={{ my: 2.5, opacity: 0.6 }} />
-
-              <Box
+            <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+              <Avatar
                 sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 2,
-                  alignItems: "flex-start",
+                  bgcolor: "#1976d2",
+                  width: 52,
+                  height: 52,
                 }}
               >
-                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                  <PhoneIphoneRounded sx={{ color: "#999", fontSize: 20 }} />
-                  <Typography variant="body1" fontWeight="500">
-                    {contactPhone}
-                  </Typography>
-                </Box>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                  <MailRounded sx={{ color: "#999", fontSize: 20 }} />
-                  <Typography
-                    variant="body2"
-                    fontWeight="500"
-                    sx={{ wordBreak: "break-all" }}
-                  >
-                    {contactEmail}
-                  </Typography>
-                </Box>
+                <ContactPhoneRounded />
+              </Avatar>
+
+              <Box>
+                <Typography fontWeight="bold">{contactName}</Typography>
+                <Typography variant="caption" color="primary" fontWeight="600">
+                  {contactRole}
+                </Typography>
               </Box>
             </Box>
+
+            <Divider sx={{ my: 2 }} />
+
+            <Typography fontWeight="600">{contactPhone}</Typography>
+            <Typography variant="body2">{contactEmail}</Typography>
           </Paper>
         </Grid>
 
+        {/* RIGHT IMAGE */}
         <Grid
-          size={{ xs: 12, md: 5 }}
-          sx={{ display: "flex", justifyContent: "center" }}
+          size={{ xs: 12, md: 6 }}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}
         >
-          <Box
-            sx={{
-              width: "100%",
-              maxWidth: "450px",
-              display: "flex",
-              justifyContent: "center",
-
-              animation: "float 4s ease-in-out infinite",
-              "@keyframes float": {
-                "0%": {
-                  transform: "translateY(0px)",
-                },
-                "50%": {
-                  transform: "translateY(-20px)",
-                },
-                "100%": {
-                  transform: "translateY(0px)",
-                },
-              },
-            }}
-          >
+          <Box sx={{ animation: "float 4s ease-in-out infinite" }}>
             <img
               src="/images/notify-phone-icon.png"
-              alt="Notification"
               style={{
-                width: "100%",
-                height: "auto",
-                filter: "drop-shadow(0px 15px 30px rgba(0,0,0,0.1))",
-                transition: "0.3s ease-in-out",
+                width: desktop ? 420 : "85%",
+                filter: "drop-shadow(0 30px 50px rgba(0,0,0,.15))",
               }}
             />
           </Box>
