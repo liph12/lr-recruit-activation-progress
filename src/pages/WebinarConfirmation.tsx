@@ -177,7 +177,7 @@ export default function WebinarConfirmation() {
             WebkitTextFillColor: "transparent",
           }}
         >
-          New Agents Orientation?
+          New Agent's Orientation?
         </Typography>
       </Box>
 
