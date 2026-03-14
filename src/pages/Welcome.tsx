@@ -2,10 +2,11 @@ import { Box, Typography } from "@mui/material";
 import StyledButton from "../components/utils/StyledButton";
 import { ArrowForward } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import { useAppProvider } from "../providers/AppProvider";
 
 const animationStyles = `
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400;1,600;1,700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; }
 
   :root {
     --blue-deep: #003580;
@@ -18,7 +19,7 @@ const animationStyles = `
   }
 
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
+    from { opacity: 0; transform: translateY(20px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
@@ -34,35 +35,35 @@ const animationStyles = `
 
   @keyframes lineDraw {
     from { width: 0; opacity: 0; }
-    to   { width: 72px; opacity: 1; }
+    to   { width: 60px; opacity: 1; }
   }
 
   @keyframes goldPulse {
     0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.5); }
-    50%       { box-shadow: 0 0 0 10px rgba(201,168,76,0); }
+    50%       { box-shadow: 0 0 0 8px rgba(201,168,76,0); }
   }
 
   @keyframes panImage {
     0%   { transform: scale(1.06) translateX(0px); }
-    50%  { transform: scale(1.06) translateX(-14px); }
+    50%  { transform: scale(1.06) translateX(-12px); }
     100% { transform: scale(1.06) translateX(0px); }
   }
 
   @keyframes orbDrift1 {
     0%, 100% { transform: translate(0, 0); }
-    50%       { transform: translate(20px, -15px); }
+    50%       { transform: translate(16px, -12px); }
   }
 
   @keyframes orbDrift2 {
     0%, 100% { transform: translate(0, 0); }
-    50%       { transform: translate(-15px, 20px); }
+    50%       { transform: translate(-12px, 16px); }
   }
 
-  .anim-1 { animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.10s both; }
-  .anim-2 { animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.25s both; }
-  .anim-3 { animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.40s both; }
-  .anim-4 { animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.55s both; }
-  .anim-5 { animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.70s both; }
+  .anim-1 { animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.10s both; }
+  .anim-2 { animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.22s both; }
+  .anim-3 { animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.34s both; }
+  .anim-4 { animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.46s both; }
+  .anim-5 { animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.58s both; }
   .anim-img { animation: fadeIn 1.2s ease 0.05s both; }
 
   .shimmer-text {
@@ -85,51 +86,35 @@ const animationStyles = `
     display: block;
     height: 2px;
     background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent);
-    margin-top: 14px;
-    margin-bottom: 22px;
-    animation: lineDraw 1s cubic-bezier(0.22,1,0.36,1) 0.7s both;
+    margin-top: 12px;
+    margin-bottom: 18px;
+    animation: lineDraw 1s cubic-bezier(0.22,1,0.36,1) 0.6s both;
     width: 0;
   }
 
   .badge-pill {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
+    gap: 6px;
     background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(201,168,76,0.05));
     border: 1px solid rgba(201,168,76,0.4);
     border-radius: 100px;
-    padding: 5px 14px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.68rem;
+    padding: 4px 13px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.65rem;
     font-weight: 600;
     color: #a07c28;
     letter-spacing: 0.12em;
     text-transform: uppercase;
+    white-space: nowrap;
   }
 
   .badge-dot {
-    width: 6px; height: 6px;
+    width: 5px; height: 5px;
     border-radius: 50%;
     background: var(--gold);
     animation: goldPulse 2s ease-in-out infinite;
     flex-shrink: 0;
-  }
-
-  .stat-card {
-    background: rgba(255,255,255,0.75);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(201,168,76,0.18);
-    border-radius: 10px;
-    padding: 12px 14px;
-    transition: all 0.3s ease;
-    cursor: default;
-  }
-
-  .stat-card:hover {
-    transform: translateY(-3px);
-    border-color: rgba(201,168,76,0.45);
-    box-shadow: 0 10px 28px rgba(0,53,128,0.1);
-    background: rgba(255,255,255,0.98);
   }
 
   .cta-btn {
@@ -138,14 +123,12 @@ const animationStyles = `
     background: linear-gradient(135deg, var(--blue-mid) 0%, var(--blue-deep) 100%) !important;
     border: none !important;
     border-radius: 6px !important;
-    padding: 13px 32px !important;
-    font-family: 'DM Sans', sans-serif !important;
+    font-family: 'Open Sans', sans-serif !important;
     font-weight: 600 !important;
-    font-size: 0.85rem !important;
     letter-spacing: 0.1em !important;
     text-transform: uppercase !important;
     color: white !important;
-    box-shadow: 0 6px 28px rgba(0,53,128,0.32), inset 0 1px 0 rgba(255,255,255,0.15) !important;
+    box-shadow: 0 6px 24px rgba(0,53,128,0.32), inset 0 1px 0 rgba(255,255,255,0.15) !important;
     transition: all 0.35s cubic-bezier(0.22,1,0.36,1) !important;
     width: 100% !important;
   }
@@ -162,290 +145,332 @@ const animationStyles = `
   .cta-btn:hover::before { left: 100%; }
   .cta-btn:hover {
     transform: translateY(-2px) !important;
-    box-shadow: 0 14px 40px rgba(0,53,128,0.45) !important;
+    box-shadow: 0 12px 36px rgba(0,53,128,0.45) !important;
   }
   .cta-btn:active { transform: translateY(0) !important; }
 
-  .pan-image {
-    animation: panImage 20s ease-in-out infinite;
+  .pan-image { animation: panImage 20s ease-in-out infinite; }
+
+  .logo-divider {
+    width: 1px;
+    height: 28px;
+    background: linear-gradient(to bottom, transparent, rgba(201,168,76,0.4), transparent);
+    flex-shrink: 0;
+    margin: 0 2px;
   }
 
   .orb-1 { animation: orbDrift1 9s ease-in-out infinite; }
   .orb-2 { animation: orbDrift2 11s ease-in-out infinite; }
 
-  .logo-divider {
-    width: 1px;
-    height: 32px;
-    background: linear-gradient(to bottom, transparent, rgba(201,168,76,0.45), transparent);
-    flex-shrink: 0;
-    margin: 0 4px;
+  /* ── WELCOME ROOT ── */
+  .welcome-root {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ── MOBILE (< 640px) ── */
+  @media (max-width: 639px) {
+    .welcome-root {
+      flex-direction: column;
+      position: relative;
+    }
+    .image-panel {
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      z-index: 0 !important;
+    }
+    .left-panel {
+      position: relative;
+      z-index: 2;
+      width: 100% !important;
+      min-height: 100vh;
+      background: #ffffff !important;
+      border-right: none !important;
+      box-shadow: none !important;
+      padding: 120px 24px 40px !important;
+      overflow-y: auto;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: flex-start !important;
+    }
+    .logo-row img.logo-sm { height: 20px !important; }
+    .logo-row img.logo-lg { height: 32px !important; }
+    .welcome-headline { font-size: 1.9rem !important; }
+    .body-copy { font-size: 0.84rem !important; }
+    .cta-btn { padding: 13px 24px !important; font-size: 0.84rem !important; }
+  }
+
+  /* ── TABLET (640px – 1023px): stacked, image top half / content bottom ── */
+  @media (min-width: 640px) and (max-width: 1023px) {
+    .welcome-root {
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-y: auto;
+      position: relative;
+    }
+    .image-panel {
+      position: relative !important;
+      width: 100% !important;
+      height: 52vw !important;
+      min-height: 280px !important;
+      max-height: 420px !important;
+      flex-shrink: 0 !important;
+    }
+    .left-panel {
+      width: 100% !important;
+      min-height: auto !important;
+      padding: 32px 48px 40px !important;
+      border-right: none !important;
+      box-shadow: none !important;
+      border-top: 1px solid rgba(201,168,76,0.15) !important;
+    }
+    .logo-row { justify-content: center !important; }
+    .logo-row img.logo-sm { height: 28px !important; }
+    .logo-row img.logo-lg { height: 44px !important; }
+    .welcome-headline { font-size: clamp(2rem, 4vw, 2.8rem) !important; }
+    .content-grid {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr !important;
+      gap: 32px !important;
+      align-items: start !important;
+    }
+    .content-left { grid-column: 1; }
+    .content-right { grid-column: 2; }
+    .cta-btn { padding: 13px 32px !important; font-size: 0.88rem !important; }
+  }
+
+  /* ── SMALL DESKTOP (1024px – 1279px) ── */
+  @media (min-width: 1024px) and (max-width: 1279px) {
+    .left-panel { width: 30% !important; padding: 24px 5% !important; }
+    .welcome-root { position: fixed; inset: 0; overflow: hidden; }
+    .image-panel { position: relative !important; }
+    .welcome-headline { font-size: clamp(1.6rem, 2vw, 2.2rem) !important; }
+    .logo-row img.logo-sm { height: 22px !important; }
+    .logo-row img.logo-lg { height: 36px !important; }
+    .cta-btn { padding: 12px 24px !important; font-size: 0.82rem !important; }
+  }
+
+  /* ── LARGE DESKTOP (1280px+) ── */
+  @media (min-width: 1280px) {
+    .welcome-root { position: fixed; inset: 0; overflow: hidden; }
+    .image-panel { position: relative !important; }
+    .left-panel { width: 28% !important; padding: 28px 5% !important; }
+    .welcome-headline { font-size: clamp(2rem, 2.4vw, 3rem) !important; }
+    .logo-row img.logo-sm { height: 26px !important; }
+    .logo-row img.logo-lg { height: 44px !important; }
+    .cta-btn { padding: 13px 32px !important; font-size: 0.88rem !important; }
   }
 `;
 
 export default function Welcome() {
-  const { desktop } = useAppProvider();
-
   return (
     <>
       <style>{animationStyles}</style>
 
-      {/* ── Root: full viewport, locked, no scroll ── */}
-      <Box sx={{
-        display: "flex",
-        flexDirection: desktop ? "row" : "column",
-        height: "100vh",
-        width: "100vw",
-        overflow: "hidden",
-        position: "fixed",
-        top: 0, left: 0,
-        background: "#fff",
-      }}>
+      <div className="welcome-root">
 
         {/* ══════════════════════════════════════
-            LEFT PANEL — 20%
+            LEFT PANEL
         ══════════════════════════════════════ */}
-        <Box sx={{
-          width: desktop ? "20%" : "100%",
-          height: desktop ? "100vh" : "auto",
-          flexShrink: 0,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-start",
-          px: desktop ? "3.5%" : 3,
-          pt: desktop ? 3 : 4,
-          pb: desktop ? 3 : 5,
-          position: "relative",
-          zIndex: 2,
-          background: "#ffffff",
-          overflow: "hidden",
-          borderRight: desktop ? "1px solid rgba(201,168,76,0.15)" : "none",
-          boxShadow: desktop ? "4px 0 32px rgba(0,53,128,0.05)" : "none",
-        }}>
-
+        <Box
+          className="left-panel"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+            position: "relative",
+            background: "#ffffff",
+            overflow: "hidden",
+            borderRight: "1px solid rgba(201,168,76,0.15)",
+            boxShadow: "4px 0 32px rgba(0,53,128,0.05)",
+            height: { xs: "auto", lg: "100vh" },
+            padding: { xs: "24px 20px 32px", sm: "32px 48px 40px" },
+          }}
+        >
           {/* Ambient orbs */}
           <Box className="orb-1" sx={{
             position: "absolute", top: "5%", right: "-10%",
-            width: 240, height: 240, borderRadius: "50%",
+            width: 200, height: 200, borderRadius: "50%",
             background: "radial-gradient(circle, rgba(0,119,230,0.05) 0%, transparent 70%)",
             pointerEvents: "none",
           }} />
           <Box className="orb-2" sx={{
             position: "absolute", bottom: "8%", left: "-6%",
-            width: 200, height: 200, borderRadius: "50%",
+            width: 160, height: 160, borderRadius: "50%",
             background: "radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%)",
             pointerEvents: "none",
           }} />
 
-          {/* ── THREE LOGOS ROW — top of panel ── */}
+          {/* ── THREE LOGOS ROW ── */}
           <Box
-            className="anim-1"
+            className="anim-1 logo-row"
             sx={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              gap: 2.5,
-              mb: 3,
-              pb: 2.5,
+              gap: { xs: 1.5, sm: 2, lg: 2 },
+              mb: { xs: 2.5, lg: 3 },
+              pb: { xs: 2, lg: 2.5 },
               borderBottom: "1px solid rgba(201,168,76,0.2)",
+              width: "100%",
+              overflow: "hidden",
             }}
           >
-            {/* Left: Rent.ph */}
-            <img
-              src="/images/rentph-logo.png"
-              alt="Rent.ph"
-              style={{
-                height: desktop ? 30 : 24,
-                width: "auto",
-                objectFit: "contain",
-                flex: "0 0 auto",
-              }}
-            />
-
+            <img src="/images/rentph-logo.png" alt="Rent.ph" className="logo-sm"
+              style={{ objectFit: "contain", flexShrink: 1, minWidth: 0, maxWidth: "30%" }} />
             <span className="logo-divider" />
-
-            {/* Center: Leuterio Realty — primary, larger */}
-            <img
-              src="/images/lr-logo.png"
-              alt="Leuterio Realty & Brokerage"
-              style={{
-                height: desktop ? 50 : 38,
-                width: "auto",
-                objectFit: "contain",
-                filter: "drop-shadow(0 2px 8px rgba(0,53,128,0.12))",
-                flex: "0 0 auto",
-              }}
-            />
-
+            <img src="/images/lr-logo.png" alt="Leuterio Realty & Brokerage" className="logo-lg"
+              style={{ objectFit: "contain", flexShrink: 1, minWidth: 0, maxWidth: "36%",
+                filter: "drop-shadow(0 2px 8px rgba(0,53,128,0.12))" }} />
             <span className="logo-divider" />
-
-            {/* Right: Filipino Homes */}
-            <img
-              src="/images/fh-logo.png"
-              alt="Filipino Homes"
-              style={{
-                height: desktop ? 30 : 24,
-                width: "auto",
-                objectFit: "contain",
-                flex: "0 0 auto",
-              }}
-            />
+            <img src="/images/fh-logo.png" alt="Filipino Homes" className="logo-sm"
+              style={{ objectFit: "contain", flexShrink: 1, minWidth: 0, maxWidth: "30%" }} />
           </Box>
 
-          {/* ── Content area: vertically centered in remaining space ── */}
-          <Box sx={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-          }}>
+          {/* ── CONTENT GRID (tablet: 2-col, others: single col) ── */}
+          <Box
+            className="content-grid"
+            sx={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: { xs: "flex-start", lg: "center" },
+            }}
+          >
+            {/* ── LEFT COLUMN of tablet grid ── */}
+            <Box className="content-left">
 
-            {/* Badge */}
-            <Box className="anim-2" sx={{ mb: 2 }}>
-              <span className="badge-pill">
-                <span className="badge-dot" />
-                Smart Property Dashboard
-              </span>
-            </Box>
+              {/* Badge */}
+              <Box className="anim-2" sx={{ mb: { xs: 1.5, lg: 2 } }}>
+                <span className="badge-pill">
+                  <span className="badge-dot" />
+                  Smart Property Dashboard
+                </span>
+              </Box>
 
-            {/* Headline */}
-            <Box className="anim-3">
-              <Typography
-                component="h1"
-                sx={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  fontSize: desktop ? "clamp(2.2rem, 2.8vw, 3.4rem)" : "2.1rem",
-                  fontWeight: 700,
-                  lineHeight: 1.07,
-                  color: "var(--text-dark)",
-                }}
-              >
-                Welcome to{" "}
-                <Box component="span" className="shimmer-text">
-                  Leuterio
-                </Box>
-                <br />
-                <Box
-                  component="span"
+              {/* Headline */}
+              <Box className="anim-3">
+                <Typography
+                  component="h1"
+                  className="welcome-headline"
                   sx={{
-                    fontStyle: "italic",
-                    color: "var(--blue-mid)",
-                    WebkitTextFillColor: "var(--blue-mid)",
+                    fontFamily: "'Open Sans', sans-serif",
+                    fontWeight: 700,
+                    lineHeight: 1.07,
+                    color: "var(--text-dark)",
                   }}
                 >
-                  Realty Portal
-                </Box>
-              </Typography>
-              <span className="gold-line" />
-            </Box>
-
-            {/* Body copy */}
-            <Box className="anim-3" sx={{ mb: desktop ? 3 : 2.5 }}>
-              <Typography sx={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: desktop ? "0.88rem" : "0.84rem",
-                fontWeight: 400,
-                color: "var(--text-muted)",
-                lineHeight: 1.82,
-              }}>
-                Congratulations! You've successfully accessed the Leuterio Realty
-                Portal. We're excited to support you on your real estate journey
-                and help you achieve your property goals.
-              </Typography>
-            </Box>
-
-            {/* Stats */}
-            <Box className="anim-4" sx={{
-              display: "flex", gap: 1, mb: desktop ? 3.5 : 3, flexWrap: "wrap",
-            }}>
-              {[
-                { num: "10K+", label: "Properties" },
-                { num: "98%",  label: "Satisfaction" },
-                { num: "15+",  label: "Years" },
-              ].map((s) => (
-                <Box key={s.label} className="stat-card" sx={{ flex: "1 1 auto" }}>
-                  <Typography sx={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: "1.5rem", fontWeight: 700,
-                    color: "var(--blue-deep)", lineHeight: 1,
+                  Welcome to{" "}
+                  <Box component="span" className="shimmer-text">
+                    Leuterio
+                  </Box>
+                  <br />
+                  <Box component="span" sx={{
+                    fontStyle: "italic",
+                    fontWeight: 700,
+                    color: "var(--blue-mid)",
+                    WebkitTextFillColor: "var(--blue-mid)",
                   }}>
-                    {s.num}
-                  </Typography>
-                  <Typography sx={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: "0.63rem", fontWeight: 500,
+                    Realty Portal
+                  </Box>
+                </Typography>
+                <span className="gold-line" />
+              </Box>
+
+              {/* Body copy */}
+              <Box className="anim-3" sx={{ mb: { xs: 2.5, lg: 3 } }}>
+                <Typography
+                  className="body-copy"
+                  sx={{
+                    fontFamily: "'Open Sans', sans-serif",
+                    fontSize: { xs: "0.84rem", sm: "0.9rem", lg: "0.88rem" },
+                    fontWeight: 400,
                     color: "var(--text-muted)",
-                    letterSpacing: "0.07em",
-                    textTransform: "uppercase", mt: 0.4,
-                  }}>
-                    {s.label}
-                  </Typography>
-                </Box>
-              ))}
-            </Box>
-
-            {/* CTA */}
-            <Box className="anim-5">
-              <Link to="/welcome/get-started" style={{ textDecoration: "none", display: "block" }}>
-                <StyledButton
-                  endIcon={<ArrowForward />}
-                  variant="contained"
-                  size="large"
-                  className="cta-btn"
+                    lineHeight: 1.82,
+                  }}
                 >
-                  Get Started
-                </StyledButton>
-              </Link>
-
-              <Typography sx={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: "0.7rem",
-                color: "var(--text-muted)",
-                mt: 1.8,
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-              }}>
-                <Box component="span" sx={{
-                  display: "inline-block", width: 14, height: 14,
-                  borderRadius: "50%",
-                  background: "linear-gradient(135deg,#4ade80,#22c55e)",
-                  boxShadow: "0 2px 8px rgba(34,197,94,0.4)",
-                  flexShrink: 0,
-                }} />
-                Secure access · Free to explore
-              </Typography>
+                  Congratulations! You've successfully accessed the Leuterio Realty
+                  Portal. We're excited to support you on your real estate journey
+                  and help you achieve your property goals.
+                </Typography>
+              </Box>
             </Box>
 
-          </Box>{/* end content flex */}
+            {/* ── RIGHT COLUMN of tablet grid (or continues below on other breakpoints) ── */}
+            <Box className="content-right">
+
+              {/* CTA */}
+              <Box className="anim-5">
+                <Link to="/welcome/get-started" style={{ textDecoration: "none", display: "block" }}>
+                  <StyledButton
+                    endIcon={<ArrowForward />}
+                    variant="contained"
+                    size="large"
+                    className="cta-btn"
+                  >
+                    Get Started
+                  </StyledButton>
+                </Link>
+
+                <Typography sx={{
+                  fontFamily: "'Open Sans', sans-serif",
+                  fontSize: { xs: "0.7rem", lg: "0.7rem" },
+                  color: "var(--text-muted)",
+                  mt: 1.8,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                }}>
+                  <Box component="span" sx={{
+                    display: "inline-block", width: 13, height: 13,
+                    borderRadius: "50%",
+                    background: "linear-gradient(135deg,#4ade80,#22c55e)",
+                    boxShadow: "0 2px 6px rgba(34,197,94,0.4)",
+                    flexShrink: 0,
+                  }} />
+                  Secure access · Free to explore
+                </Typography>
+              </Box>
+
+            </Box>
+          </Box>
 
           {/* Bottom branding strip */}
           <Box sx={{
-            display: "flex", alignItems: "center", gap: 1.5, mt: 2,
+            display: "flex", alignItems: "center", gap: 1.5,
+            mt: { xs: 3, lg: 2 },
           }}>
-            <Box sx={{ height: 1, width: 24, background: "var(--gold)", opacity: 0.5 }} />
+            <Box sx={{ height: 1, width: 22, background: "var(--gold)", opacity: 0.5 }} />
             <Typography sx={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontSize: "0.58rem", color: "var(--text-muted)",
-              letterSpacing: "0.1em", textTransform: "uppercase",
+              fontFamily: "'Open Sans', sans-serif",
+              fontSize: "0.57rem",
+              color: "var(--text-muted)",
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
             }}>
               Leuterio Realty & Brokerage
             </Typography>
           </Box>
-
         </Box>
-        {/* end LEFT PANEL */}
 
         {/* ══════════════════════════════════════
-            RIGHT PANEL — 80% full-bleed image
+            IMAGE PANEL — 80% on desktop
         ══════════════════════════════════════ */}
-        <Box sx={{
-          flex: 1,
-          position: "relative",
-          overflow: "hidden",
-          height: "100vh",
-        }}>
-
-          {/* Full-bleed image with subtle pan animation */}
+        <Box
+          className="image-panel"
+          sx={{
+            flex: 1,
+            position: "relative",
+            overflow: "hidden",
+            minHeight: { xs: "100%", sm: "280px" },
+          }}
+        >
+          {/* Full-bleed image */}
           <Box className="anim-img" sx={{ position: "absolute", inset: 0, overflow: "hidden" }}>
             <img
               src="/images/welcome-img.jpg"
@@ -465,21 +490,28 @@ export default function Welcome() {
           <Box sx={{
             position: "absolute", inset: 0, zIndex: 1,
             background: `
-              linear-gradient(to right, rgba(255,255,255,0.1) 0%, transparent 14%),
-              linear-gradient(to top, rgba(0,10,30,0.45) 0%, rgba(0,10,30,0.1) 38%, transparent 60%)
+              linear-gradient(to right, rgba(255,255,255,0.08) 0%, transparent 12%),
+              linear-gradient(to top, rgba(0,10,30,0.45) 0%, rgba(0,10,30,0.08) 35%, transparent 55%)
             `,
           }} />
 
-          {/* Gold corner accent — top left of image */}
+          {/* Mobile overlay — stronger for readability */}
+          <Box sx={{
+            display: { xs: "block", sm: "none" },
+            position: "absolute", inset: 0, zIndex: 1,
+            background: "rgba(255,255,255,0.0)",
+          }} />
+
+          {/* Gold corner accent */}
           <Box sx={{
             position: "absolute", top: 0, left: 0, zIndex: 2,
             width: 0, height: 0,
-            borderTop: "80px solid rgba(201,168,76,0.12)",
-            borderRight: "80px solid transparent",
+            borderTop: "70px solid rgba(201,168,76,0.12)",
+            borderRight: "70px solid transparent",
           }} />
         </Box>
 
-      </Box>
+      </div>
     </>
   );
 }
