@@ -30,7 +30,17 @@ export default function GetStarted() {
       content = <WebinarUploadAttendance />;
     }
   } else if (user?.confirmation === "no") {
-    content = <Webinar />;
+    if (user?.webinar_progress === 100) {
+      if (course_id) {
+        content = <Outlet context={{ course_id }} />;
+      } else {
+        content = <TrainingCourses />;
+      }
+
+      isMain = false;
+    } else {
+      content = <Webinar />;
+    }
   } else {
     content = <WebinarConfirmation />;
   }
