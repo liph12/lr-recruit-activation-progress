@@ -246,7 +246,7 @@ const animationStyles = `
 
   /* ── SMALL DESKTOP (1024px – 1279px) ── */
   @media (min-width: 1024px) and (max-width: 1279px) {
-    .left-panel { width: 30% !important; padding: 24px 5% !important; }
+    .left-panel { width: 30% !important; padding: 24px 2% !important; }
     .welcome-root { position: fixed; inset: 0; overflow: hidden; }
     .image-panel { position: relative !important; }
     .welcome-headline { font-size: clamp(1.6rem, 2vw, 2.2rem) !important; }
@@ -259,8 +259,8 @@ const animationStyles = `
   @media (min-width: 1280px) {
     .welcome-root { position: fixed; inset: 0; overflow: hidden; }
     .image-panel { position: relative !important; }
-    .left-panel { width: 28% !important; padding: 28px 5% !important; }
-    .welcome-headline { font-size: clamp(2rem, 2.4vw, 3rem) !important; }
+    .left-panel { width: 28% !important; padding: 28px 2%!important; }
+    .welcome-headline { font-size: clamp(4rem, 2.4vw, 3rem) !important;}
     .logo-row img.logo-sm { height: 26px !important; }
     .logo-row img.logo-lg { height: 44px !important; }
     .cta-btn { padding: 13px 32px !important; font-size: 0.88rem !important; }
@@ -273,7 +273,6 @@ export default function Welcome() {
       <style>{animationStyles}</style>
 
       <div className="welcome-root">
-
         {/* ══════════════════════════════════════
             LEFT PANEL
         ══════════════════════════════════════ */}
@@ -293,18 +292,34 @@ export default function Welcome() {
           }}
         >
           {/* Ambient orbs */}
-          <Box className="orb-1" sx={{
-            position: "absolute", top: "5%", right: "-10%",
-            width: 200, height: 200, borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(0,119,230,0.05) 0%, transparent 70%)",
-            pointerEvents: "none",
-          }} />
-          <Box className="orb-2" sx={{
-            position: "absolute", bottom: "8%", left: "-6%",
-            width: 160, height: 160, borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%)",
-            pointerEvents: "none",
-          }} />
+          <Box
+            className="orb-1"
+            sx={{
+              position: "absolute",
+              top: "5%",
+              right: "-10%",
+              width: 200,
+              height: 200,
+              borderRadius: "50%",
+              background:
+                "radial-gradient(circle, rgba(0,119,230,0.05) 0%, transparent 70%)",
+              pointerEvents: "none",
+            }}
+          />
+          <Box
+            className="orb-2"
+            sx={{
+              position: "absolute",
+              bottom: "8%",
+              left: "-6%",
+              width: 160,
+              height: 160,
+              borderRadius: "50%",
+              background:
+                "radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%)",
+              pointerEvents: "none",
+            }}
+          />
 
           {/* ── THREE LOGOS ROW ── */}
           <Box
@@ -321,15 +336,42 @@ export default function Welcome() {
               overflow: "hidden",
             }}
           >
-            <img src="/images/rentph-logo.png" alt="Rent.ph" className="logo-sm"
-              style={{ objectFit: "contain", flexShrink: 1, minWidth: 0, maxWidth: "30%" }} />
+            <img
+              src="/images/rentph-logo.png"
+              alt="Rent.ph"
+              className="logo-sm"
+              style={{
+                objectFit: "contain",
+                flexShrink: 1,
+                minWidth: 0,
+                maxWidth: "30%",
+              }}
+            />
             <span className="logo-divider" />
-            <img src="/images/lr-logo.png" alt="Leuterio Realty & Brokerage" className="logo-lg"
-              style={{ objectFit: "contain", flexShrink: 1, minWidth: 0, maxWidth: "36%",
-                filter: "drop-shadow(0 2px 8px rgba(0,53,128,0.12))" }} />
+            <img
+              src="/images/lr-logo.png"
+              alt="Leuterio Realty & Brokerage"
+              className="logo-lg"
+              style={{
+                objectFit: "contain",
+                flexShrink: 1,
+                minWidth: 0,
+                maxWidth: "36%",
+                filter: "drop-shadow(0 2px 8px rgba(0,53,128,0.12))",
+              }}
+            />
             <span className="logo-divider" />
-            <img src="/images/fh-logo.png" alt="Filipino Homes" className="logo-sm"
-              style={{ objectFit: "contain", flexShrink: 1, minWidth: 0, maxWidth: "30%" }} />
+            <img
+              src="/images/fh-logo.png"
+              alt="Filipino Homes"
+              className="logo-sm"
+              style={{
+                objectFit: "contain",
+                flexShrink: 1,
+                minWidth: 0,
+                maxWidth: "30%",
+              }}
+            />
           </Box>
 
           {/* ── CONTENT GRID (tablet: 2-col, others: single col) ── */}
@@ -344,7 +386,6 @@ export default function Welcome() {
           >
             {/* ── LEFT COLUMN of tablet grid ── */}
             <Box className="content-left">
-
               {/* Badge */}
               <Box className="anim-2" sx={{ mb: { xs: 1.5, lg: 2 } }}>
                 <span className="badge-pill">
@@ -370,12 +411,15 @@ export default function Welcome() {
                     Leuterio
                   </Box>
                   <br />
-                  <Box component="span" sx={{
-                    fontStyle: "italic",
-                    fontWeight: 700,
-                    color: "var(--blue-mid)",
-                    WebkitTextFillColor: "var(--blue-mid)",
-                  }}>
+                  <Box
+                    component="span"
+                    sx={{
+                      fontStyle: "italic",
+                      fontWeight: 700,
+                      color: "var(--blue-mid)",
+                      WebkitTextFillColor: "var(--blue-mid)",
+                    }}
+                  >
                     Realty Portal
                   </Box>
                 </Typography>
@@ -394,19 +438,21 @@ export default function Welcome() {
                     lineHeight: 1.82,
                   }}
                 >
-                  Congratulations! You've successfully accessed the Leuterio Realty
-                  Portal. We're excited to support you on your real estate journey
-                  and help you achieve your property goals.
+                  Congratulations! You've successfully accessed the Leuterio
+                  Realty Portal. We're excited to support you on your real
+                  estate journey and help you achieve your property goals.
                 </Typography>
               </Box>
             </Box>
 
             {/* ── RIGHT COLUMN of tablet grid (or continues below on other breakpoints) ── */}
             <Box className="content-right">
-
               {/* CTA */}
               <Box className="anim-5">
-                <Link to="/welcome/get-started" style={{ textDecoration: "none", display: "block" }}>
+                <Link
+                  to="/welcome/get-started"
+                  style={{ textDecoration: "none", display: "block" }}
+                >
                   <StyledButton
                     endIcon={<ArrowForward />}
                     variant="contained"
@@ -417,42 +463,61 @@ export default function Welcome() {
                   </StyledButton>
                 </Link>
 
-                <Typography sx={{
-                  fontFamily: "'Open Sans', sans-serif",
-                  fontSize: { xs: "0.7rem", lg: "0.7rem" },
-                  color: "var(--text-muted)",
-                  mt: 1.8,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                }}>
-                  <Box component="span" sx={{
-                    display: "inline-block", width: 13, height: 13,
-                    borderRadius: "50%",
-                    background: "linear-gradient(135deg,#4ade80,#22c55e)",
-                    boxShadow: "0 2px 6px rgba(34,197,94,0.4)",
-                    flexShrink: 0,
-                  }} />
+                <Typography
+                  sx={{
+                    fontFamily: "'Open Sans', sans-serif",
+                    fontSize: { xs: "0.7rem", lg: "0.7rem" },
+                    color: "var(--text-muted)",
+                    mt: 1.8,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                  }}
+                >
+                  <Box
+                    component="span"
+                    sx={{
+                      display: "inline-block",
+                      width: 13,
+                      height: 13,
+                      borderRadius: "50%",
+                      background: "linear-gradient(135deg,#4ade80,#22c55e)",
+                      boxShadow: "0 2px 6px rgba(34,197,94,0.4)",
+                      flexShrink: 0,
+                    }}
+                  />
                   Secure access · Free to explore
                 </Typography>
               </Box>
-
             </Box>
           </Box>
 
           {/* Bottom branding strip */}
-          <Box sx={{
-            display: "flex", alignItems: "center", gap: 1.5,
-            mt: { xs: 3, lg: 2 },
-          }}>
-            <Box sx={{ height: 1, width: 22, background: "var(--gold)", opacity: 0.5 }} />
-            <Typography sx={{
-              fontFamily: "'Open Sans', sans-serif",
-              fontSize: "0.57rem",
-              color: "var(--text-muted)",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-            }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1.5,
+              mt: { xs: 3, lg: 2 },
+            }}
+          >
+            <Box
+              sx={{
+                height: 1,
+                width: 22,
+                background: "var(--gold)",
+                opacity: 0.5,
+              }}
+            />
+            <Typography
+              sx={{
+                fontFamily: "'Open Sans', sans-serif",
+                fontSize: "0.57rem",
+                color: "var(--text-muted)",
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+              }}
+            >
               Leuterio Realty & Brokerage
             </Typography>
           </Box>
@@ -471,7 +536,10 @@ export default function Welcome() {
           }}
         >
           {/* Full-bleed image */}
-          <Box className="anim-img" sx={{ position: "absolute", inset: 0, overflow: "hidden" }}>
+          <Box
+            className="anim-img"
+            sx={{ position: "absolute", inset: 0, overflow: "hidden" }}
+          >
             <img
               src="/images/welcome-img.jpg"
               alt="Leuterio Realty"
@@ -487,30 +555,43 @@ export default function Welcome() {
           </Box>
 
           {/* Gradient overlays */}
-          <Box sx={{
-            position: "absolute", inset: 0, zIndex: 1,
-            background: `
+          <Box
+            sx={{
+              position: "absolute",
+              inset: 0,
+              zIndex: 1,
+              background: `
               linear-gradient(to right, rgba(255,255,255,0.08) 0%, transparent 12%),
               linear-gradient(to top, rgba(0,10,30,0.45) 0%, rgba(0,10,30,0.08) 35%, transparent 55%)
             `,
-          }} />
+            }}
+          />
 
           {/* Mobile overlay — stronger for readability */}
-          <Box sx={{
-            display: { xs: "block", sm: "none" },
-            position: "absolute", inset: 0, zIndex: 1,
-            background: "rgba(255,255,255,0.0)",
-          }} />
+          <Box
+            sx={{
+              display: { xs: "block", sm: "none" },
+              position: "absolute",
+              inset: 0,
+              zIndex: 1,
+              background: "rgba(255,255,255,0.0)",
+            }}
+          />
 
           {/* Gold corner accent */}
-          <Box sx={{
-            position: "absolute", top: 0, left: 0, zIndex: 2,
-            width: 0, height: 0,
-            borderTop: "70px solid rgba(201,168,76,0.12)",
-            borderRight: "70px solid transparent",
-          }} />
+          <Box
+            sx={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              zIndex: 2,
+              width: 0,
+              height: 0,
+              borderTop: "70px solid rgba(201,168,76,0.12)",
+              borderRight: "70px solid transparent",
+            }}
+          />
         </Box>
-
       </div>
     </>
   );
