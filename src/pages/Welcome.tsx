@@ -171,7 +171,7 @@ const animationStyles = `
     position: relative;
   }
 
-  /* ── MOBILE (< 640px): image as full background, content on top ── */
+  /* ── MOBILE (< 640px) ── */
   @media (max-width: 639px) {
     .welcome-root {
       flex-direction: column;
@@ -189,20 +189,20 @@ const animationStyles = `
       z-index: 2;
       width: 100% !important;
       min-height: 100vh;
-      background: rgba(255,255,255,0.88) !important;
-      backdrop-filter: blur(16px) !important;
+      background: #ffffff !important;
       border-right: none !important;
       box-shadow: none !important;
-      padding: 24px 20px 32px !important;
+      padding: 120px 24px 40px !important;
       overflow-y: auto;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: flex-start !important;
     }
-    .logo-row img.logo-sm { height: 22px !important; }
-    .logo-row img.logo-lg { height: 34px !important; }
-    .welcome-headline { font-size: 2rem !important; }
+    .logo-row img.logo-sm { height: 20px !important; }
+    .logo-row img.logo-lg { height: 32px !important; }
+    .welcome-headline { font-size: 1.9rem !important; }
     .body-copy { font-size: 0.84rem !important; }
-    .stat-num { font-size: 1.3rem !important; }
-    .stat-label { font-size: 0.6rem !important; }
-    .cta-btn { padding: 12px 24px !important; font-size: 0.82rem !important; }
+    .cta-btn { padding: 13px 24px !important; font-size: 0.84rem !important; }
   }
 
   /* ── TABLET (640px – 1023px): stacked, image top half / content bottom ── */
