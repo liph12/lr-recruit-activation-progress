@@ -283,7 +283,7 @@ export default function Welcome() {
             flexDirection: "column",
             justifyContent: "flex-start",
             position: "relative",
-            background: "#ffffff",
+            background: "#e0dddd",
             overflow: "hidden",
             borderRight: "1px solid rgba(201,168,76,0.15)",
             boxShadow: "4px 0 32px rgba(0,53,128,0.05)",
