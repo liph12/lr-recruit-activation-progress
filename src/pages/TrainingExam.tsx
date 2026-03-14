@@ -20,7 +20,7 @@ export default function TrainingExam() {
     const fetchExamAsync = async () => {
       try {
         const response = await axios.get(
-          `/integration/agent/course-exam?id=${course_id}&email=${user?.email}`
+          `/integration/agent/course-exam?id=${course_id}&email=${user?.email}`,
         );
         const { exam, course } = response.data;
 
