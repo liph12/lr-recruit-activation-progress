@@ -117,25 +117,6 @@ const animationStyles = `
     flex-shrink: 0;
   }
 
-  .stat-card {
-    background: rgba(255,255,255,0.75);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(201,168,76,0.18);
-    border-radius: 8px;
-    padding: 10px 12px;
-    transition: all 0.3s ease;
-    cursor: default;
-    flex: 1 1 0;
-    min-width: 0;
-  }
-
-  .stat-card:hover {
-    transform: translateY(-2px);
-    border-color: rgba(201,168,76,0.45);
-    box-shadow: 0 8px 24px rgba(0,53,128,0.1);
-    background: rgba(255,255,255,0.98);
-  }
-
   .cta-btn {
     position: relative;
     overflow: hidden;
@@ -422,43 +403,6 @@ export default function Welcome() {
 
             {/* ── RIGHT COLUMN of tablet grid (or continues below on other breakpoints) ── */}
             <Box className="content-right">
-
-              {/* Stats */}
-              <Box className="anim-4" sx={{
-                display: "flex",
-                gap: { xs: 1, sm: 1.5, lg: 1 },
-                mb: { xs: 2.5, lg: 3.5 },
-                flexWrap: "nowrap",
-              }}>
-                {[
-                  { num: "10K+", label: "Properties" },
-                  { num: "98%",  label: "Satisfaction" },
-                  { num: "15+",  label: "Years" },
-                ].map((s) => (
-                  <Box key={s.label} className="stat-card">
-                    <Typography className="stat-num" sx={{
-                      fontFamily: "'Open Sans', sans-serif",
-                      fontSize: { xs: "1.3rem", sm: "1.5rem", lg: "1.5rem" },
-                      fontWeight: 700,
-                      color: "var(--blue-deep)",
-                      lineHeight: 1,
-                    }}>
-                      {s.num}
-                    </Typography>
-                    <Typography className="stat-label" sx={{
-                      fontFamily: "'Open Sans', sans-serif",
-                      fontSize: { xs: "0.6rem", sm: "0.65rem", lg: "0.63rem" },
-                      fontWeight: 500,
-                      color: "var(--text-muted)",
-                      letterSpacing: "0.07em",
-                      textTransform: "uppercase",
-                      mt: 0.4,
-                    }}>
-                      {s.label}
-                    </Typography>
-                  </Box>
-                ))}
-              </Box>
 
               {/* CTA */}
               <Box className="anim-5">
