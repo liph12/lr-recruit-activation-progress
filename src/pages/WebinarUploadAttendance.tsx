@@ -86,18 +86,20 @@ export default function WebinarUploadAttendance() {
       }}
     >
       <Box sx={{ width: desktop ? "60vw" : "100%", px: desktop ? 0 : 2 }}>
-        <Typography variant={desktop ? "h3" : "h4"} fontWeight="bold">
-          Confirm your Attendance
+        <Typography
+          variant={desktop ? "h3" : "h4"}
+          fontWeight="bold"
+          textAlign={"center"}
+        >
+          Congratulations on completing the New Agents Orientation
         </Typography>
-        <Typography variant={desktop ? "h5" : "body1"} fontWeight="bold">
-          Please upload a screenshot or photo taken during the New Agent’s
-          Orientation as proof of attendance.
-        </Typography>
-        <Typography variant="body1">
-          Accepted files: <b>JPG, PNG</b> {desktop ? "|" : <br />} Maximum file
-          size: <b>5MB</b>
-        </Typography>
+
         <Box sx={{ mt: 2 }}>
+          <Typography variant="body1">
+            Accepted files: <b>JPG, PNG</b> {desktop ? "|" : <br />} Maximum
+            file size: <b>5MB</b>
+          </Typography>
+
           <Grid container spacing={2}>
             <Grid size={{ lg: 6, md: 6, xs: 12 }}>
               <Typography>Proof of attendance</Typography>
