@@ -2,555 +2,572 @@ import { Box, Typography } from "@mui/material";
 import StyledButton from "../components/utils/StyledButton";
 import { ArrowForward } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import { useAppProvider } from "../providers/AppProvider";
-import NavbarLayout from "../components/layouts/NavbarLayout";
 
 const animationStyles = `
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400;1,600;1,700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; }
 
   :root {
     --blue-deep: #003580;
     --blue-mid: #0055b3;
     --blue-bright: #0077e6;
-    --blue-light: #e8f2ff;
     --gold: #c9a84c;
     --gold-light: #f0d98a;
-    --white: #ffffff;
     --text-dark: #0a1628;
     --text-muted: #4a5d7a;
   }
 
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
+    from { opacity: 0; transform: translateY(20px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  @keyframes fadeRight {
-    from { opacity: 0; transform: translateX(40px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-
-  @keyframes float {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    33%       { transform: translateY(-14px) rotate(1deg); }
-    66%       { transform: translateY(-7px) rotate(-1deg); }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
   }
 
   @keyframes shimmer {
-    0%   { background-position: -400px 0; }
-    100% { background-position: 400px 0; }
-  }
-
-  @keyframes pulse-ring {
-    0%   { transform: scale(0.95); opacity: 0.6; }
-    50%  { transform: scale(1.08); opacity: 0.2; }
-    100% { transform: scale(0.95); opacity: 0.6; }
+    0%   { background-position: -600px 0; }
+    100% { background-position: 600px 0; }
   }
 
   @keyframes lineDraw {
-    from { width: 0; }
-    to   { width: 80px; }
-  }
-
-  @keyframes bgShift {
-    0%   { background-position: 0% 50%; }
-    50%  { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  @keyframes orbFloat1 {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50%       { transform: translate(30px, -20px) scale(1.05); }
-  }
-
-  @keyframes orbFloat2 {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50%       { transform: translate(-20px, 30px) scale(1.08); }
-  }
-
-  @keyframes orbFloat3 {
-    0%, 100% { transform: translate(0, 0); }
-    50%       { transform: translate(15px, 15px); }
-  }
-
-  @keyframes cardReveal {
-    from { opacity: 0; transform: scale(0.9) translateY(20px); }
-    to   { opacity: 1; transform: scale(1) translateY(0); }
+    from { width: 0; opacity: 0; }
+    to   { width: 60px; opacity: 1; }
   }
 
   @keyframes goldPulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.4); }
-    50%       { box-shadow: 0 0 0 12px rgba(201,168,76,0); }
+    0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.5); }
+    50%       { box-shadow: 0 0 0 8px rgba(201,168,76,0); }
   }
 
-  .anim-fade-up-1 { animation: fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.1s both; }
-  .anim-fade-up-2 { animation: fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.3s both; }
-  .anim-fade-up-3 { animation: fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.5s both; }
-  .anim-fade-up-4 { animation: fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.7s both; }
-  .anim-fade-right { animation: fadeRight 1s cubic-bezier(0.22,1,0.36,1) 0.3s both; }
-  .anim-card { animation: cardReveal 1s cubic-bezier(0.22,1,0.36,1) 0.2s both; }
-  .float { animation: float 6s ease-in-out infinite; }
-  .gold-pulse { animation: goldPulse 2s ease-in-out infinite; }
+  @keyframes panImage {
+    0%   { transform: scale(1.06) translateX(0px); }
+    50%  { transform: scale(1.06) translateX(-12px); }
+    100% { transform: scale(1.06) translateX(0px); }
+  }
+
+  @keyframes orbDrift1 {
+    0%, 100% { transform: translate(0, 0); }
+    50%       { transform: translate(16px, -12px); }
+  }
+
+  @keyframes orbDrift2 {
+    0%, 100% { transform: translate(0, 0); }
+    50%       { transform: translate(-12px, 16px); }
+  }
+
+  .anim-1 { animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.10s both; }
+  .anim-2 { animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.22s both; }
+  .anim-3 { animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.34s both; }
+  .anim-4 { animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.46s both; }
+  .anim-5 { animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.58s both; }
+  .anim-img { animation: fadeIn 1.2s ease 0.05s both; }
 
   .shimmer-text {
     background: linear-gradient(
       90deg,
       var(--blue-deep) 0%,
-      var(--blue-bright) 40%,
+      var(--blue-bright) 38%,
       var(--gold) 50%,
-      var(--blue-bright) 60%,
+      var(--blue-bright) 62%,
       var(--blue-deep) 100%
     );
-    background-size: 800px 100%;
+    background-size: 600px 100%;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: shimmer 4s linear infinite;
   }
 
-  .get-started-btn {
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(135deg, var(--blue-mid) 0%, var(--blue-deep) 100%) !important;
-    border: none !important;
-    border-radius: 4px !important;
-    padding: 16px 44px !important;
-    font-family: 'DM Sans', sans-serif !important;
-    font-weight: 600 !important;
-    font-size: 1rem !important;
-    letter-spacing: 0.08em !important;
-    text-transform: uppercase !important;
-    color: white !important;
-    box-shadow: 0 6px 32px rgba(0,53,128,0.35), inset 0 1px 0 rgba(255,255,255,0.15) !important;
-    transition: all 0.4s cubic-bezier(0.22,1,0.36,1) !important;
-    cursor: pointer;
-  }
-
-  .get-started-btn::before {
-    content: '';
-    position: absolute;
-    top: 0; left: -100%;
-    width: 100%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-    transition: left 0.5s ease;
-  }
-
-  .get-started-btn:hover::before { left: 100%; }
-
-  .get-started-btn:hover {
-    transform: translateY(-3px) !important;
-    box-shadow: 0 16px 48px rgba(0,53,128,0.5), inset 0 1px 0 rgba(255,255,255,0.2) !important;
-  }
-
-  .get-started-btn:active {
-    transform: translateY(-1px) !important;
-  }
-
   .gold-line {
     display: block;
     height: 2px;
     background: linear-gradient(90deg, var(--gold), var(--gold-light), transparent);
-    animation: lineDraw 1.2s cubic-bezier(0.22,1,0.36,1) 0.8s both;
-    width: 0;
     margin-top: 12px;
-    margin-bottom: 20px;
-  }
-
-  .stat-card {
-    background: rgba(255,255,255,0.8);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(201,168,76,0.2);
-    border-radius: 8px;
-    padding: 16px 22px;
-    transition: all 0.35s ease;
-  }
-
-  .stat-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(201,168,76,0.5);
-    box-shadow: 0 12px 32px rgba(0,53,128,0.12);
-  }
-
-  .image-frame {
-    position: relative;
-    border-radius: 16px;
-    overflow: visible;
-  }
-
-  .image-frame::before {
-    content: '';
-    position: absolute;
-    top: -2px; left: -2px; right: -2px; bottom: -2px;
-    border-radius: 18px;
-    background: linear-gradient(135deg, var(--gold), rgba(0,85,179,0.4), var(--gold-light));
-    z-index: 0;
-    animation: bgShift 4s ease infinite;
-    background-size: 200% 200%;
-  }
-
-  .image-inner {
-    position: relative;
-    z-index: 1;
-    border-radius: 16px;
-    overflow: hidden;
-    background: white;
+    margin-bottom: 18px;
+    animation: lineDraw 1s cubic-bezier(0.22,1,0.36,1) 0.6s both;
+    width: 0;
   }
 
   .badge-pill {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: linear-gradient(135deg, rgba(201,168,76,0.12), rgba(201,168,76,0.06));
-    border: 1px solid rgba(201,168,76,0.35);
+    background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(201,168,76,0.05));
+    border: 1px solid rgba(201,168,76,0.4);
     border-radius: 100px;
-    padding: 6px 18px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.78rem;
+    padding: 4px 13px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.65rem;
     font-weight: 600;
-    color: var(--gold);
+    color: #a07c28;
     letter-spacing: 0.12em;
     text-transform: uppercase;
+    white-space: nowrap;
   }
 
   .badge-dot {
-    width: 6px; height: 6px;
+    width: 5px; height: 5px;
     border-radius: 50%;
     background: var(--gold);
     animation: goldPulse 2s ease-in-out infinite;
+    flex-shrink: 0;
   }
 
-  .orb-1 { animation: orbFloat1 8s ease-in-out infinite; }
-  .orb-2 { animation: orbFloat2 10s ease-in-out infinite; }
-  .orb-3 { animation: orbFloat3 12s ease-in-out infinite; }
+  .stat-card {
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(201,168,76,0.18);
+    border-radius: 8px;
+    padding: 10px 12px;
+    transition: all 0.3s ease;
+    cursor: default;
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(201,168,76,0.45);
+    box-shadow: 0 8px 24px rgba(0,53,128,0.1);
+    background: rgba(255,255,255,0.98);
+  }
+
+  .cta-btn {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--blue-mid) 0%, var(--blue-deep) 100%) !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-family: 'Open Sans', sans-serif !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.1em !important;
+    text-transform: uppercase !important;
+    color: white !important;
+    box-shadow: 0 6px 24px rgba(0,53,128,0.32), inset 0 1px 0 rgba(255,255,255,0.15) !important;
+    transition: all 0.35s cubic-bezier(0.22,1,0.36,1) !important;
+    width: 100% !important;
+  }
+
+  .cta-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .cta-btn:hover::before { left: 100%; }
+  .cta-btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 12px 36px rgba(0,53,128,0.45) !important;
+  }
+  .cta-btn:active { transform: translateY(0) !important; }
+
+  .pan-image { animation: panImage 20s ease-in-out infinite; }
+
+  .logo-divider {
+    width: 1px;
+    height: 28px;
+    background: linear-gradient(to bottom, transparent, rgba(201,168,76,0.4), transparent);
+    flex-shrink: 0;
+    margin: 0 2px;
+  }
+
+  .orb-1 { animation: orbDrift1 9s ease-in-out infinite; }
+  .orb-2 { animation: orbDrift2 11s ease-in-out infinite; }
+
+  /* ── WELCOME ROOT ── */
+  .welcome-root {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ── MOBILE (< 640px): image as full background, content on top ── */
+  @media (max-width: 639px) {
+    .welcome-root {
+      flex-direction: column;
+      position: relative;
+    }
+    .image-panel {
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      z-index: 0 !important;
+    }
+    .left-panel {
+      position: relative;
+      z-index: 2;
+      width: 100% !important;
+      min-height: 100vh;
+      background: rgba(255,255,255,0.88) !important;
+      backdrop-filter: blur(16px) !important;
+      border-right: none !important;
+      box-shadow: none !important;
+      padding: 24px 20px 32px !important;
+      overflow-y: auto;
+    }
+    .logo-row img.logo-sm { height: 22px !important; }
+    .logo-row img.logo-lg { height: 34px !important; }
+    .welcome-headline { font-size: 2rem !important; }
+    .body-copy { font-size: 0.84rem !important; }
+    .stat-num { font-size: 1.3rem !important; }
+    .stat-label { font-size: 0.6rem !important; }
+    .cta-btn { padding: 12px 24px !important; font-size: 0.82rem !important; }
+  }
+
+  /* ── TABLET (640px – 1023px): stacked, image top half / content bottom ── */
+  @media (min-width: 640px) and (max-width: 1023px) {
+    .welcome-root {
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-y: auto;
+      position: relative;
+    }
+    .image-panel {
+      position: relative !important;
+      width: 100% !important;
+      height: 52vw !important;
+      min-height: 280px !important;
+      max-height: 420px !important;
+      flex-shrink: 0 !important;
+    }
+    .left-panel {
+      width: 100% !important;
+      min-height: auto !important;
+      padding: 32px 48px 40px !important;
+      border-right: none !important;
+      box-shadow: none !important;
+      border-top: 1px solid rgba(201,168,76,0.15) !important;
+    }
+    .logo-row { justify-content: center !important; }
+    .logo-row img.logo-sm { height: 28px !important; }
+    .logo-row img.logo-lg { height: 44px !important; }
+    .welcome-headline { font-size: clamp(2rem, 4vw, 2.8rem) !important; }
+    .content-grid {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr !important;
+      gap: 32px !important;
+      align-items: start !important;
+    }
+    .content-left { grid-column: 1; }
+    .content-right { grid-column: 2; }
+    .cta-btn { padding: 13px 32px !important; font-size: 0.88rem !important; }
+  }
+
+  /* ── SMALL DESKTOP (1024px – 1279px) ── */
+  @media (min-width: 1024px) and (max-width: 1279px) {
+    .left-panel { width: 30% !important; padding: 24px 5% !important; }
+    .welcome-root { position: fixed; inset: 0; overflow: hidden; }
+    .image-panel { position: relative !important; }
+    .welcome-headline { font-size: clamp(1.6rem, 2vw, 2.2rem) !important; }
+    .logo-row img.logo-sm { height: 22px !important; }
+    .logo-row img.logo-lg { height: 36px !important; }
+    .cta-btn { padding: 12px 24px !important; font-size: 0.82rem !important; }
+  }
+
+  /* ── LARGE DESKTOP (1280px+) ── */
+  @media (min-width: 1280px) {
+    .welcome-root { position: fixed; inset: 0; overflow: hidden; }
+    .image-panel { position: relative !important; }
+    .left-panel { width: 28% !important; padding: 28px 5% !important; }
+    .welcome-headline { font-size: clamp(2rem, 2.4vw, 3rem) !important; }
+    .logo-row img.logo-sm { height: 26px !important; }
+    .logo-row img.logo-lg { height: 44px !important; }
+    .cta-btn { padding: 13px 32px !important; font-size: 0.88rem !important; }
+  }
 `;
 
 export default function Welcome() {
-  const { desktop } = useAppProvider();
-
   return (
-    <NavbarLayout>
+    <>
       <style>{animationStyles}</style>
 
-      {/* === Ambient background orbs === */}
-      <Box sx={{ position: "fixed", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>
-        <Box className="orb-1" sx={{
-          position: "absolute", top: "5%", right: "15%",
-          width: 520, height: 520, borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(0,119,230,0.07) 0%, transparent 70%)",
-        }} />
-        <Box className="orb-2" sx={{
-          position: "absolute", bottom: "10%", left: "5%",
-          width: 400, height: 400, borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%)",
-        }} />
-        <Box className="orb-3" sx={{
-          position: "absolute", top: "40%", left: "40%",
-          width: 300, height: 300, borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(0,53,128,0.04) 0%, transparent 70%)",
-        }} />
-        {/* subtle grid overlay */}
-        <Box sx={{
-          position: "absolute", inset: 0,
-          backgroundImage: `
-            linear-gradient(rgba(0,85,179,0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0,85,179,0.03) 1px, transparent 1px)
-          `,
-          backgroundSize: "60px 60px",
-        }} />
-      </Box>
+      <div className="welcome-root">
 
-      {/* === Main Content === */}
-      <Box sx={{
-        position: "relative",
-        zIndex: 1,
-        px: desktop ? "6%" : 3,
-        py: desktop ? "5%" : 5,
-        minHeight: desktop ? "88vh" : "auto",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-      }}>
+        {/* ══════════════════════════════════════
+            LEFT PANEL
+        ══════════════════════════════════════ */}
+        <Box
+          className="left-panel"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+            position: "relative",
+            background: "#ffffff",
+            overflow: "hidden",
+            borderRight: "1px solid rgba(201,168,76,0.15)",
+            boxShadow: "4px 0 32px rgba(0,53,128,0.05)",
+            height: { xs: "auto", lg: "100vh" },
+            padding: { xs: "24px 20px 32px", sm: "32px 48px 40px" },
+          }}
+        >
+          {/* Ambient orbs */}
+          <Box className="orb-1" sx={{
+            position: "absolute", top: "5%", right: "-10%",
+            width: 200, height: 200, borderRadius: "50%",
+            background: "radial-gradient(circle, rgba(0,119,230,0.05) 0%, transparent 70%)",
+            pointerEvents: "none",
+          }} />
+          <Box className="orb-2" sx={{
+            position: "absolute", bottom: "8%", left: "-6%",
+            width: 160, height: 160, borderRadius: "50%",
+            background: "radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%)",
+            pointerEvents: "none",
+          }} />
 
-        {/* Celebrate icon — top center, elevated */}
-        <Box className="anim-fade-up-1" sx={{
-          display: "flex", justifyContent: desktop ? "flex-start" : "center",
-          mb: desktop ? 5 : 4,
-        }}>
-          <Box sx={{ position: "relative", display: "inline-flex", justifyContent: "center", alignItems: "center" }}>
-            <Box sx={{
-              position: "absolute", width: 90, height: 90, borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(0,102,204,0.12) 0%, transparent 70%)",
-              animation: "pulse-ring 2.5s ease-in-out infinite",
-            }} />
-            <Box sx={{
-              width: desktop ? 72 : 56, height: desktop ? 72 : 56,
-              borderRadius: "50%",
-              background: "linear-gradient(145deg, #fff 0%, #e8f2ff 100%)",
-              boxShadow: "0 8px 32px rgba(0,53,128,0.18), inset 0 1px 0 rgba(255,255,255,0.9)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-            }}>
-              <img
-                src="/images/celebrate-icon.png"
-                width={desktop ? 44 : 34}
-                height="auto"
-                style={{ position: "relative", zIndex: 2, filter: "drop-shadow(0 4px 12px rgba(0,102,204,0.2))" }}
-              />
-            </Box>
-          </Box>
-        </Box>
-
-        {/* === Two column layout === */}
-        <Box sx={{
-          display: "grid",
-          gridTemplateColumns: desktop ? "1fr 1fr" : "1fr",
-          gap: desktop ? 8 : 5,
-          alignItems: "center",
-        }}>
-
-          {/* ── LEFT: Copy ── */}
-          <Box sx={{ display: "flex", flexDirection: "column", order: desktop ? 1 : 2 }}>
-
-            {/* Badge */}
-            <Box className="anim-fade-up-1" sx={{ mb: 3 }}>
-              <span className="badge-pill">
-                <span className="badge-dot" />
-                Smart Property Dashboard
-              </span>
-            </Box>
-
-            {/* Main heading */}
-            <Box className="anim-fade-up-2">
-              <Typography
-                component="h1"
-                sx={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  fontSize: desktop ? "clamp(2.8rem, 4vw, 4.2rem)" : "2.4rem",
-                  fontWeight: 700,
-                  lineHeight: 1.08,
-                  color: "var(--text-dark)",
-                  mb: 0,
-                }}
-              >
-                Welcome to{" "}
-                <Box component="span" className="shimmer-text">
-                  Leuterio
-                </Box>
-                <br />
-                <Box component="span" sx={{
-                  fontStyle: "italic",
-                  color: "var(--blue-mid)",
-                  WebkitTextFillColor: "var(--blue-mid)",
-                }}>
-                  Realty Portal
-                </Box>
-              </Typography>
-              <span className="gold-line" />
-            </Box>
-
-            {/* Sub-headline */}
-            <Box className="anim-fade-up-3" sx={{ mb: 4 }}>
-              <Typography sx={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: desktop ? "1.05rem" : "0.95rem",
-                fontWeight: 400,
-                color: "var(--text-muted)",
-                lineHeight: 1.85,
-                maxWidth: 480,
-              }}>
-                Congratulations! You've successfully accessed the Leuterio Realty
-                Portal. We're excited to support you on your real estate journey
-                and help you achieve your property goals.
-              </Typography>
-            </Box>
-
-            {/* Stats row */}
-            <Box className="anim-fade-up-3" sx={{
-              display: "flex", gap: 2, mb: 5, flexWrap: "wrap",
-            }}>
-              {[
-                { num: "10K+", label: "Properties Listed" },
-                { num: "98%", label: "Client Satisfaction" },
-                { num: "15+", label: "Years of Trust" },
-              ].map((s) => (
-                <Box key={s.label} className="stat-card">
-                  <Typography sx={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: "1.7rem", fontWeight: 700,
-                    color: "var(--blue-deep)", lineHeight: 1,
-                  }}>
-                    {s.num}
-                  </Typography>
-                  <Typography sx={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: "0.72rem", fontWeight: 500,
-                    color: "var(--text-muted)", letterSpacing: "0.06em",
-                    textTransform: "uppercase", mt: 0.5,
-                  }}>
-                    {s.label}
-                  </Typography>
-                </Box>
-              ))}
-            </Box>
-
-            {/* CTA Button */}
-            <Box className="anim-fade-up-4">
-              <Link to="/welcome/get-started" style={{ textDecoration: "none" }}>
-                <StyledButton
-                  endIcon={<ArrowForward />}
-                  variant="contained"
-                  size="large"
-                  className="get-started-btn"
-                >
-                  Get Started
-                </StyledButton>
-              </Link>
-
-              {/* Trust signal */}
-              <Typography sx={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: "0.78rem", color: "var(--text-muted)",
-                mt: 2.5, display: "flex", alignItems: "center", gap: 1,
-              }}>
-                <Box component="span" sx={{
-                  display: "inline-block", width: 18, height: 18,
-                  borderRadius: "50%", background: "linear-gradient(135deg,#4ade80,#22c55e)",
-                  boxShadow: "0 2px 8px rgba(34,197,94,0.4)",
-                  flexShrink: 0,
-                }} />
-                Secure access · No credit card required · Free to explore
-              </Typography>
-            </Box>
-          </Box>
-
-          {/* ── RIGHT: Image ── */}
+          {/* ── THREE LOGOS ROW ── */}
           <Box
-            className="anim-fade-right"
+            className="anim-1 logo-row"
             sx={{
               display: "flex",
-              justifyContent: "center",
               alignItems: "center",
-              order: desktop ? 2 : 1,
+              justifyContent: "center",
+              gap: { xs: 1.5, sm: 2, lg: 2 },
+              mb: { xs: 2.5, lg: 3 },
+              pb: { xs: 2, lg: 2.5 },
+              borderBottom: "1px solid rgba(201,168,76,0.2)",
+              width: "100%",
+              overflow: "hidden",
             }}
           >
-            <Box className="float" sx={{ width: "100%", maxWidth: 560 }}>
-              {/* Decorative corner accent */}
-              <Box sx={{
-                position: "relative",
-              }}>
-                {/* Top-right gold corner */}
-                <Box sx={{
-                  position: "absolute", top: -12, right: -12, zIndex: 3,
-                  width: 60, height: 60,
-                  borderTop: "3px solid var(--gold)",
-                  borderRight: "3px solid var(--gold)",
-                  borderRadius: "0 8px 0 0",
-                }} />
-                {/* Bottom-left blue corner */}
-                <Box sx={{
-                  position: "absolute", bottom: -12, left: -12, zIndex: 3,
-                  width: 60, height: 60,
-                  borderBottom: "3px solid var(--blue-mid)",
-                  borderLeft: "3px solid var(--blue-mid)",
-                  borderRadius: "0 0 0 8px",
-                }} />
+            <img src="/images/rentph-logo.png" alt="Rent.ph" className="logo-sm"
+              style={{ objectFit: "contain", flexShrink: 1, minWidth: 0, maxWidth: "30%" }} />
+            <span className="logo-divider" />
+            <img src="/images/lr-logo.png" alt="Leuterio Realty & Brokerage" className="logo-lg"
+              style={{ objectFit: "contain", flexShrink: 1, minWidth: 0, maxWidth: "36%",
+                filter: "drop-shadow(0 2px 8px rgba(0,53,128,0.12))" }} />
+            <span className="logo-divider" />
+            <img src="/images/fh-logo.png" alt="Filipino Homes" className="logo-sm"
+              style={{ objectFit: "contain", flexShrink: 1, minWidth: 0, maxWidth: "30%" }} />
+          </Box>
 
-                <Box className="image-frame">
-                  <Box className="image-inner">
-                    {/* Inner gradient top bar */}
-                    <Box sx={{
-                      position: "absolute", top: 0, left: 0, right: 0,
-                      height: 4, zIndex: 4,
-                      background: "linear-gradient(90deg, var(--blue-deep), var(--blue-bright), var(--gold))",
-                    }} />
+          {/* ── CONTENT GRID (tablet: 2-col, others: single col) ── */}
+          <Box
+            className="content-grid"
+            sx={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: { xs: "flex-start", lg: "center" },
+            }}
+          >
+            {/* ── LEFT COLUMN of tablet grid ── */}
+            <Box className="content-left">
 
-                    <Box sx={{
-                      background: "linear-gradient(160deg, #ddeeff 0%, #eef5ff 40%, #f8faff 100%)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      p: desktop ? 6 : 4,
-                      minHeight: desktop ? 420 : 280,
-                    }}>
-                      <img
-                        src="/images/celebrate-icon.png"
-                        alt="Celebration"
-                        style={{
-                          width: desktop ? "82%" : "78%",
-                          height: "auto",
-                          filter: "drop-shadow(0 24px 48px rgba(0,53,128,0.18)) drop-shadow(0 8px 16px rgba(201,168,76,0.15))",
-                        }}
-                      />
-                    </Box>
-                  </Box>
-                </Box>
-
-                {/* Floating badge on image */}
-                <Box className="gold-pulse" sx={{
-                  position: "absolute",
-                  bottom: desktop ? 28 : 18,
-                  right: desktop ? -20 : -8,
-                  zIndex: 5,
-                  background: "linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-mid) 100%)",
-                  color: "white",
-                  borderRadius: "12px",
-                  px: 2.5, py: 1.5,
-                  boxShadow: "0 8px 24px rgba(0,53,128,0.3)",
-                  backdropFilter: "blur(8px)",
-                }}>
-                  <Typography sx={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: "1.4rem", fontWeight: 700, lineHeight: 1, color: "white",
-                  }}>
-                    #1
-                  </Typography>
-                  <Typography sx={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontSize: "0.65rem", fontWeight: 500, color: "rgba(255,255,255,0.75)",
-                    letterSpacing: "0.08em", textTransform: "uppercase",
-                  }}>
-                    Trusted Portal
-                  </Typography>
-                </Box>
-
-                {/* Floating verified badge top left */}
-                <Box sx={{
-                  position: "absolute",
-                  top: desktop ? 24 : 14,
-                  left: desktop ? -16 : -6,
-                  zIndex: 5,
-                  background: "rgba(255,255,255,0.92)",
-                  backdropFilter: "blur(12px)",
-                  borderRadius: "10px",
-                  border: "1px solid rgba(201,168,76,0.25)",
-                  px: 2, py: 1,
-                  boxShadow: "0 6px 20px rgba(0,0,0,0.08)",
-                  display: "flex", alignItems: "center", gap: 1,
-                }}>
-                  <Box sx={{
-                    width: 28, height: 28, borderRadius: "50%",
-                    background: "linear-gradient(135deg, var(--gold), var(--gold-light))",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: "0.85rem",
-                  }}>✓</Box>
-                  <Box>
-                    <Typography sx={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontSize: "0.7rem", fontWeight: 700,
-                      color: "var(--text-dark)", lineHeight: 1,
-                    }}>Verified</Typography>
-                    <Typography sx={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontSize: "0.62rem", color: "var(--text-muted)", lineHeight: 1.2,
-                    }}>Real Estate Portal</Typography>
-                  </Box>
-                </Box>
-
+              {/* Badge */}
+              <Box className="anim-2" sx={{ mb: { xs: 1.5, lg: 2 } }}>
+                <span className="badge-pill">
+                  <span className="badge-dot" />
+                  Smart Property Dashboard
+                </span>
               </Box>
+
+              {/* Headline */}
+              <Box className="anim-3">
+                <Typography
+                  component="h1"
+                  className="welcome-headline"
+                  sx={{
+                    fontFamily: "'Open Sans', sans-serif",
+                    fontWeight: 700,
+                    lineHeight: 1.07,
+                    color: "var(--text-dark)",
+                  }}
+                >
+                  Welcome to{" "}
+                  <Box component="span" className="shimmer-text">
+                    Leuterio
+                  </Box>
+                  <br />
+                  <Box component="span" sx={{
+                    fontStyle: "italic",
+                    fontWeight: 700,
+                    color: "var(--blue-mid)",
+                    WebkitTextFillColor: "var(--blue-mid)",
+                  }}>
+                    Realty Portal
+                  </Box>
+                </Typography>
+                <span className="gold-line" />
+              </Box>
+
+              {/* Body copy */}
+              <Box className="anim-3" sx={{ mb: { xs: 2.5, lg: 3 } }}>
+                <Typography
+                  className="body-copy"
+                  sx={{
+                    fontFamily: "'Open Sans', sans-serif",
+                    fontSize: { xs: "0.84rem", sm: "0.9rem", lg: "0.88rem" },
+                    fontWeight: 400,
+                    color: "var(--text-muted)",
+                    lineHeight: 1.82,
+                  }}
+                >
+                  Congratulations! You've successfully accessed the Leuterio Realty
+                  Portal. We're excited to support you on your real estate journey
+                  and help you achieve your property goals.
+                </Typography>
+              </Box>
+            </Box>
+
+            {/* ── RIGHT COLUMN of tablet grid (or continues below on other breakpoints) ── */}
+            <Box className="content-right">
+
+              {/* Stats */}
+              <Box className="anim-4" sx={{
+                display: "flex",
+                gap: { xs: 1, sm: 1.5, lg: 1 },
+                mb: { xs: 2.5, lg: 3.5 },
+                flexWrap: "nowrap",
+              }}>
+                {[
+                  { num: "10K+", label: "Properties" },
+                  { num: "98%",  label: "Satisfaction" },
+                  { num: "15+",  label: "Years" },
+                ].map((s) => (
+                  <Box key={s.label} className="stat-card">
+                    <Typography className="stat-num" sx={{
+                      fontFamily: "'Open Sans', sans-serif",
+                      fontSize: { xs: "1.3rem", sm: "1.5rem", lg: "1.5rem" },
+                      fontWeight: 700,
+                      color: "var(--blue-deep)",
+                      lineHeight: 1,
+                    }}>
+                      {s.num}
+                    </Typography>
+                    <Typography className="stat-label" sx={{
+                      fontFamily: "'Open Sans', sans-serif",
+                      fontSize: { xs: "0.6rem", sm: "0.65rem", lg: "0.63rem" },
+                      fontWeight: 500,
+                      color: "var(--text-muted)",
+                      letterSpacing: "0.07em",
+                      textTransform: "uppercase",
+                      mt: 0.4,
+                    }}>
+                      {s.label}
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
+
+              {/* CTA */}
+              <Box className="anim-5">
+                <Link to="/welcome/get-started" style={{ textDecoration: "none", display: "block" }}>
+                  <StyledButton
+                    endIcon={<ArrowForward />}
+                    variant="contained"
+                    size="large"
+                    className="cta-btn"
+                  >
+                    Get Started
+                  </StyledButton>
+                </Link>
+
+                <Typography sx={{
+                  fontFamily: "'Open Sans', sans-serif",
+                  fontSize: { xs: "0.7rem", lg: "0.7rem" },
+                  color: "var(--text-muted)",
+                  mt: 1.8,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                }}>
+                  <Box component="span" sx={{
+                    display: "inline-block", width: 13, height: 13,
+                    borderRadius: "50%",
+                    background: "linear-gradient(135deg,#4ade80,#22c55e)",
+                    boxShadow: "0 2px 6px rgba(34,197,94,0.4)",
+                    flexShrink: 0,
+                  }} />
+                  Secure access · Free to explore
+                </Typography>
+              </Box>
+
             </Box>
           </Box>
 
+          {/* Bottom branding strip */}
+          <Box sx={{
+            display: "flex", alignItems: "center", gap: 1.5,
+            mt: { xs: 3, lg: 2 },
+          }}>
+            <Box sx={{ height: 1, width: 22, background: "var(--gold)", opacity: 0.5 }} />
+            <Typography sx={{
+              fontFamily: "'Open Sans', sans-serif",
+              fontSize: "0.57rem",
+              color: "var(--text-muted)",
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+            }}>
+              Leuterio Realty & Brokerage
+            </Typography>
+          </Box>
         </Box>
-      </Box>
-    </NavbarLayout>
+
+        {/* ══════════════════════════════════════
+            IMAGE PANEL — 80% on desktop
+        ══════════════════════════════════════ */}
+        <Box
+          className="image-panel"
+          sx={{
+            flex: 1,
+            position: "relative",
+            overflow: "hidden",
+            minHeight: { xs: "100%", sm: "280px" },
+          }}
+        >
+          {/* Full-bleed image */}
+          <Box className="anim-img" sx={{ position: "absolute", inset: 0, overflow: "hidden" }}>
+            <img
+              src="/images/welcome-img.jpg"
+              alt="Leuterio Realty"
+              className="pan-image"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                objectPosition: "center center",
+                display: "block",
+              }}
+            />
+          </Box>
+
+          {/* Gradient overlays */}
+          <Box sx={{
+            position: "absolute", inset: 0, zIndex: 1,
+            background: `
+              linear-gradient(to right, rgba(255,255,255,0.08) 0%, transparent 12%),
+              linear-gradient(to top, rgba(0,10,30,0.45) 0%, rgba(0,10,30,0.08) 35%, transparent 55%)
+            `,
+          }} />
+
+          {/* Mobile overlay — stronger for readability */}
+          <Box sx={{
+            display: { xs: "block", sm: "none" },
+            position: "absolute", inset: 0, zIndex: 1,
+            background: "rgba(255,255,255,0.0)",
+          }} />
+
+          {/* Gold corner accent */}
+          <Box sx={{
+            position: "absolute", top: 0, left: 0, zIndex: 2,
+            width: 0, height: 0,
+            borderTop: "70px solid rgba(201,168,76,0.12)",
+            borderRight: "70px solid transparent",
+          }} />
+        </Box>
+
+      </div>
+    </>
   );
 }

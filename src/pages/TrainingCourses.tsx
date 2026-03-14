@@ -1,10 +1,12 @@
-import { Box, Typography, Divider, Grid, Chip, Container } from "@mui/material";
 import {
-  OpenInNewRounded,
-  CheckCircleRounded,
-  InfoRounded,
-  UploadRounded,
-} from "@mui/icons-material";
+  Box,
+  Typography,
+  Divider,
+  Grid,
+  Container,
+  Avatar,
+} from "@mui/material";
+import { OpenInNewRounded, UploadRounded } from "@mui/icons-material";
 import { useAppProvider } from "../providers/AppProvider";
 import { useEffect, useState } from "react";
 import type { Course } from "../types/course";
@@ -28,9 +30,15 @@ export default function TrainingCourses() {
   const [externalUser, setExternalUser] = useState<ExternalUser | null>(null);
   const [endorsement, setEndorsement] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [currentCourseIdx, setCurrentCourseIdx] = useState<number>(0);
 
   const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) =>
     setEndorsement(e.target.files ? e.target.files[0] : null);
+
+  const handleNextCourse = () =>
+    setCurrentCourseIdx((prev) => (prev < courses.length ? prev + 1 : prev));
+  const handlePrevCourse = () =>
+    setCurrentCourseIdx((prev) => (prev > 0 ? prev - 1 : prev));
 
   const handleUploadEndorsement = async () => {
     try {
@@ -170,7 +178,7 @@ export default function TrainingCourses() {
           Get Started with FIRE
         </Typography>
         <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-          <InfoRounded color="action" fontSize={desktop ? "large" : "medium"} />
+          {/* <InfoRounded color="action" fontSize={desktop ? "large" : "medium"} /> */}
           {externalUser?.requiresEndorsement ? (
             <Box>
               <Typography variant={desktop ? "h6" : "body1"}>
@@ -181,9 +189,12 @@ export default function TrainingCourses() {
               </Typography>
             </Box>
           ) : (
-            <Typography variant={desktop ? "h5" : "body1"}>
-              Please take and finish modules 1 - 3
-            </Typography>
+            <>
+              <Typography variant={desktop ? "h6" : "body1"}>
+                You are about to begin the 12 training modules required to
+                complete your requirements as a Filipino Homes agent.
+              </Typography>
+            </>
           )}
         </Box>
       </Container>
@@ -194,10 +205,10 @@ export default function TrainingCourses() {
             justifyContent: "center",
             flexDirection: "column",
             alignItems: "center",
-            height: externalUser?.requiresEndorsement ? "50vh" : "auto",
+            height: "auto",
           }}
         >
-          <Box sx={{ mt: 5 }}>
+          <Box sx={{ my: 5 }}>
             {externalUser?.requiresEndorsement ? (
               <Grid container spacing={1}>
                 <Grid size={{ lg: 6, md: 6, xs: 12 }}>
@@ -231,7 +242,7 @@ export default function TrainingCourses() {
                   <Grid key={k} size={{ lg: 4, md: 12, xs: 12 }}>
                     <Box
                       sx={{
-                        height: 150,
+                        height: 170,
                         bgcolor: "#fff",
                         px: 2,
                         py: 1,
@@ -241,15 +252,35 @@ export default function TrainingCourses() {
                       }}
                     >
                       <Box sx={{ display: "flex", gap: 2 }}>
-                        <Typography variant="h3">{k + 1}</Typography>
-
+                        <Typography variant="h4">{k + 1}</Typography>
                         <Box sx={{ width: "100%" }}>
                           <Typography variant={desktop ? "h6" : "body1"}>
                             {c.title}
                           </Typography>
-                          <Divider sx={{ my: 1 }} />
+                        </Box>
+                      </Box>
+                      <Divider sx={{ my: 1 }} />
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: 2,
+                          alignItems: "center",
+                        }}
+                      >
+                        <Avatar
+                          src={c.speaker.avatar}
+                          sx={{
+                            height: "auto",
+                            width: 35,
+                            border: "2px solid #eee",
+                          }}
+                        />
+                        <Box>
                           <Typography variant="body2">
                             {c.speaker.name}
+                          </Typography>
+                          <Typography variant="caption" color="textSecondary">
+                            Speaker
                           </Typography>
                         </Box>
                       </Box>
@@ -261,55 +292,20 @@ export default function TrainingCourses() {
                           alignItems: "center",
                         }}
                       >
-                        <Typography variant="h5">
-                          <Typography variant="h4" component="span">
-                            {c.scores[0]?.score ?? 0}
-                          </Typography>
-                          /10
-                        </Typography>
-
-                        <Divider orientation="vertical" sx={{ height: 35 }} />
-
-                        <Chip
-                          label={c.status}
-                          size="small"
-                          color={
-                            c.status === "done"
-                              ? "success"
-                              : c.status === "next"
-                              ? "primary"
-                              : "default"
-                          }
-                        />
                         <Box
                           component={Link}
-                          to={`/welcome/get-started/exam/${c.id}`}
+                          to={`/welcome/get-started/training/${c.id}`}
                           sx={{
                             width: "100%",
-                            pointerEvents:
-                              c.status === "pending" ? "none" : "auto",
                           }}
                         >
                           <StyledButton
                             fullWidth
                             variant="outlined"
                             size="small"
-                            disabled={c.status === "pending"}
-                            startIcon={
-                              c.status === "pending" ? (
-                                <InfoRounded />
-                              ) : c.status === "done" ? (
-                                <CheckCircleRounded />
-                              ) : (
-                                <OpenInNewRounded />
-                              )
-                            }
+                            startIcon={<OpenInNewRounded />}
                           >
-                            {c.status === "pending"
-                              ? "Not available"
-                              : c.status === "done"
-                              ? "Re-take"
-                              : "Take exam"}
+                            Take course
                           </StyledButton>
                         </Box>
                       </Box>
