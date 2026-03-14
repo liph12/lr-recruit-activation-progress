@@ -2,6 +2,21 @@ import { Box, Typography } from "@mui/material";
 import StyledButton from "../components/utils/StyledButton";
 import { ArrowForward } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+
+// ── Slider images ──────────────────────────────────────────────────────────────
+const SLIDE_IMAGES = [
+  "/images/natcon2025.jpg",
+  "/images/natcon2024.jpg",
+  "/images/natcon2023.jpg",
+];
+
+// ── Logos that slide one-by-one, all same size ────────────────────────────────
+const LOGOS = [
+  { src: "/images/rentph-logo-white.png", alt: "Rent.ph" },
+  { src: "/images/lr-logo-white.png", alt: "Leuterio Realty & Brokerage" },
+  { src: "/images/fh-logo-white.png", alt: "Filipino Homes" },
+];
 
 const animationStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400;1,600;1,700&display=swap');
@@ -14,8 +29,8 @@ const animationStyles = `
     --blue-bright: #0077e6;
     --gold: #c9a84c;
     --gold-light: #f0d98a;
-    --text-dark: #0a1628;
-    --text-muted: #4a5d7a;
+    --text-dark: #ffffff;
+    --text-muted: rgba(255,255,255,0.72);
   }
 
   @keyframes fadeUp {
@@ -43,6 +58,19 @@ const animationStyles = `
     50%       { box-shadow: 0 0 0 8px rgba(201,168,76,0); }
   }
 
+  @keyframes bgShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes particleDrift {
+    0%   { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 0.6; }
+    100% { transform: translateY(-80px) translateX(20px) scale(0.6); opacity: 0; }
+  }
+
   @keyframes panImage {
     0%   { transform: scale(1.06) translateX(0px); }
     50%  { transform: scale(1.06) translateX(-12px); }
@@ -59,6 +87,83 @@ const animationStyles = `
     50%       { transform: translate(-12px, 16px); }
   }
 
+  /* ── LOGO SLIDER ── */
+  @keyframes logoSlideIn {
+    from { opacity: 0; transform: translateX(30px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes logoSlideOut {
+    from { opacity: 1; transform: translateX(0); }
+    to   { opacity: 0; transform: translateX(-30px); }
+  }
+
+  .logo-slide-in  { animation: logoSlideIn  0.5s cubic-bezier(0.22,1,0.36,1) both; }
+  .logo-slide-out { animation: logoSlideOut 0.4s cubic-bezier(0.55,0,0.78,0) both; }
+
+  /* uniform logo size — all logos same height, same max-width */
+  .logo-unified {
+    height: 44px;
+    width: auto;
+    max-width: 160px;
+    object-fit: contain;
+    flex-shrink: 0;
+    display: block;
+  }
+
+  /* ── IMAGE SLIDER ── */
+  .slide-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    will-change: transform;
+    transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1);
+  }
+
+  .slide-item {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .slide-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+    animation: panImage 20s ease-in-out infinite;
+  }
+
+  /* dot indicators */
+  .slider-dots {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+  }
+
+  .slider-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.45);
+    border: 1px solid rgba(255,255,255,0.6);
+    cursor: pointer;
+    transition: all 0.35s ease;
+  }
+
+  .slider-dot.active {
+    background: var(--gold);
+    border-color: var(--gold-light);
+    transform: scale(1.35);
+    box-shadow: 0 0 6px rgba(201,168,76,0.7);
+  }
+
   .anim-1 { animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.10s both; }
   .anim-2 { animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.22s both; }
   .anim-3 { animation: fadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.34s both; }
@@ -69,17 +174,17 @@ const animationStyles = `
   .shimmer-text {
     background: linear-gradient(
       90deg,
-      var(--blue-deep) 0%,
-      var(--blue-bright) 38%,
-      var(--gold) 50%,
-      var(--blue-bright) 62%,
-      var(--blue-deep) 100%
+      #7eb8ff 0%,
+      #ffffff 35%,
+      var(--gold-light) 50%,
+      #ffffff 65%,
+      #7eb8ff 100%
     );
     background-size: 600px 100%;
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: shimmer 4s linear infinite;
+    animation: shimmer 3.5s linear infinite;
   }
 
   .gold-line {
@@ -90,20 +195,21 @@ const animationStyles = `
     margin-bottom: 18px;
     animation: lineDraw 1s cubic-bezier(0.22,1,0.36,1) 0.6s both;
     width: 0;
+    opacity: 0.8;
   }
 
   .badge-pill {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(201,168,76,0.05));
-    border: 1px solid rgba(201,168,76,0.4);
+    background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.08));
+    border: 1px solid rgba(201,168,76,0.5);
     border-radius: 100px;
     padding: 4px 13px;
     font-family: 'Open Sans', sans-serif;
     font-size: 0.65rem;
     font-weight: 600;
-    color: #a07c28;
+    color: var(--gold-light);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -120,15 +226,16 @@ const animationStyles = `
   .cta-btn {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg, var(--blue-mid) 0%, var(--blue-deep) 100%) !important;
-    border: none !important;
+    background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.08) 100%) !important;
+    border: 1px solid rgba(255,255,255,0.35) !important;
     border-radius: 6px !important;
     font-family: 'Open Sans', sans-serif !important;
     font-weight: 600 !important;
     letter-spacing: 0.1em !important;
     text-transform: uppercase !important;
     color: white !important;
-    box-shadow: 0 6px 24px rgba(0,53,128,0.32), inset 0 1px 0 rgba(255,255,255,0.15) !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.25) !important;
+    backdrop-filter: blur(8px) !important;
     transition: all 0.35s cubic-bezier(0.22,1,0.36,1) !important;
     width: 100% !important;
   }
@@ -138,14 +245,16 @@ const animationStyles = `
     position: absolute;
     top: 0; left: -100%;
     width: 100%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
     transition: left 0.5s ease;
   }
 
   .cta-btn:hover::before { left: 100%; }
   .cta-btn:hover {
     transform: translateY(-2px) !important;
-    box-shadow: 0 12px 36px rgba(0,53,128,0.45) !important;
+    background: linear-gradient(135deg, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.15) 100%) !important;
+    border-color: rgba(255,255,255,0.55) !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.35) !important;
   }
   .cta-btn:active { transform: translateY(0) !important; }
 
@@ -171,6 +280,39 @@ const animationStyles = `
     position: relative;
   }
 
+  /* ── LEFT PANEL dark animated background ── */
+  .left-panel {
+    background: linear-gradient(
+      135deg,
+      #0a1628 0%,
+      #001a45 25%,
+      #0d1f3c 50%,
+      #001233 75%,
+      #0a0f1e 100%
+    ) !important;
+    background-size: 400% 400% !important;
+    animation: bgShift 14s ease infinite !important;
+  }
+
+  /* Subtle star-like particles */
+  .left-panel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 18% 22%, rgba(255,255,255,0.18) 0%, transparent 100%),
+      radial-gradient(1px 1px at 72% 11%, rgba(255,255,255,0.12) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 45% 68%, rgba(201,168,76,0.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 88% 55%, rgba(255,255,255,0.10) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 82%, rgba(255,255,255,0.14) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 62% 38%, rgba(201,168,76,0.18) 0%, transparent 100%),
+      radial-gradient(1px 1px at 10% 58%, rgba(255,255,255,0.09) 0%, transparent 100%),
+      radial-gradient(1px 1px at 93% 78%, rgba(255,255,255,0.13) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.7;
+  }
+
   /* ── MOBILE (< 640px) ── */
   @media (max-width: 639px) {
     .welcome-root {
@@ -189,7 +331,7 @@ const animationStyles = `
       z-index: 2;
       width: 100% !important;
       min-height: 100vh;
-      background: #ffffff !important;
+      background: linear-gradient(160deg, #0a1628 0%, #001a45 50%, #0a0f1e 100%) !important;
       border-right: none !important;
       box-shadow: none !important;
       padding: 120px 24px 40px !important;
@@ -198,14 +340,13 @@ const animationStyles = `
       flex-direction: column !important;
       justify-content: flex-start !important;
     }
-    .logo-row img.logo-sm { height: 30px !important; }
-    .logo-row img.logo-lg { height: 40px !important; }
+    .logo-row img.logo-unified { height: 30px !important; max-width: 120px !important; }
     .welcome-headline { font-size: 1.9rem !important; }
     .body-copy { font-size: 0.84rem !important; }
     .cta-btn { padding: 13px 24px !important; font-size: 0.84rem !important; }
   }
 
-  /* ── TABLET (640px – 1023px): stacked, image top half / content bottom ── */
+  /* ── TABLET (640px – 1023px) ── */
   @media (min-width: 640px) and (max-width: 1023px) {
     .welcome-root {
       flex-direction: column;
@@ -230,8 +371,7 @@ const animationStyles = `
       border-top: 1px solid rgba(201,168,76,0.15) !important;
     }
     .logo-row { justify-content: center !important; }
-    .logo-row img.logo-sm { height: 28px !important; }
-    .logo-row img.logo-lg { height: 50px !important; }
+    .logo-row img.logo-unified { height: 36px !important; max-width: 140px !important; }
     .welcome-headline { font-size: clamp(2rem, 4vw, 2.8rem) !important; }
     .content-grid {
       display: grid !important;
@@ -250,8 +390,7 @@ const animationStyles = `
     .welcome-root { position: fixed; inset: 0; overflow: hidden; }
     .image-panel { position: relative !important; }
     .welcome-headline { font-size: clamp(1.6rem, 2vw, 2.2rem) !important; }
-    .logo-row img.logo-sm { height: 22px !important; }
-    .logo-row img.logo-lg { height: 36px !important; }
+    .logo-row img.logo-unified { height: 28px !important; max-width: 110px !important; }
     .cta-btn { padding: 12px 24px !important; font-size: 0.82rem !important; }
   }
 
@@ -261,13 +400,37 @@ const animationStyles = `
     .image-panel { position: relative !important; }
     .left-panel { width: 28% !important; padding: 28px 2%!important; }
     .welcome-headline { font-size: clamp(4rem, 2.4vw, 3rem) !important;}
-    .logo-row img.logo-sm { height: 26px !important; }
-    .logo-row img.logo-lg { height: 70px !important; }
+    .logo-row img.logo-unified { height: 74px !important; max-width: 190px !important; }
     .cta-btn { padding: 13px 32px !important; font-size: 0.88rem !important; }
   }
 `;
 
 export default function Welcome() {
+  // ── logo slider state ────────────────────────────────────────────────────
+  const [logoIndex, setLogoIndex] = useState(0);
+  const [logoAnim, setLogoAnim] = useState<"in" | "out">("in");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLogoAnim("out");
+      setTimeout(() => {
+        setLogoIndex((prev) => (prev + 1) % LOGOS.length);
+        setLogoAnim("in");
+      }, 420);
+    }, 2800);
+    return () => clearInterval(interval);
+  }, []);
+
+  // ── image slider state ───────────────────────────────────────────────────
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % SLIDE_IMAGES.length);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <>
       <style>{animationStyles}</style>
@@ -285,8 +448,8 @@ export default function Welcome() {
             position: "relative",
             background: "#e0dddd",
             overflow: "hidden",
-            borderRight: "1px solid rgba(201,168,76,0.15)",
-            boxShadow: "4px 0 32px rgba(0,53,128,0.05)",
+            borderRight: "1px solid rgba(201,168,76,0.18)",
+            boxShadow: "4px 0 40px rgba(0,0,0,0.4)",
             height: { xs: "auto", lg: "100vh" },
             padding: { xs: "24px 20px 32px", sm: "32px 48px 40px" },
           }}
@@ -302,7 +465,7 @@ export default function Welcome() {
               height: 200,
               borderRadius: "50%",
               background:
-                "radial-gradient(circle, rgba(0,119,230,0.05) 0%, transparent 70%)",
+                "radial-gradient(circle, rgba(0,119,230,0.12) 0%, transparent 70%)",
               pointerEvents: "none",
             }}
           />
@@ -316,60 +479,35 @@ export default function Welcome() {
               height: 160,
               borderRadius: "50%",
               background:
-                "radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%)",
+                "radial-gradient(circle, rgba(201,168,76,0.10) 0%, transparent 70%)",
               pointerEvents: "none",
             }}
           />
 
-          {/* ── THREE LOGOS ROW ── */}
+          {/* ── LOGO SLIDER — one logo at a time, same size ── */}
           <Box
             className="anim-1 logo-row"
             sx={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              gap: { xs: 1.5, sm: 2, lg: 2 },
               mb: { xs: 2.5, lg: 3 },
               pb: { xs: 2, lg: 2.5 },
-              borderBottom: "1px solid rgba(201,168,76,0.2)",
+              // borderBottom: "1px solid rgba(201,168,76,0.2)",
               width: "100%",
               overflow: "hidden",
+              minHeight: 60,
             }}
           >
             <img
-              src="/images/rentph-logo.png"
-              alt="Rent.ph"
-              className="logo-sm"
+              key={`logo-${logoIndex}`}
+              src={LOGOS[logoIndex].src}
+              alt={LOGOS[logoIndex].alt}
+              className={`logo-unified ${
+                logoAnim === "in" ? "logo-slide-in" : "logo-slide-out"
+              }`}
               style={{
-                objectFit: "contain",
-                flexShrink: 1,
-                minWidth: 0,
-                maxWidth: "30%",
-              }}
-            />
-            <span className="logo-divider" />
-            <img
-              src="/images/lr-logo.png"
-              alt="Leuterio Realty & Brokerage"
-              className="logo-lg"
-              style={{
-                objectFit: "contain",
-                flexShrink: 1,
-                minWidth: 0,
-                maxWidth: "36%",
                 filter: "drop-shadow(0 2px 8px rgba(0,53,128,0.12))",
-              }}
-            />
-            <span className="logo-divider" />
-            <img
-              src="/images/fh-logo.png"
-              alt="Filipino Homes"
-              className="logo-sm"
-              style={{
-                objectFit: "contain",
-                flexShrink: 1,
-                minWidth: 0,
-                maxWidth: "40%",
               }}
             />
           </Box>
@@ -414,10 +552,10 @@ export default function Welcome() {
                   <Box
                     component="span"
                     sx={{
-                      fontStyle: "italic",
+                      // fontStyle: "italic",
                       fontWeight: 700,
-                      color: "var(--blue-mid)",
-                      WebkitTextFillColor: "var(--blue-mid)",
+                      color: "rgba(255,255,255,0.92)",
+                      WebkitTextFillColor: "rgba(255,255,255,0.92)",
                     }}
                   >
                     Realty Portal
@@ -440,12 +578,12 @@ export default function Welcome() {
                 >
                   Congratulations! You've successfully accessed the Leuterio
                   Realty Portal. We're excited to support you on your real
-                  estate journey and help you achieved your dreams.
+                  estate journey and help you achieve your dreams.
                 </Typography>
               </Box>
             </Box>
 
-            {/* ── RIGHT COLUMN of tablet grid (or continues below on other breakpoints) ── */}
+            {/* ── RIGHT COLUMN of tablet grid ── */}
             <Box className="content-right">
               {/* CTA */}
               <Box className="anim-5">
@@ -480,10 +618,6 @@ export default function Welcome() {
                       display: "inline-block",
                       width: 13,
                       height: 13,
-                      // borderRadius: "50%",
-                      // background: "linear-gradient(135deg,#4ade80,#22c55e)",
-                      // boxShadow: "0 2px 6px rgba(34,197,94,0.4)",
-                      // flexShrink: 0,
                     }}
                   />
                   {/* Secure access · Free to explore */}
@@ -524,10 +658,10 @@ export default function Welcome() {
         </Box>
 
         {/* ══════════════════════════════════════
-            IMAGE PANEL — 80% on desktop
+            IMAGE PANEL — slider
         ══════════════════════════════════════ */}
         <Box
-          className="image-panel"
+          className="image-panel anim-img"
           sx={{
             flex: 1,
             position: "relative",
@@ -535,24 +669,17 @@ export default function Welcome() {
             minHeight: { xs: "100%", sm: "280px" },
           }}
         >
-          {/* Full-bleed image */}
-          <Box
-            className="anim-img"
-            sx={{ position: "absolute", inset: 0, overflow: "hidden" }}
+          {/* Slide track */}
+          <div
+            className="slide-track"
+            style={{ transform: `translateX(-${activeSlide * 100}%)` }}
           >
-            <img
-              src="/images/welcome-img.jpg"
-              alt="Leuterio Realty"
-              className="pan-image"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                objectPosition: "center center",
-                display: "block",
-              }}
-            />
-          </Box>
+            {SLIDE_IMAGES.map((src, idx) => (
+              <div className="slide-item" key={idx}>
+                <img src={src} alt={`Leuterio Realty slide ${idx + 1}`} />
+              </div>
+            ))}
+          </div>
 
           {/* Gradient overlays */}
           <Box
@@ -564,10 +691,11 @@ export default function Welcome() {
               linear-gradient(to right, rgba(255,255,255,0.08) 0%, transparent 12%),
               linear-gradient(to top, rgba(0,10,30,0.45) 0%, rgba(0,10,30,0.08) 35%, transparent 55%)
             `,
+              pointerEvents: "none",
             }}
           />
 
-          {/* Mobile overlay — stronger for readability */}
+          {/* Mobile overlay */}
           <Box
             sx={{
               display: { xs: "block", sm: "none" },
@@ -575,6 +703,7 @@ export default function Welcome() {
               inset: 0,
               zIndex: 1,
               background: "rgba(255,255,255,0.0)",
+              pointerEvents: "none",
             }}
           />
 
@@ -589,8 +718,20 @@ export default function Welcome() {
               height: 0,
               borderTop: "70px solid rgba(201,168,76,0.12)",
               borderRight: "70px solid transparent",
+              pointerEvents: "none",
             }}
           />
+
+          {/* Dot indicators */}
+          <div className="slider-dots">
+            {SLIDE_IMAGES.map((_, idx) => (
+              <div
+                key={idx}
+                className={`slider-dot${activeSlide === idx ? " active" : ""}`}
+                onClick={() => setActiveSlide(idx)}
+              />
+            ))}
+          </div>
         </Box>
       </div>
     </>
