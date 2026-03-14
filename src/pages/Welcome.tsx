@@ -2,7 +2,7 @@ import { Box, Typography } from "@mui/material";
 import StyledButton from "../components/utils/StyledButton";
 import { ArrowForward } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // ── Slider images ──────────────────────────────────────────────────────────────
 const SLIDE_IMAGES = [
@@ -19,7 +19,7 @@ const LOGOS = [
 ];
 
 const animationStyles = `
-  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400;1,600;1,700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
   *, *::before, *::after { box-sizing: border-box; }
 
@@ -56,19 +56,6 @@ const animationStyles = `
   @keyframes goldPulse {
     0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.5); }
     50%       { box-shadow: 0 0 0 8px rgba(201,168,76,0); }
-  }
-
-  @keyframes bgShift {
-    0%   { background-position: 0% 50%; }
-    50%  { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  @keyframes particleDrift {
-    0%   { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
-    10%  { opacity: 1; }
-    90%  { opacity: 0.6; }
-    100% { transform: translateY(-80px) translateX(20px) scale(0.6); opacity: 0; }
   }
 
   @keyframes panImage {
@@ -206,7 +193,7 @@ const animationStyles = `
     border: 1px solid rgba(201,168,76,0.5);
     border-radius: 100px;
     padding: 4px 13px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Outfit', sans-serif;
     font-size: 0.65rem;
     font-weight: 600;
     color: var(--gold-light);
@@ -229,7 +216,7 @@ const animationStyles = `
     background: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.08) 100%) !important;
     border: 1px solid rgba(255,255,255,0.35) !important;
     border-radius: 6px !important;
-    font-family: 'Open Sans', sans-serif !important;
+    font-family: 'Outfit', sans-serif !important;
     font-weight: 600 !important;
     letter-spacing: 0.1em !important;
     text-transform: uppercase !important;
@@ -280,37 +267,24 @@ const animationStyles = `
     position: relative;
   }
 
-  /* ── LEFT PANEL dark animated background ── */
+  /* ── LEFT PANEL ── */
   .left-panel {
-    background: linear-gradient(
-      135deg,
-      #0a1628 0%,
-      #001a45 25%,
-      #0d1f3c 50%,
-      #001233 75%,
-      #0a0f1e 100%
-    ) !important;
-    background-size: 400% 400% !important;
-    animation: bgShift 14s ease infinite !important;
+    background: #071020 !important;
   }
 
-  /* Subtle star-like particles */
-  .left-panel::after {
-    content: '';
+  .live-bg-canvas {
     position: absolute;
     inset: 0;
-    background-image:
-      radial-gradient(1px 1px at 18% 22%, rgba(255,255,255,0.18) 0%, transparent 100%),
-      radial-gradient(1px 1px at 72% 11%, rgba(255,255,255,0.12) 0%, transparent 100%),
-      radial-gradient(1.5px 1.5px at 45% 68%, rgba(201,168,76,0.25) 0%, transparent 100%),
-      radial-gradient(1px 1px at 88% 55%, rgba(255,255,255,0.10) 0%, transparent 100%),
-      radial-gradient(1px 1px at 30% 82%, rgba(255,255,255,0.14) 0%, transparent 100%),
-      radial-gradient(1.5px 1.5px at 62% 38%, rgba(201,168,76,0.18) 0%, transparent 100%),
-      radial-gradient(1px 1px at 10% 58%, rgba(255,255,255,0.09) 0%, transparent 100%),
-      radial-gradient(1px 1px at 93% 78%, rgba(255,255,255,0.13) 0%, transparent 100%);
-    pointer-events: none;
+    width: 100%;
+    height: 100%;
     z-index: 0;
-    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  /* ensure all left-panel children sit above the canvas */
+  .left-panel > *:not(.live-bg-canvas) {
+    position: relative;
+    z-index: 1;
   }
 
   /* ── MOBILE (< 640px) ── */
@@ -331,7 +305,7 @@ const animationStyles = `
       z-index: 2;
       width: 100% !important;
       min-height: 100vh;
-      background: linear-gradient(160deg, #0a1628 0%, #001a45 50%, #0a0f1e 100%) !important;
+      background: #071020 !important;
       border-right: none !important;
       box-shadow: none !important;
       padding: 120px 24px 40px !important;
@@ -400,7 +374,7 @@ const animationStyles = `
     .image-panel { position: relative !important; }
     .left-panel { width: 28% !important; padding: 28px 2%!important; }
     .welcome-headline { font-size: clamp(4rem, 2.4vw, 3rem) !important;}
-    .logo-row img.logo-unified { height: 74px !important; max-width: 190px !important; }
+    .logo-row img.logo-unified { height: 94px !important; max-width: 210px !important; }
     .cta-btn { padding: 13px 32px !important; font-size: 0.88rem !important; }
   }
 `;
@@ -431,6 +405,104 @@ export default function Welcome() {
     return () => clearInterval(timer);
   }, []);
 
+  // ── live blob background ─────────────────────────────────────────────────
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let animId: number;
+
+    const resize = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
+    resize();
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas);
+
+    // Soft slow-drifting blobs: deep blue + off-white
+    const blobs = [
+      {
+        x: 0.25,
+        y: 0.2,
+        r: 0.15,
+        ox: 0,
+        oy: 0,
+        speed: 0.000015,
+        color: [0, 85, 179] as [number, number, number],
+      },
+      {
+        x: 0.75,
+        y: 0.7,
+        r: 0.5,
+        ox: 1,
+        oy: 2,
+        speed: 0.000025,
+        color: [0, 55, 140] as [number, number, number],
+      },
+      {
+        x: 0.5,
+        y: 0.45,
+        r: 0.42,
+        ox: 2,
+        oy: 1,
+        speed: 0.00002,
+        color: [220, 235, 255] as [number, number, number],
+      },
+      {
+        x: 0.2,
+        y: 0.75,
+        r: 0.38,
+        ox: 3,
+        oy: 3,
+        speed: 0.000015,
+        color: [200, 218, 255] as [number, number, number],
+      },
+    ];
+
+    let t = 0;
+    const draw = () => {
+      const W = canvas.width;
+      const H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      // Dark navy base
+      ctx.fillStyle = "#071020";
+      ctx.fillRect(0, 0, W, H);
+
+      blobs.forEach((b) => {
+        const cx = (b.x + Math.sin(t * b.speed * 1000 + b.ox) * 0.1) * W;
+        const cy = (b.y + Math.cos(t * b.speed * 800 + b.oy) * 0.08) * H;
+        const rad = b.r * Math.max(W, H);
+
+        const [r, g, bl] = b.color;
+        const isLight = r > 150;
+        const peak = isLight ? 0.06 : 0.2;
+
+        const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, rad);
+        grd.addColorStop(0, `rgba(${r},${g},${bl},${peak})`);
+        grd.addColorStop(0.45, `rgba(${r},${g},${bl},${peak * 0.35})`);
+        grd.addColorStop(1, `rgba(${r},${g},${bl},0)`);
+
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, 0, W, H);
+      });
+
+      t++;
+      animId = requestAnimationFrame(draw);
+    };
+
+    draw();
+    return () => {
+      cancelAnimationFrame(animId);
+      ro.disconnect();
+    };
+  }, []);
+
   return (
     <>
       <style>{animationStyles}</style>
@@ -446,7 +518,6 @@ export default function Welcome() {
             flexDirection: "column",
             justifyContent: "flex-start",
             position: "relative",
-            background: "#e0dddd",
             overflow: "hidden",
             borderRight: "1px solid rgba(201,168,76,0.18)",
             boxShadow: "4px 0 40px rgba(0,0,0,0.4)",
@@ -454,35 +525,8 @@ export default function Welcome() {
             padding: { xs: "24px 20px 32px", sm: "32px 48px 40px" },
           }}
         >
-          {/* Ambient orbs */}
-          <Box
-            className="orb-1"
-            sx={{
-              position: "absolute",
-              top: "5%",
-              right: "-10%",
-              width: 200,
-              height: 200,
-              borderRadius: "50%",
-              background:
-                "radial-gradient(circle, rgba(0,119,230,0.12) 0%, transparent 70%)",
-              pointerEvents: "none",
-            }}
-          />
-          <Box
-            className="orb-2"
-            sx={{
-              position: "absolute",
-              bottom: "8%",
-              left: "-6%",
-              width: 160,
-              height: 160,
-              borderRadius: "50%",
-              background:
-                "radial-gradient(circle, rgba(201,168,76,0.10) 0%, transparent 70%)",
-              pointerEvents: "none",
-            }}
-          />
+          {/* Live canvas background */}
+          <canvas ref={canvasRef} className="live-bg-canvas" />
 
           {/* ── LOGO SLIDER — one logo at a time, same size ── */}
           <Box
@@ -536,7 +580,7 @@ export default function Welcome() {
                   component="h1"
                   className="welcome-headline"
                   sx={{
-                    fontFamily: "'Open Sans', sans-serif",
+                    fontFamily: "'Outfit', sans-serif",
                     fontWeight: 700,
                     lineHeight: 1.07,
                     color: "var(--text-dark)",
@@ -567,7 +611,7 @@ export default function Welcome() {
                 <Typography
                   className="body-copy"
                   sx={{
-                    fontFamily: "'Open Sans', sans-serif",
+                    fontFamily: "'Outfit', sans-serif",
                     fontSize: { xs: "0.84rem", sm: "0.9rem", lg: "1.2rem" },
                     fontWeight: 400,
                     color: "var(--text-muted)",
@@ -601,7 +645,7 @@ export default function Welcome() {
 
                 <Typography
                   sx={{
-                    fontFamily: "'Open Sans', sans-serif",
+                    fontFamily: "'Outfit', sans-serif",
                     fontSize: { xs: "0.7rem", lg: "0.7rem" },
                     color: "var(--text-muted)",
                     mt: 1.8,
@@ -643,7 +687,7 @@ export default function Welcome() {
             />
             <Typography
               sx={{
-                fontFamily: "'Open Sans', sans-serif",
+                fontFamily: "'Outfit', sans-serif",
                 fontSize: "0.57rem",
                 color: "var(--text-muted)",
                 letterSpacing: "0.1em",
