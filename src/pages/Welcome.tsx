@@ -198,8 +198,8 @@ const animationStyles = `
       flex-direction: column !important;
       justify-content: flex-start !important;
     }
-    .logo-row img.logo-sm { height: 20px !important; }
-    .logo-row img.logo-lg { height: 32px !important; }
+    .logo-row img.logo-sm { height: 30px !important; }
+    .logo-row img.logo-lg { height: 40px !important; }
     .welcome-headline { font-size: 1.9rem !important; }
     .body-copy { font-size: 0.84rem !important; }
     .cta-btn { padding: 13px 24px !important; font-size: 0.84rem !important; }
@@ -231,7 +231,7 @@ const animationStyles = `
     }
     .logo-row { justify-content: center !important; }
     .logo-row img.logo-sm { height: 28px !important; }
-    .logo-row img.logo-lg { height: 44px !important; }
+    .logo-row img.logo-lg { height: 50px !important; }
     .welcome-headline { font-size: clamp(2rem, 4vw, 2.8rem) !important; }
     .content-grid {
       display: grid !important;
@@ -262,7 +262,7 @@ const animationStyles = `
     .left-panel { width: 28% !important; padding: 28px 2%!important; }
     .welcome-headline { font-size: clamp(4rem, 2.4vw, 3rem) !important;}
     .logo-row img.logo-sm { height: 26px !important; }
-    .logo-row img.logo-lg { height: 44px !important; }
+    .logo-row img.logo-lg { height: 70px !important; }
     .cta-btn { padding: 13px 32px !important; font-size: 0.88rem !important; }
   }
 `;
@@ -369,7 +369,7 @@ export default function Welcome() {
                 objectFit: "contain",
                 flexShrink: 1,
                 minWidth: 0,
-                maxWidth: "30%",
+                maxWidth: "40%",
               }}
             />
           </Box>
@@ -388,9 +388,9 @@ export default function Welcome() {
             <Box className="content-left">
               {/* Badge */}
               <Box className="anim-2" sx={{ mb: { xs: 1.5, lg: 2 } }}>
-                <span className="badge-pill">
-                  <span className="badge-dot" />
-                  Smart Property Dashboard
+             <span className="badge-pil">
+                  {/* <span className="badge-dot" /> */}
+                  {/* Smart Property Dashboard */}
                 </span>
               </Box>
 
@@ -432,7 +432,7 @@ export default function Welcome() {
                   className="body-copy"
                   sx={{
                     fontFamily: "'Open Sans', sans-serif",
-                    fontSize: { xs: "0.84rem", sm: "0.9rem", lg: "0.88rem" },
+                    fontSize: { xs: "0.84rem", sm: "0.9rem", lg: "1.2rem" },
                     fontWeight: 400,
                     color: "var(--text-muted)",
                     lineHeight: 1.82,
@@ -480,13 +480,13 @@ export default function Welcome() {
                       display: "inline-block",
                       width: 13,
                       height: 13,
-                      borderRadius: "50%",
-                      background: "linear-gradient(135deg,#4ade80,#22c55e)",
-                      boxShadow: "0 2px 6px rgba(34,197,94,0.4)",
-                      flexShrink: 0,
+                      // borderRadius: "50%",
+                      // background: "linear-gradient(135deg,#4ade80,#22c55e)",
+                      // boxShadow: "0 2px 6px rgba(34,197,94,0.4)",
+                      // flexShrink: 0,
                     }}
                   />
-                  Secure access · Free to explore
+                  {/* Secure access · Free to explore */}
                 </Typography>
               </Box>
             </Box>
@@ -518,7 +518,7 @@ export default function Welcome() {
                 textTransform: "uppercase",
               }}
             >
-              Leuterio Realty & Brokerage
+              {/* Leuterio Realty & Brokerage */}
             </Typography>
           </Box>
         </Box>

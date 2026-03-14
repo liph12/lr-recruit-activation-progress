@@ -221,7 +221,8 @@ export default function WebinarConfirmation() {
           sx={{
             fontSize: desktop ? "0.88rem" : "0.68rem",
             color: "text.secondary",
-            fontWeight: 500,
+            fontWeight: 800,
+          
           }}
         >
           🤝 <strong>NAO</strong> = Face-to-Face
