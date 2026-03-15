@@ -38,23 +38,53 @@ export default function PresentationPDF({ document }: { document: string }) {
           justifyContent: "center",
         }}
       >
-        <IconButton onClick={prevPage}>
+        <IconButton
+          onClick={prevPage}
+          sx={{
+            color: "#c9a84c",
+            bgcolor: "rgba(201,168,76,0.08)",
+            border: "1px solid rgba(201,168,76,0.18)",
+            "&:hover": {
+              bgcolor: "rgba(201,168,76,0.18)",
+              boxShadow: "0 6px 18px rgba(201,168,76,0.25)",
+            },
+          }}
+          aria-label="Previous"
+        >
           <ChevronLeft />
         </IconButton>
-        <Typography>
+
+        <Typography sx={{ color: "#c9a84c", fontWeight: 700, px: 1 }}>
           Page {pageNumber} of {numPages}
         </Typography>
-        <IconButton onClick={nextPage}>
+
+        <IconButton
+          onClick={nextPage}
+          sx={{
+            color: "#c9a84c",
+            bgcolor: "rgba(201,168,76,0.08)",
+            border: "1px solid rgba(201,168,76,0.18)",
+            "&:hover": {
+              bgcolor: "rgba(201,168,76,0.18)",
+              boxShadow: "0 6px 18px rgba(201,168,76,0.25)",
+            },
+          }}
+          aria-label="Next"
+        >
           <ChevronRight />
         </IconButton>
       </Box>
+
       <Box
         sx={{
           width: desktop ? 600 : 320,
           height: desktop ? 400 : 220,
           mx: "auto",
           overflow: "hidden",
-          border: "1px solid #ddd",
+          borderRadius: 1,
+          border: "1px solid rgba(201,168,76,0.12)",
+          boxShadow: "inset 0 2px 6px rgba(0,0,0,0.25)",
+          background: "linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0))",
         }}
       >
         <Document file={document} onLoadSuccess={onDocumentLoadSuccess}>
