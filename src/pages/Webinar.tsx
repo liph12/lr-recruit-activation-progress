@@ -1,5 +1,4 @@
-import { Box, Typography } from "@mui/material";
-import { InfoOutlineRounded } from "@mui/icons-material";
+import { Avatar, Box, Divider, Grid, Typography } from "@mui/material";
 import YoutubeEmbedWebinar from "../components/utils/YoutubeEmbededWebiner";
 import { useAppProvider } from "../providers/AppProvider";
 
@@ -11,8 +10,6 @@ export default function Webinar() {
       sx={{
         display: "flex",
         justifyContent: "center",
-        flexDirection: "column",
-        height: "80vh",
         alignItems: "center",
       }}
     >
@@ -20,11 +17,29 @@ export default function Webinar() {
         <Typography variant={desktop ? "h3" : "h4"} fontWeight="bold">
           New Agents Webinar
         </Typography>
-        <Box sx={{ display: "flex", gap: 1, alignItems: "center", my: 1 }}>
-          <InfoOutlineRounded color="action" />
-          <Typography variant={desktop ? "h5" : "body1"} fontWeight="bold">
-            Please read carefully before proceeding.
-          </Typography>
+        <Divider sx={{ my: 2 }} />
+        <Grid container spacing={2}>
+          <Grid size={{ lg: 6, md: 12, xs: 12 }}>
+            <Box sx={{ display: "flex", gap: 3, alignItems: "center" }}>
+              <Avatar
+                src="https://leuteriorealty.com/memberfiles/0/20240419043008.jpg"
+                sx={{ height: "auto", width: 50 }}
+              />
+              <Box>
+                <Typography>Anthony Leuterio - REB e-PRO</Typography>
+                <Typography variant="body2" color="textSecondary">
+                  Speaker
+                </Typography>
+              </Box>
+            </Box>
+          </Grid>
+          <Grid size={{ lg: 6, md: 12, xs: 12 }}>
+            <Typography>CEO & Founder of Filipino Homes</Typography>
+            <Typography>2024 International Realtor of the Year</Typography>
+          </Grid>
+        </Grid>
+        <Box sx={{ mt: 2 }}>
+          <YoutubeEmbedWebinar />
         </Box>
         <Typography variant="body1">
           To continue to the FIRE Website, you must watch and complete the full
@@ -32,9 +47,6 @@ export default function Webinar() {
           Save the video watched progress if you want to continue at a later
           time.
         </Typography>
-        <Box sx={{ mt: 2 }}>
-          <YoutubeEmbedWebinar />
-        </Box>
       </Box>
     </Box>
   );

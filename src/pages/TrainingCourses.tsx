@@ -173,30 +173,36 @@ export default function TrainingCourses() {
 
   return (
     <>
-      <Container maxWidth="lg">
-        <Typography variant={desktop ? "h4" : "h5"}>
-          Get Started with FIRE
-        </Typography>
-        <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-          {/* <InfoRounded color="action" fontSize={desktop ? "large" : "medium"} /> */}
-          {externalUser?.requiresEndorsement ? (
-            <Box>
-              <Typography variant={desktop ? "h6" : "body1"}>
-                Please upload your endorsement letter.
-              </Typography>
-              <Typography variant="body2">
-                Accepted file types: JPG, PNG, PDF. Maximum file size: 5MB.
-              </Typography>
-            </Box>
-          ) : (
-            <>
-              <Typography variant={desktop ? "h6" : "body1"}>
-                You are about to begin the 12 training modules required to
-                complete your requirements as a Filipino Homes agent.
-              </Typography>
-            </>
-          )}
-        </Box>
+      <Container maxWidth="lg" sx={{ py: 5 }}>
+        <Grid container spacing={3}>
+          <Grid size={{ lg: 6, md: 12, xs: 12 }}>
+            <Typography variant={desktop ? "h4" : "h5"}>
+              Get Started with FIRE
+            </Typography>
+            <Typography variant="h6">
+              Filipino Homes Institute of Real Estate
+            </Typography>
+          </Grid>
+          <Grid size={{ lg: 6, md: 12, xs: 12 }}>
+            {externalUser?.requiresEndorsement ? (
+              <Box>
+                <Typography variant={desktop ? "h6" : "body1"}>
+                  Please upload your endorsement letter.
+                </Typography>
+                <Typography variant="body2">
+                  Accepted file types: JPG, PNG, PDF. Maximum file size: 5MB.
+                </Typography>
+              </Box>
+            ) : (
+              <>
+                <Typography variant={desktop ? "h6" : "body1"}>
+                  You are about to begin the 12 training modules required to
+                  complete your requirements as a Filipino Homes agent.
+                </Typography>
+              </>
+            )}
+          </Grid>
+        </Grid>
       </Container>
       <Box component={desktop ? Container : "div"} sx={{ px: desktop ? 0 : 5 }}>
         <Box
