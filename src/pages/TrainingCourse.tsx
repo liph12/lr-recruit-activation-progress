@@ -82,8 +82,11 @@ export default function TrainingCourse({ course, takeCourse }: CourseProps) {
   const NAVBAR_HEIGHT = desktop ? 68 : 58;
 
   const iframeString = course.video
-    .replace(/width="\d+px"/, 'width="100%"')
-    .replace(/height="\d+px"/, 'height="100%"');
+    .replace(/width="\d+px"/i, 'width="100%"')
+    .replace(/height="\d+px"/i, 'height="100%"')
+    // Ensure fullscreen is permitted on the embedded video
+    .replace(/<iframe(?![^>]*allowfullscreen)/i,
+      '<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowfullscreen');
 
   // ── Live canvas background ─────────────────────────────────────────────
   useEffect(() => {
