@@ -547,7 +547,9 @@ export default function Welcome() {
               key={`logo-${logoIndex}`}
               src={LOGOS[logoIndex].src}
               alt={LOGOS[logoIndex].alt}
-              className={`logo-unified ${logoAnim === "in" ? "logo-slide-in" : "logo-slide-out"}`}
+              className={`logo-unified ${
+                logoAnim === "in" ? "logo-slide-in" : "logo-slide-out"
+              }`}
               style={{
                 filter: "drop-shadow(0 2px 8px rgba(0,53,128,0.12))",
               }}

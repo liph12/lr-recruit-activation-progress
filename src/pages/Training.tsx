@@ -58,7 +58,7 @@ export default function Course() {
       {isTaking ? (
         <TrainingCourse course={course} takeCourse={takeCourse} />
       ) : (
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" sx={{ py: 5 }}>
           <Box
             sx={{
               display: "flex",

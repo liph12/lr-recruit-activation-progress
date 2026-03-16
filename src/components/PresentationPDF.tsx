@@ -84,7 +84,8 @@ export default function PresentationPDF({ document }: { document: string }) {
           borderRadius: 1,
           border: "1px solid rgba(201,168,76,0.12)",
           boxShadow: "inset 0 2px 6px rgba(0,0,0,0.25)",
-          background: "linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0))",
+          background:
+            "linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0))",
         }}
       >
         <Document file={document} onLoadSuccess={onDocumentLoadSuccess}>

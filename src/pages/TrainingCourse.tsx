@@ -129,6 +129,7 @@ export default function TrainingCourse({ course, takeCourse }: CourseProps) {
       <style>{animationStyles}</style>
       <Box
         sx={{
+          py: 5,
           position: "relative",
           height: `calc(100vh - ${NAVBAR_HEIGHT}px - 8px)`,
           overflow: "hidden",
@@ -187,133 +188,137 @@ export default function TrainingCourse({ course, takeCourse }: CourseProps) {
               flexShrink: 0,
             }}
           >
-          <Typography
-            variant={desktop ? "h4" : "h5"}
-            sx={{ fontWeight: 700, color: "#ffffff" }}
-          >
-            {course.title}
-          </Typography>
-
-          {desktop && (
-            <StyledButton
-              variant="contained"
-              size="large"
-              endIcon={<StartRounded />}
-              onClick={takeCourse}
+            <Typography
+              variant={desktop ? "h4" : "h5"}
+              sx={{ fontWeight: 700, color: "#ffffff" }}
             >
-              Ready to Take Quiz?
-            </StyledButton>
-          )}
+              {course.title}
+            </Typography>
+
+            {desktop && (
+              <StyledButton
+                variant="contained"
+                size="large"
+                endIcon={<StartRounded />}
+                onClick={takeCourse}
+              >
+                Ready to Take Quiz?
+              </StyledButton>
+            )}
           </Box>
 
           <Divider
-            sx={{ mb: 0.8, borderColor: "rgba(255,255,255,0.15)", flexShrink: 0 }}
+            sx={{
+              mb: 0.8,
+              borderColor: "rgba(255,255,255,0.15)",
+              flexShrink: 0,
+            }}
           />
 
           {/* Toggle Buttons */}
           <Box sx={{ mb: 0.8, flexShrink: 0 }}>
-          <ButtonGroup size="large">
-            <StyledButton
-              onClick={() => setIsVideo(true)}
-              variant={isVideo ? "contained" : "outlined"}
-              startIcon={<SubscriptionsRounded />}
-            >
-              Video
-            </StyledButton>
-            <StyledButton
-              onClick={() => setIsVideo(false)}
-              variant={isVideo ? "outlined" : "contained"}
-              startIcon={<AutoStoriesRounded />}
-            >
-              Powerpoint
-            </StyledButton>
-          </ButtonGroup>
-        </Box>
+            <ButtonGroup size="large">
+              <StyledButton
+                onClick={() => setIsVideo(true)}
+                variant={isVideo ? "contained" : "outlined"}
+                startIcon={<SubscriptionsRounded />}
+              >
+                Video
+              </StyledButton>
+              <StyledButton
+                onClick={() => setIsVideo(false)}
+                variant={isVideo ? "outlined" : "contained"}
+                startIcon={<AutoStoriesRounded />}
+              >
+                Powerpoint
+              </StyledButton>
+            </ButtonGroup>
+          </Box>
 
-        {/* Content Area */}
-        <Box
-          sx={{
-            flex: 1,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            overflow: "hidden",
-            borderRadius: 3,
-            boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
-            background: "rgba(255,255,255,0.07)",
-            backdropFilter: "blur(8px)",
-            border: "1px solid rgba(255,255,255,0.08)",
-            p: isVideo ? 0.5 : 0,
-            minHeight: 0,
-            boxSizing: "border-box",
-          }}
-        >
-          {isVideo ? (
-            <Box
-              sx={{
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                minHeight: 0,
-              }}
-            >
-              <div
-                dangerouslySetInnerHTML={{ __html: iframeString }}
-                style={{
+          {/* Content Area */}
+          <Box
+            sx={{
+              flex: 1,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              overflow: "hidden",
+              borderRadius: 3,
+              boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
+              background: "rgba(255,255,255,0.07)",
+              backdropFilter: "blur(8px)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              p: isVideo ? 0.5 : 0,
+              minHeight: 0,
+              boxSizing: "border-box",
+            }}
+          >
+            {isVideo ? (
+              <Box
+                sx={{
                   width: "100%",
                   height: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  minHeight: 0,
                 }}
-              />
-            </Box>
-          ) : (
-            <Box
-              sx={{
-                width: "100%",
-                height: "100%",
-                overflow: "hidden",
-                display: "flex",
-                flexDirection: "column",
-                "& > *": {
-                  flex: 1,
-                  height: "100% !important",
-                  width: "calc(100% + 80px) !important",
-                  maxWidth: "none !important",
-                  maxHeight: "100% !important",
-                  marginLeft: "-40px !important",
-                },
-                "& canvas, & img": {
-                  width: "100% !important",
-                  height: "auto !important",
-                  maxHeight: "100% !important",
-                  objectFit: "contain",
-                },
-              }}
-            >
-              <PresentationPDF
-                document={`https://socket.leuteriorealty.com/proxy?url=${course.presentation}`}
-              />
+              >
+                <div
+                  dangerouslySetInnerHTML={{ __html: iframeString }}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                  }}
+                />
+              </Box>
+            ) : (
+              <Box
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  overflow: "hidden",
+                  display: "flex",
+                  flexDirection: "column",
+                  "& > *": {
+                    flex: 1,
+                    height: "100% !important",
+                    width: "calc(100% + 80px) !important",
+                    maxWidth: "none !important",
+                    maxHeight: "100% !important",
+                    marginLeft: "-40px !important",
+                  },
+                  "& canvas, & img": {
+                    width: "100% !important",
+                    height: "auto !important",
+                    maxHeight: "100% !important",
+                    objectFit: "contain",
+                  },
+                }}
+              >
+                <PresentationPDF
+                  document={`https://socket.leuteriorealty.com/proxy?url=${course.presentation}`}
+                />
+              </Box>
+            )}
+          </Box>
+
+          {/* Mobile CTA */}
+          {!desktop && (
+            <Box sx={{ mt: 0, p: 0, flexShrink: 0 }}>
+              <StyledButton
+                variant="contained"
+                size="large"
+                endIcon={<StartRounded />}
+                fullWidth
+                onClick={takeCourse}
+              >
+                Start Learning Now
+              </StyledButton>
             </Box>
           )}
-        </Box>
-
-        {/* Mobile CTA */}
-        {!desktop && (
-          <Box sx={{ mt: 0, p: 0, flexShrink: 0 }}>
-            <StyledButton
-              variant="contained"
-              size="large"
-              endIcon={<StartRounded />}
-              fullWidth
-              onClick={takeCourse}
-            >
-              Start Learning Now
-            </StyledButton>
-          </Box>
-        )}
-      </Container>
-    </Box>
+        </Container>
+      </Box>
     </>
   );
 }

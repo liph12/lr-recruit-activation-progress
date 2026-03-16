@@ -60,12 +60,11 @@ export default function TrainingNavbarLayout({
               width: desktop ? 56 : 50,
               height: desktop ? 56 : 50,
               borderRadius: "50%",
-              background: "#ffffff",
               boxShadow: "0 6px 20px rgba(0,0,0,0.35)",
             }}
           >
             <img
-              src="/images/fire-logo.png"
+              src="/images/fire-icon.png"
               height={desktop ? 40 : 36}
               style={{
                 objectFit: "contain",
@@ -74,7 +73,7 @@ export default function TrainingNavbarLayout({
           </Box>
         </Container>
       </Box>
-      {children}
+      <Box>{children}</Box>
     </>
   );
 }
