@@ -6,9 +6,7 @@ import {
   PlayArrowRounded,
   ArrowForwardRounded,
   UploadFileRounded,
-  AutoAwesomeRounded,
   EmojiEventsRounded,
-  TrendingUpRounded,
 } from "@mui/icons-material";
 import { useAppProvider } from "../providers/AppProvider";
 import { useEffect, useState, useRef } from "react";
@@ -329,7 +327,7 @@ export default function TrainingCourses() {
 
           <Grid container spacing={{ xs: 3, md: 6 }} alignItems="center">
             {/* Left — title + gold line + description */}
-            <Grid size={{ xs: 12, md: 6 }}>
+            <Grid size={{ xs: 12, md: 12 }}>
               {/* Title — one line */}
               <Box
                 sx={{
@@ -393,7 +391,7 @@ export default function TrainingCourses() {
               {/* Description */}
               <Typography
                 sx={{
-                  fontSize: { xs: "0.88rem", md: "1rem" },
+                  fontSize: { xs: "0.88rem", md: "1.3rem" },
                   color: "rgba(255,255,255,0.6)",
                   lineHeight: 1.75,
                   fontFamily: OUTFIT,
@@ -406,201 +404,7 @@ export default function TrainingCourses() {
               </Typography>
             </Grid>
 
-            {/* Right — progress */}
-            {!externalUser.requiresEndorsement &&
-              courses.length > 0 &&
-              (() => {
-                const done = courses.filter((c) => c.status === "done").length;
-                const total = courses.length;
-                const pct = Math.round((done / total) * 100);
-                return (
-                  <Grid size={{ xs: 12, md: 6 }}>
-                    <Box
-                      sx={{
-                        animation: `${fadeInUp} 0.65s ease 0.3s both`,
-                        width: "100%",
-                      }}
-                    >
-                      {/* Stats row */}
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 2.5,
-                          mb: 2,
-                          flexWrap: "nowrap",
-                        }}
-                      >
-                        {/* Completed */}
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 1.2,
-                            flexShrink: 0,
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              width: 40,
-                              height: 40,
-                              borderRadius: "12px",
-                              background: "rgba(76,175,80,0.12)",
-                              border: "1px solid rgba(76,175,80,0.25)",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                            }}
-                          >
-                            <EmojiEventsRounded
-                              sx={{ fontSize: 20, color: "#66bb6a" }}
-                            />
-                          </Box>
-                          <Box>
-                            <Typography
-                              sx={{
-                                fontSize: "1.5rem",
-                                fontWeight: 900,
-                                color: "#ffffff",
-                                lineHeight: 1,
-                                fontFamily: OUTFIT,
-                              }}
-                            >
-                              {done}
-                            </Typography>
-                            <Typography
-                              sx={{
-                                fontSize: "0.62rem",
-                                color: "rgba(255,255,255,0.4)",
-                                fontWeight: 600,
-                                letterSpacing: "0.1em",
-                                textTransform: "uppercase",
-                                fontFamily: OUTFIT,
-                              }}
-                            >
-                              Completed
-                            </Typography>
-                          </Box>
-                        </Box>
-
-                        <Box
-                          sx={{
-                            width: "1px",
-                            height: 36,
-                            background: "rgba(255,255,255,0.1)",
-                            flexShrink: 0,
-                          }}
-                        />
-
-                        {/* Percentage */}
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 1.2,
-                            flexShrink: 0,
-                          }}
-                        >
-                          <Box
-                            sx={{
-                              width: 40,
-                              height: 40,
-                              borderRadius: "12px",
-                              background:
-                                pct === 100
-                                  ? "rgba(76,175,80,0.12)"
-                                  : "rgba(25,118,210,0.12)",
-                              border: `1px solid ${pct === 100 ? "rgba(76,175,80,0.25)" : "rgba(25,118,210,0.25)"}`,
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                            }}
-                          >
-                            <TrendingUpRounded
-                              sx={{
-                                fontSize: 20,
-                                color: pct === 100 ? "#66bb6a" : "#7eb8ff",
-                              }}
-                            />
-                          </Box>
-                          <Box>
-                            <Typography
-                              sx={{
-                                fontSize: "1.5rem",
-                                fontWeight: 900,
-                                lineHeight: 1,
-                                fontFamily: OUTFIT,
-                                color: pct === 100 ? "#66bb6a" : "#7eb8ff",
-                              }}
-                            >
-                              {pct}%
-                            </Typography>
-                            <Typography
-                              sx={{
-                                fontSize: "0.62rem",
-                                color: "rgba(255,255,255,0.4)",
-                                fontWeight: 600,
-                                letterSpacing: "0.1em",
-                                textTransform: "uppercase",
-                                fontFamily: OUTFIT,
-                              }}
-                            >
-                              Progress
-                            </Typography>
-                          </Box>
-                        </Box>
-                      </Box>
-
-                      {/* Track — full width */}
-                      <Box
-                        sx={{
-                          width: "100%",
-                          height: 6,
-                          borderRadius: 3,
-                          background: "rgba(255,255,255,0.08)",
-                          overflow: "hidden",
-                          mb: 1,
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            height: "100%",
-                            width: `${pct}%`,
-                            minWidth: pct > 0 ? "6px" : 0,
-                            borderRadius: 3,
-                            background:
-                              pct === 100
-                                ? "linear-gradient(90deg,#4caf50,#81c784)"
-                                : "linear-gradient(90deg,#1565c0,#7eb8ff)",
-                            transition:
-                              "width 1.2s cubic-bezier(0.22,1,0.36,1)",
-                          }}
-                        />
-                      </Box>
-
-                      {/* Per-module dots */}
-                      <Box sx={{ display: "flex", gap: "3px", width: "100%" }}>
-                        {courses.map((c, i) => (
-                          <Box
-                            key={i}
-                            sx={{
-                              flex: 1,
-                              height: 3,
-                              borderRadius: 2,
-                              background:
-                                c.status === "done"
-                                  ? "#4caf50"
-                                  : c.status === "next"
-                                    ? "#1e88e5"
-                                    : "rgba(255,255,255,0.07)",
-                            }}
-                          />
-                        ))}
-                      </Box>
-                    </Box>
-                  </Grid>
-                );
-              })()}
+            {/* Right — progress removed per request */}
           </Grid>
         </Box>
 
@@ -785,7 +589,8 @@ export default function TrainingCourses() {
             alignItems="stretch"
           >
             {courses.map((c, k) => {
-              const isLocked = c.status === "pending";
+              // Per request: do not lock any course
+              const isLocked = false;
               const isDone = c.status === "done";
               const isNext = c.status === "next";
               const isHovered = hoveredCard === k;
@@ -914,69 +719,40 @@ export default function TrainingCourses() {
                         {c.speaker.name}
                       </Typography>
 
-                      {/* Status chip */}
-                      <Box sx={{ mb: 1.5 }}>
-                        <Box
-                          sx={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: 0.5,
-                            px: 1.1,
-                            py: 0.3,
-                            borderRadius: "100px",
-                            background: isDone
-                              ? "rgba(76,175,80,0.12)"
-                              : isNext
-                                ? "rgba(25,118,210,0.12)"
-                                : "rgba(255,255,255,0.06)",
-                            border: "1px solid",
-                            borderColor: isDone
-                              ? "rgba(76,175,80,0.3)"
-                              : isNext
-                                ? "rgba(25,118,210,0.3)"
-                                : "rgba(255,255,255,0.1)",
-                          }}
-                        >
-                          {isDone && (
+                      {/* Status chip — only show when completed */}
+                      {isDone && (
+                        <Box sx={{ mb: 1.5 }}>
+                          <Box
+                            sx={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: 0.5,
+                              px: 1.1,
+                              py: 0.3,
+                              borderRadius: "100px",
+                              background: "rgba(76,175,80,0.12)",
+                              border: "1px solid",
+                              borderColor: "rgba(76,175,80,0.3)",
+                            }}
+                          >
                             <CheckCircleRounded
                               sx={{ fontSize: 15, color: "#66bb6a" }}
                             />
-                          )}
-                          {isNext && (
-                            <AutoAwesomeRounded
-                              sx={{ fontSize: 15, color: "#7eb8ff" }}
-                            />
-                          )}
-                          {isLocked && (
-                            <LockRounded
+                            <Typography
                               sx={{
-                                fontSize: 15,
-                                color: "rgba(255,255,255,0.3)",
+                                fontSize: "0.72rem",
+                                fontWeight: 700,
+                                color: "#66bb6a",
+                                letterSpacing: "0.1em",
+                                textTransform: "uppercase",
+                                fontFamily: OUTFIT,
                               }}
-                            />
-                          )}
-                          <Typography
-                            sx={{
-                              fontSize: "0.72rem",
-                              fontWeight: 700,
-                              color: isDone
-                                ? "#66bb6a"
-                                : isNext
-                                  ? "#7eb8ff"
-                                  : "rgba(255,255,255,0.3)",
-                              letterSpacing: "0.1em",
-                              textTransform: "uppercase",
-                              fontFamily: OUTFIT,
-                            }}
-                          >
-                            {isDone
-                              ? "Completed"
-                              : isNext
-                                ? "Up Next"
-                                : "Locked"}
-                          </Typography>
+                            >
+                              Completed
+                            </Typography>
+                          </Box>
                         </Box>
-                      </Box>
+                      )}
 
                       {/* Course title */}
                       <Typography
