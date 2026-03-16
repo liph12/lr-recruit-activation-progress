@@ -205,7 +205,7 @@ export default function TrainingCourse({ course, takeCourse }: CourseProps) {
           zIndex: 1,
           flex: 1,
           display: "flex",
-          flexDirection: { xs: "column", md: "row" },
+            flexDirection: { xs: "column", md: "row" },
           px: { xs: 2, sm: 3, md: 4 },
           pt: { xs: 3, md: 5 },
           pb: { xs: 1.5, md: 2 },
@@ -220,7 +220,7 @@ export default function TrainingCourse({ course, takeCourse }: CourseProps) {
             flexDirection: "column",
             justifyContent: "center",
             flexShrink: 0,
-            width: { xs: "100%", md: "38%" },
+            width: { xs: "100%", md: "32%" },
             gap: { xs: 2, md: 2.5 },
             animation: `${fadeInUp} 0.5s ease both`,
           }}
@@ -249,7 +249,7 @@ export default function TrainingCourse({ course, takeCourse }: CourseProps) {
             />
             <Typography
               sx={{
-                fontSize: "0.62rem",
+                fontSize: "1rem",
                 fontWeight: 700,
                 letterSpacing: "0.14em",
                 textTransform: "uppercase",
@@ -266,11 +266,11 @@ export default function TrainingCourse({ course, takeCourse }: CourseProps) {
             <Typography
               sx={{
                 fontSize: {
-                  xs: "clamp(1.5rem,6vw,2rem)",
-                  md: "clamp(1.6rem,2.8vw,2.6rem)",
+                  xs: "clamp(1.8rem,7vw,2.4rem)",
+                  md: "clamp(3.5rem,3.8vw,3rem)",
                 },
                 fontWeight: 900,
-                lineHeight: 1.1,
+                lineHeight: 1.08,
                 letterSpacing: "-0.03em",
                 fontFamily: OUTFIT,
                 backgroundImage:
@@ -279,7 +279,7 @@ export default function TrainingCourse({ course, takeCourse }: CourseProps) {
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 animation: `${shimmer} 4s linear infinite`,
-                mb: 0.5,
+                mb: 0.7,
               }}
             >
               {course.title}
@@ -297,17 +297,17 @@ export default function TrainingCourse({ course, takeCourse }: CourseProps) {
           </Box>
 
           {/* Toggle tabs */}
-          <Box sx={{ display: "flex", gap: 1 }}>
+          <Box sx={{ display: "flex", gap: 1.8 }}>
             {[
               {
                 label: "Video",
-                icon: <SubscriptionsRounded sx={{ fontSize: 15 }} />,
+                icon: <SubscriptionsRounded sx={{ fontSize: 18 }} />,
                 active: isVideo,
                 onClick: () => setIsVideo(true),
               },
               {
                 label: "Powerpoint",
-                icon: <AutoStoriesRounded sx={{ fontSize: 15 }} />,
+                icon: <AutoStoriesRounded sx={{ fontSize: 18 }} />,
                 active: !isVideo,
                 onClick: () => setIsVideo(false),
               },
@@ -318,10 +318,10 @@ export default function TrainingCourse({ course, takeCourse }: CourseProps) {
                 sx={{
                   display: "inline-flex",
                   alignItems: "center",
-                  gap: 0.7,
-                  px: 2,
-                  py: 0.9,
-                  borderRadius: "10px",
+                  gap: 0.9,
+                  px: 2.4,
+                  py: 1.05,
+                  borderRadius: "12px",
                   cursor: "pointer",
                   userSelect: "none",
                   background: tab.active
@@ -349,7 +349,7 @@ export default function TrainingCourse({ course, takeCourse }: CourseProps) {
                 </Box>
                 <Typography
                   sx={{
-                    fontSize: "0.8rem",
+                    fontSize: "1.3rem",
                     fontWeight: tab.active ? 700 : 500,
                     color: tab.active ? "#ffffff" : "rgba(255,255,255,0.45)",
                     fontFamily: OUTFIT,
@@ -393,7 +393,7 @@ export default function TrainingCourse({ course, takeCourse }: CourseProps) {
             <Typography
               sx={{
                 fontWeight: 800,
-                fontSize: "0.88rem",
+                fontSize: "1.4rem",
                 letterSpacing: "0.08em",
                 textTransform: "uppercase",
                 color: "#ffffff",
@@ -420,8 +420,8 @@ export default function TrainingCourse({ course, takeCourse }: CourseProps) {
             minWidth: 0,
             minHeight: 0,
             display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            alignItems: "stretch",
+            justifyContent: "stretch",
             animation: `${fadeInUp} 0.55s ease 0.1s both`,
             overflow: "hidden",
           }}
