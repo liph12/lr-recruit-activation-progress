@@ -308,16 +308,18 @@ const animationStyles = `
       background: #071020 !important;
       border-right: none !important;
       box-shadow: none !important;
-      padding: 120px 24px 40px !important;
+      /* More breathing room for hero on mobile */
+      padding: 96px 26px 60px !important;
       overflow-y: auto;
       display: flex !important;
       flex-direction: column !important;
       justify-content: flex-start !important;
     }
-    .logo-row img.logo-unified { height: 30px !important; max-width: 120px !important; }
-    .welcome-headline { font-size: 1.9rem !important; }
-    .body-copy { font-size: 0.84rem !important; }
-    .cta-btn { padding: 13px 24px !important; font-size: 0.84rem !important; }
+    /* Bigger logo & typography to match the design mock */
+    .logo-row img.logo-unified { height: 90px !important; max-width: 260px !important; }
+    .welcome-headline { font-size: clamp(3rem, 9vw, 3.5rem) !important; }
+    .body-copy { font-size: 1.3rem !important; }
+    .cta-btn { padding: 16px 26px !important; font-size: 0.98rem !important; }
   }
 
   /* ── TABLET (640px – 1023px) ── */
