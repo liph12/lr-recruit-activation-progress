@@ -235,8 +235,8 @@ export default function Course() {
                   <Typography
                     sx={{
                       fontSize: {
-                        xs: "clamp(1.8rem,7vw,2.4rem)",
-                        md: "clamp(2rem,4vw,3rem)",
+                        xs: "clamp(2.5rem,7vw,2.4rem)",
+                        md: "clamp(4.5rem,4vw,3rem)",
                       },
                       fontWeight: 900,
                       lineHeight: 1.05,
@@ -251,8 +251,8 @@ export default function Course() {
                   <Typography
                     sx={{
                       fontSize: {
-                        xs: "clamp(1.8rem,7vw,2.4rem)",
-                        md: "clamp(2rem,4vw,3rem)",
+                        xs: "clamp(2.5rem,7vw,2.4rem)",
+                        md: "clamp(4rem,4vw,3rem)",
                       },
                       fontWeight: 900,
                       lineHeight: 1.05,
@@ -322,7 +322,7 @@ export default function Course() {
                     <Typography
                       sx={{
                         fontWeight: 800,
-                        fontSize: "0.92rem",
+                        fontSize: "1rem",
                         letterSpacing: "0.08em",
                         textTransform: "uppercase",
                         color: "#ffffff",
@@ -411,7 +411,7 @@ export default function Course() {
                   sx={{
                     animation: `${fadeInUp} 0.65s ease 0.18s both`,
                     p: { xs: 2.5, md: 3 },
-                    borderRadius: "18px",
+                    borderRadius: "16px",
                     background: "rgba(255,255,255,0.04)",
                     border: "1px solid rgba(255,255,255,0.08)",
                     backdropFilter: "blur(12px)",
@@ -421,7 +421,7 @@ export default function Course() {
                     sx={{
                       fontWeight: 800,
                       color: "#ffffff",
-                      fontSize: { xs: "1rem", md: "1.1rem" },
+                      fontSize: { xs: "1rem", md: "1.5rem" },
                       fontFamily: OUTFIT,
                       mb: 2,
                       letterSpacing: "-0.01em",
@@ -451,7 +451,7 @@ export default function Course() {
                         />
                         <Typography
                           sx={{
-                            fontSize: { xs: "0.85rem", md: "0.9rem" },
+                            fontSize: { xs: "0.85rem", md: "1rem" },
                             color: "rgba(255,255,255,0.7)",
                             lineHeight: 1.55,
                             fontFamily: OUTFIT,
@@ -495,7 +495,7 @@ export default function Course() {
                 <Typography
                   sx={{
                     fontWeight: 800,
-                    fontSize: "0.92rem",
+                    fontSize: "1rem",
                     letterSpacing: "0.08em",
                     textTransform: "uppercase",
                     color: "#ffffff",
