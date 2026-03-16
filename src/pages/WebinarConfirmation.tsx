@@ -19,11 +19,32 @@ const shimmer = keyframes`
   100% { background-position: 600px 0; }
 `;
 
+// ── logo slide animations (match Welcome.tsx) ───────────────────────────────
+const logoSlideIn = keyframes`
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+`;
+
+const logoSlideOut = keyframes`
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-30px); }
+`;
+
+// same logo set as Welcome.tsx
+const LOGOS = [
+  { src: "/images/rentph-logo-white.png", alt: "Rent.ph" },
+  { src: "/images/lr-logo-white.png", alt: "Leuterio Realty & Brokerage" },
+  { src: "/images/fh-logo-white.png", alt: "Filipino Homes" },
+];
+
 export default function WebinarConfirmation() {
   const axios = useAxios();
   const { desktop, setUserData } = useAppProvider();
   const [hoveredBtn, setHoveredBtn] = useState<"yes" | "no" | null>(null);
   const [loading, setLoading] = useState<"yes" | "no" | null>(null);
+  // logo slider state
+  const [logoIndex, setLogoIndex] = useState(0);
+  const [logoAnim, setLogoAnim] = useState<"in" | "out">("in");
 
   const handleConfirmAsync = async (status: "yes" | "no") => {
     try {
@@ -136,26 +157,73 @@ export default function WebinarConfirmation() {
     };
   }, []);
 
+  // ── cycle logos one at a time (like Welcome.tsx) ─────────────────────────
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLogoAnim("out");
+      setTimeout(() => {
+        setLogoIndex((prev) => (prev + 1) % LOGOS.length);
+        setLogoAnim("in");
+      }, 420);
+    }, 2800);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <Box
       sx={{
         display: "flex",
-        justifyContent: "center",
+        justifyContent: { xs: "flex-start", lg: "center" },
         flexDirection: "column",
-        height: "100.5vh",
+        height: { xs: "100dvh", lg: "100vh" },
         alignItems: "center",
         px: desktop ? 4 : 2.5,
+        pt: desktop ? 0 : 7,
         position: "relative",
         overflow: "hidden",
         background: "#071020",
       }}
     >
+      {/* ── Sliding single-logo header (mobile-friendly) ── */}
+        <Box
+          sx={{
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1,
+            mb: desktop ? 3 : 2.5,
+            pb: desktop ? 1.5 : 1.5,
+            width: "100%",
+            overflow: "hidden",
+            minHeight: desktop ? 0 : 96,
+            display: desktop ? "none" : "flex",
+            animation: `${fadeInUp} 0.6s ease-out 0.05s both`,
+          }}
+        >
+          <Box
+            component="img"
+            key={`logo-${logoIndex}`}
+            src={LOGOS[logoIndex].src}
+            alt={LOGOS[logoIndex].alt}
+            sx={{
+              height: desktop ? { lg: 64, xs: 44 } : 90,
+              // Fallbacks to ensure reasonable size across breakpoints
+              maxWidth: desktop ? 210 : 260,
+              width: "auto",
+              objectFit: "contain",
+              filter: "drop-shadow(0 2px 8px rgba(0,53,128,0.12))",
+              animation:
+                logoAnim === "in"
+                  ? `${logoSlideIn} 0.5s cubic-bezier(0.22,1,0.36,1) both`
+                  : `${logoSlideOut} 0.4s cubic-bezier(0.55,0,0.78,0) both`,
+            }}
+          />
+        </Box>
       {/* ── Live canvas background ── */}
       <canvas
         ref={canvasRef}
         style={{
           position: "absolute",
-          inset: 0,
+          inset: -1,
           width: "100%",
           height: "100%",
           zIndex: 0,
@@ -176,8 +244,8 @@ export default function WebinarConfirmation() {
           sx={{
             fontFamily: "'Outfit', sans-serif",
             fontSize: desktop
-              ? "clamp(2.2rem, 4.5vw, 3.5rem)"
-              : "clamp(1.6rem, 7vw, 2.2rem)",
+              ? "clamp(2.6rem, 5vw, 4rem)"
+              : "clamp(2rem, 9vw, 3rem)",
             fontWeight: 900,
             lineHeight: 1.12,
             letterSpacing: "-0.025em",
@@ -191,8 +259,8 @@ export default function WebinarConfirmation() {
           sx={{
             fontFamily: "'Outfit', sans-serif",
             fontSize: desktop
-              ? "clamp(2.2rem, 4.5vw, 3.5rem)"
-              : "clamp(1.6rem, 7vw, 2.2rem)",
+              ? "clamp(2.6rem, 5vw, 4rem)"
+              : "clamp(2rem, 9vw, 3rem)",
             fontWeight: 900,
             lineHeight: 1.5,
             letterSpacing: "-0.025em",
@@ -213,7 +281,7 @@ export default function WebinarConfirmation() {
         sx={{
           display: "flex",
           flexDirection: "row",
-          gap: desktop ? 4 : 2.5,
+          gap: desktop ? 4 : 3,
           zIndex: 1,
           animation: `${fadeInUp} 0.65s ease-out 0.26s both`,
         }}
@@ -234,8 +302,8 @@ export default function WebinarConfirmation() {
         >
           <Box
             sx={{
-              width: desktop ? 88 : 72,
-              height: desktop ? 88 : 72,
+              width: desktop ? 99 : 92,
+              height: desktop ? 99 : 92,
               borderRadius: "50%",
               background:
                 hoveredBtn === "no"
@@ -261,7 +329,7 @@ export default function WebinarConfirmation() {
           >
             <Close
               sx={{
-                fontSize: desktop ? 32 : 26,
+                fontSize: desktop ? 40 : 40,
                 color:
                   hoveredBtn === "no" ? "#ffffff" : "rgba(255,255,255,0.55)",
                 transition: "color 0.3s",
@@ -271,7 +339,7 @@ export default function WebinarConfirmation() {
           <Typography
             sx={{
               fontFamily: "'Outfit', sans-serif",
-              fontSize: desktop ? "1.2rem" : "0.82rem",
+              fontSize: desktop ? "1.2rem" : "1.5rem",
               fontWeight: 700,
               letterSpacing: "0.18em",
               textTransform: "uppercase",
@@ -299,8 +367,8 @@ export default function WebinarConfirmation() {
         >
           <Box
             sx={{
-              width: desktop ? 88 : 72,
-              height: desktop ? 88 : 72,
+              width: desktop ? 96 : 88,
+              height: desktop ? 96 : 88,
               borderRadius: "50%",
               background:
                 hoveredBtn === "yes"
@@ -329,7 +397,7 @@ export default function WebinarConfirmation() {
           >
             <Check
               sx={{
-                fontSize: desktop ? 34 : 28,
+                fontSize: desktop ? 38 : 32,
                 color: "#ffffff",
               }}
             />
@@ -337,7 +405,7 @@ export default function WebinarConfirmation() {
           <Typography
             sx={{
               fontFamily: "'Outfit', sans-serif",
-              fontSize: desktop ? "1.2rem" : "0.82rem",
+              fontSize: desktop ? "1.2rem" : "1.5rem",
               fontWeight: 700,
               letterSpacing: "0.18em",
               textTransform: "uppercase",

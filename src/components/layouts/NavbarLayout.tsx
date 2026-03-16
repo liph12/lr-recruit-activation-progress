@@ -7,40 +7,30 @@ export default function NavbarLayout({ children }: { children: ReactNode }) {
 
   return (
     <>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          px: desktop ? 5 : 1,
-          py: 2,
-          mb: -14,
-          zIndex: 2,
-          position: "relative",
-        }}
-      >
-        <Box>
-          <img
-            src="/images/rentph-logo-white.png"
-            width={desktop ? 160 : 110}
-            height="auto"
-          />
+      {desktop && (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            px: 5,
+            py: 2,
+            mb: -14,
+            zIndex: 2,
+            position: "relative",
+          }}
+        >
+          <Box>
+            <img src="/images/rentph-logo-white.png" width={160} height="auto" />
+          </Box>
+          <Box>
+            <img src="/images/lr-logo-white.png" width={140} height="auto" />
+          </Box>
+          <Box>
+            <img src="/images/fh-logo-white.png" width={210} height="auto" />
+          </Box>
         </Box>
-        <Box>
-          <img
-            src="/images/lr-logo-white.png"
-            width={desktop ? 140 : 90}
-            height="auto"
-          />
-        </Box>
-        <Box>
-          <img
-            src="/images/fh-logo-white.png"
-            width={desktop ? 210 : 130}
-            height="auto"
-          />
-        </Box>
-      </Box>
+      )}
       {children}
     </>
   );
