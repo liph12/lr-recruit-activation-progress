@@ -436,7 +436,7 @@ export default function WebinarConfirmationContacts() {
             <Typography
               sx={{
                 fontSize: {
-                  xs: "clamp(2rem, 9vw, 2.8rem)",
+                  xs: "clamp(3.5rem, 9vw, 2.8rem)",
                   sm: "clamp(2.2rem, 6vw, 3rem)",
                   md: "clamp(2.2rem, 4vw, 4.2rem)",
                 },
@@ -451,8 +451,8 @@ export default function WebinarConfirmationContacts() {
             <Typography
               sx={{
                 fontSize: {
-                  xs: "clamp(2rem, 9vw, 2.8rem)",
-                  sm: "clamp(2.2rem, 6vw, 3rem)",
+                  xs: "clamp(3.5rem, 9vw, 4rem)",
+                  sm: "clamp(3rem, 6vw, 4rem)",
                   md: "clamp(2.2rem, 4vw, 4.2rem)",
                 },
                 fontWeight: 900,
@@ -519,6 +519,7 @@ export default function WebinarConfirmationContacts() {
               boxShadow: "0 20px 48px rgba(0,0,0,0.3)",
               // center on mobile/tablet, left-align on desktop
               mx: { xs: "auto", md: 0 },
+              textAlign: { xs: "left", md: "left" },
               animation: `${fadeInUp} 0.65s ease 0.24s both`,
               boxSizing: "border-box",
             }}
@@ -542,7 +543,7 @@ export default function WebinarConfirmationContacts() {
                   sx={{
                     fontWeight: 700,
                     color: "#ffffff",
-                    fontSize: { xs: "0.9rem", sm: "0.95rem", md: "1.8rem" },
+                    fontSize: { xs: "1.2rem", sm: "1.3rem", md: "1.8rem" },
                     lineHeight: 1.3,
                     // prevent long names from overflowing
                     overflow: "hidden",
@@ -574,8 +575,9 @@ export default function WebinarConfirmationContacts() {
               sx={{
                 fontWeight: 700,
                 color: "#ffffff",
-                fontSize: { xs: "0.9rem", sm: "0.95rem", md: "1.3rem" },
+                fontSize: { xs: "1.05rem", sm: "1.1rem", md: "1.3rem" },
                 mb: 0.5,
+                textAlign: { xs: "left", md: "left" },
               }}
             >
               {contactPhone}
@@ -584,9 +586,10 @@ export default function WebinarConfirmationContacts() {
             {/* Email — allow wrapping on small screens */}
             <Typography
               sx={{
-                fontSize: { xs: "0.72rem", sm: "0.78rem", md: "1.3rem" },
+                fontSize: { xs: "0.9rem", sm: "0.95rem", md: "1.1rem" },
                 color: "rgba(255,255,255,0.45)",
                 wordBreak: "break-word",
+                textAlign: { xs: "left", md: "left" },
               }}
             >
               {contactEmail}
