@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import { useAppProvider } from "../providers/AppProvider";
 import { CheckCircleRounded, ContactPhoneRounded } from "@mui/icons-material";
 import { keyframes } from "@mui/material";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // ── Keyframes ──────────────────────────────────────────────────────────────
 const fadeInUp = keyframes`
@@ -42,6 +42,20 @@ export default function WebinarConfirmationContacts() {
     ? "it.dept.leuteriorealty@gmail.com"
     : user?.sponsor?.email;
   const contactRole = isDirect ? "Leuterio Direct Secretary" : "Sponsor";
+
+  // ── Toast state — show checkmark animation for 2.2s then reveal content ──
+  const [showToast, setShowToast] = useState(true);
+  const [contentVisible, setContentVisible] = useState(false);
+
+  useEffect(() => {
+    // Show toast for 4.5s so user can read, then fade out and reveal content
+    const t1 = setTimeout(() => setShowToast(false), 4500);
+    const t2 = setTimeout(() => setContentVisible(true), 4800);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, []);
 
   // ── Live canvas background ───────────────────────────────────────────────
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -173,16 +187,130 @@ export default function WebinarConfirmationContacts() {
         }}
       />
 
+      {/* ── Outfit font + toast keyframes ── */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+        * { font-family: 'Outfit', sans-serif !important; }
+
+        @keyframes wcc-draw-circle {
+          from { stroke-dashoffset: 283; }
+          to   { stroke-dashoffset: 0; }
+        }
+        @keyframes wcc-draw-check {
+          from { stroke-dashoffset: 120; }
+          to   { stroke-dashoffset: 0; }
+        }
+        @keyframes wcc-pop-in {
+          0%   { transform: scale(0.4); opacity: 0; }
+          65%  { transform: scale(1.08); opacity: 1; }
+          82%  { transform: scale(0.97); }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes wcc-fade-out {
+          0%   { opacity: 1; }
+          80%  { opacity: 1; }
+          100% { opacity: 0; }
+        }
+        @keyframes wcc-glow-pulse {
+          0%, 100% { filter: drop-shadow(0 0 32px rgba(76,175,80,0.4)); }
+          50%       { filter: drop-shadow(0 0 64px rgba(76,175,80,0.75)); }
+        }
+        .wcc-toast {
+          position: fixed; inset: 0; z-index: 9999;
+          display: flex; align-items: center; justify-content: center;
+          flex-direction: column; gap: 28px;
+          background: rgba(7,16,32,0.90);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          animation: wcc-fade-out 4.5s ease forwards;
+        }
+        .wcc-svg-wrap {
+          animation: wcc-pop-in 0.65s cubic-bezier(0.34,1.56,0.64,1) both,
+                     wcc-glow-pulse 2.2s ease-in-out 1.2s infinite;
+        }
+        .wcc-text {
+          display: flex; flex-direction: column;
+          align-items: center; gap: 8px;
+          text-align: center;
+          opacity: 0;
+          animation: wcc-text-in 0.5s ease 1.1s forwards;
+        }
+        @keyframes wcc-text-in {
+          from { opacity: 0; transform: translateY(12px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .wcc-text-title {
+          font-family: 'Outfit', sans-serif;
+          font-size: clamp(1.3rem, 3.5vw, 1.75rem);
+          font-weight: 800;
+          color: #ffffff;
+          letter-spacing: -0.02em;
+          margin: 0;
+          line-height: 1.15;
+        }
+        .wcc-text-sub {
+          font-family: 'Outfit', sans-serif;
+          font-size: clamp(0.82rem, 2vw, 0.95rem);
+          color: rgba(255,255,255,0.48);
+          margin: 0;
+          letter-spacing: 0.01em;
+        }
+        .wcc-circle-bg {
+          fill: rgba(76,175,80,0.07);
+          stroke: rgba(76,175,80,0.2);
+          stroke-width: 1.5;
+        }
+        .wcc-circle-ring {
+          fill: none; stroke: #4caf50; stroke-width: 2.4;
+          stroke-linecap: round;
+          stroke-dasharray: 283; stroke-dashoffset: 283;
+          animation: wcc-draw-circle 0.85s cubic-bezier(0.65,0,0.45,1) 0.2s forwards;
+        }
+        .wcc-check {
+          fill: none; stroke: #69f0ae; stroke-width: 5;
+          stroke-linecap: round; stroke-linejoin: round;
+          stroke-dasharray: 120; stroke-dashoffset: 120;
+          animation: wcc-draw-check 0.5s cubic-bezier(0.65,0,0.45,1) 0.95s forwards;
+        }
+      `}</style>
+
+      {/* ── Success toast — checkmark only ── */}
+      {showToast && (
+        <div className="wcc-toast">
+          <div className="wcc-svg-wrap">
+            <svg viewBox="0 0 90 90" width="220" height="220">
+              <circle className="wcc-circle-bg" cx="45" cy="45" r="43" />
+              <circle
+                className="wcc-circle-ring"
+                cx="45"
+                cy="45"
+                r="43"
+                transform="rotate(-90 45 45)"
+              />
+              <polyline className="wcc-check" points="24,46 38,60 66,32" />
+            </svg>
+          </div>
+          <div className="wcc-text">
+            <p className="wcc-text-title">Successfully Uploaded Proof!</p>
+            <p className="wcc-text-sub">Your attendance has been submitted.</p>
+          </div>
+        </div>
+      )}
+
+      {/* ── Main content — fades in after toast ── */}
       <Grid
         container
         spacing={{ xs: 3, sm: 4, md: 8 }}
         sx={{
-          maxWidth: 1100,
+          maxWidth: 1300,
           width: "100%",
           position: "relative",
           zIndex: 1,
-          // vertically center items on all breakpoints
           alignItems: "center",
+          opacity: contentVisible ? 1 : 0,
+          transform: contentVisible ? "translateY(0)" : "translateY(20px)",
+          transition: "opacity 0.6s ease, transform 0.6s ease",
         }}
       >
         {/* ── LEFT CONTENT ── */}
@@ -232,7 +360,7 @@ export default function WebinarConfirmationContacts() {
                 fontSize: {
                   xs: "clamp(1.6rem, 7vw, 2.1rem)",
                   sm: "clamp(1.8rem, 5vw, 2.6rem)",
-                  md: "clamp(2rem, 4vw, 3.2rem)",
+                  md: "clamp(2rem, 4vw, 4.2rem)",
                 },
                 fontWeight: 900,
                 lineHeight: 1.1,
@@ -247,7 +375,7 @@ export default function WebinarConfirmationContacts() {
                 fontSize: {
                   xs: "clamp(1.6rem, 7vw, 2.1rem)",
                   sm: "clamp(1.8rem, 5vw, 2.6rem)",
-                  md: "clamp(2rem, 4vw, 3.2rem)",
+                  md: "clamp(2rem, 4vw, 4.2rem)",
                 },
                 fontWeight: 900,
                 lineHeight: 1.1,
@@ -282,10 +410,10 @@ export default function WebinarConfirmationContacts() {
           <Typography
             sx={{
               color: "rgba(255,255,255,0.60)",
-              maxWidth: 460,
+              maxWidth: 500,
               mb: { xs: 3, sm: 4, md: 4.5 },
               lineHeight: 1.78,
-              fontSize: { xs: "0.85rem", sm: "0.92rem", md: "1rem" },
+              fontSize: { xs: "0.85rem", sm: "0.92rem", md: "1.2rem" },
               // center on mobile/tablet, left-align on desktop
               mx: { xs: "auto", md: 0 },
               animation: `${fadeInUp} 0.65s ease 0.16s both`,
@@ -336,7 +464,7 @@ export default function WebinarConfirmationContacts() {
                   sx={{
                     fontWeight: 700,
                     color: "#ffffff",
-                    fontSize: { xs: "0.9rem", sm: "0.95rem", md: "1rem" },
+                    fontSize: { xs: "0.9rem", sm: "0.95rem", md: "1.8rem" },
                     lineHeight: 1.3,
                     // prevent long names from overflowing
                     overflow: "hidden",
@@ -348,7 +476,7 @@ export default function WebinarConfirmationContacts() {
                 </Typography>
                 <Typography
                   sx={{
-                    fontSize: "0.68rem",
+                    fontSize: "1rem",
                     fontWeight: 600,
                     color: "#7eb8ff",
                     letterSpacing: "0.08em",
@@ -368,7 +496,7 @@ export default function WebinarConfirmationContacts() {
               sx={{
                 fontWeight: 700,
                 color: "#ffffff",
-                fontSize: { xs: "0.9rem", sm: "0.95rem", md: "1rem" },
+                fontSize: { xs: "0.9rem", sm: "0.95rem", md: "1.3rem" },
                 mb: 0.5,
               }}
             >
@@ -378,7 +506,7 @@ export default function WebinarConfirmationContacts() {
             {/* Email — allow wrapping on small screens */}
             <Typography
               sx={{
-                fontSize: { xs: "0.72rem", sm: "0.78rem", md: "0.8rem" },
+                fontSize: { xs: "0.72rem", sm: "0.78rem", md: "1.3rem" },
                 color: "rgba(255,255,255,0.45)",
                 wordBreak: "break-word",
               }}
@@ -402,8 +530,8 @@ export default function WebinarConfirmationContacts() {
               animation: `${float} 5s ease-in-out infinite`,
               filter: "drop-shadow(0 30px 60px rgba(0,85,179,0.35))",
               // responsive image size
-              width: { sm: "60%", md: "75%", lg: 380 },
-              maxWidth: 420,
+              width: { sm: "60%", md: "75%", lg: 680 },
+              maxWidth: 680,
             }}
           >
             <img

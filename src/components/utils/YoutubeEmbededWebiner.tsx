@@ -1,12 +1,11 @@
-import { Box, Slider, Typography, Divider } from "@mui/material";
+import { Box, Slider, Typography } from "@mui/material";
 import { SaveRounded, CheckCircleRounded } from "@mui/icons-material";
 import { useEffect, useRef, useState } from "react";
 import { useAppProvider } from "../../providers/AppProvider";
-import StyledButton from "./StyledButton";
 import useAxios from "../../hooks/useAxios";
 
 export default function YoutubeEmbedWebinar() {
-  const { desktop, user, setUserData } = useAppProvider();
+  const { user, setUserData } = useAppProvider();
   const axios = useAxios();
   const playerRef = useRef<any>(null);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
@@ -30,7 +29,7 @@ export default function YoutubeEmbedWebinar() {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       const { data } = response.data;
@@ -58,7 +57,7 @@ export default function YoutubeEmbedWebinar() {
       setMaxWatchedPercent(
         savedPercent > user?.webinar_progress
           ? savedPercent
-          : user?.webinar_progress
+          : user?.webinar_progress,
       );
     }
 
@@ -120,22 +119,123 @@ export default function YoutubeEmbedWebinar() {
 
   return (
     <Box>
-      <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-        <StyledButton
-          variant="contained"
-          size="small"
-          startIcon={isSaved ? <CheckCircleRounded /> : <SaveRounded />}
-          loading={saving}
-          disabled={saving}
-          onClick={saveProgressAsync}
-          color={isSaved ? "success" : "primary"}
+      {/* ── Top bar: Save button + progress ── */}
+      <Box
+        sx={{
+          display: "flex",
+          gap: 2,
+          alignItems: "center",
+          px: { xs: 2, sm: 2.5 },
+          py: 1.5,
+          background: "rgba(255,255,255,0.03)",
+          borderBottom: "1px solid rgba(255,255,255,0.07)",
+        }}
+      >
+        {/* Save button */}
+        <Box
+          onClick={!saving ? saveProgressAsync : undefined}
+          sx={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 0.8,
+            px: 2,
+            py: 0.75,
+            borderRadius: "100px",
+            cursor: saving ? "default" : "pointer",
+            background: isSaved
+              ? "rgba(76,175,80,0.15)"
+              : "linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%)",
+            border: "1px solid",
+            borderColor: isSaved
+              ? "rgba(76,175,80,0.45)"
+              : "rgba(255,255,255,0.18)",
+            backdropFilter: "blur(8px)",
+            transition: "all 0.3s ease",
+            userSelect: "none",
+            "&:hover": !saving
+              ? {
+                  background: isSaved
+                    ? "rgba(76,175,80,0.22)"
+                    : "rgba(255,255,255,0.16)",
+                  borderColor: isSaved
+                    ? "rgba(76,175,80,0.6)"
+                    : "rgba(255,255,255,0.35)",
+                }
+              : {},
+          }}
         >
-          {isSaved ? "Saved" : "Save"}
-        </StyledButton>
-        <Divider sx={{ height: 20 }} orientation="vertical" />
-        <Typography sx={{ mt: desktop ? 0 : 1 }}>
-          Watched: {maxWatchedPercent.toFixed(0)}%
-        </Typography>
+          {saving ? (
+            <Box
+              sx={{
+                width: 14,
+                height: 14,
+                borderRadius: "50%",
+                border: "2px solid rgba(255,255,255,0.25)",
+                borderTopColor: "#ffffff",
+                animation: "spin 0.7s linear infinite",
+                "@keyframes spin": {
+                  from: { transform: "rotate(0deg)" },
+                  to: { transform: "rotate(360deg)" },
+                },
+              }}
+            />
+          ) : isSaved ? (
+            <CheckCircleRounded sx={{ fontSize: 15, color: "#66bb6a" }} />
+          ) : (
+            <SaveRounded
+              sx={{ fontSize: 15, color: "rgba(255,255,255,0.8)" }}
+            />
+          )}
+          <Typography
+            sx={{
+              fontSize: "0.75rem",
+              fontWeight: 700,
+              letterSpacing: "0.08em",
+              color: isSaved ? "#66bb6a" : "rgba(255,255,255,0.85)",
+              textTransform: "uppercase",
+              transition: "color 0.3s",
+            }}
+          >
+            {saving ? "Saving…" : isSaved ? "Saved" : "Save Progress"}
+          </Typography>
+        </Box>
+
+        {/* Divider dot */}
+        <Box
+          sx={{
+            width: 4,
+            height: 4,
+            borderRadius: "50%",
+            background: "rgba(255,255,255,0.15)",
+            flexShrink: 0,
+          }}
+        />
+
+        {/* Watched % */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 0.8 }}>
+          <Typography
+            sx={{
+              fontSize: "0.72rem",
+              fontWeight: 600,
+              color: "rgba(255,255,255,0.4)",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+            }}
+          >
+            Watched
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: "0.88rem",
+              fontWeight: 800,
+              color: maxWatchedPercent >= 100 ? "#66bb6a" : "#f0d98a",
+              letterSpacing: "-0.01em",
+              transition: "color 0.3s",
+            }}
+          >
+            {maxWatchedPercent.toFixed(0)}%
+          </Typography>
+        </Box>
       </Box>
       <Box
         sx={{
@@ -161,13 +261,35 @@ export default function YoutubeEmbedWebinar() {
           }}
         />
         <Slider
-          size="medium"
+          size="small"
           min={0}
           max={duration}
           value={currentTime}
           onChange={handleSeek}
-          sx={{ position: "absolute", bottom: desktop ? 0 : -10 }}
-          color="error"
+          sx={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            width: "100%",
+            color: "#f0d98a",
+            height: 3,
+            padding: "0 !important",
+            "& .MuiSlider-thumb": {
+              width: 12,
+              height: 12,
+              background: "#f0d98a",
+              boxShadow: "0 0 6px rgba(240,217,138,0.6)",
+              "&:hover": { boxShadow: "0 0 10px rgba(240,217,138,0.8)" },
+            },
+            "& .MuiSlider-track": {
+              background: "linear-gradient(90deg, #c9a84c, #f0d98a)",
+              border: "none",
+            },
+            "& .MuiSlider-rail": {
+              background: "rgba(255,255,255,0.12)",
+            },
+          }}
         />
       </Box>
     </Box>
