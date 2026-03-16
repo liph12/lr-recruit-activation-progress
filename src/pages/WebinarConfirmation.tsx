@@ -281,7 +281,7 @@ export default function WebinarConfirmation() {
         sx={{
           display: "flex",
           flexDirection: "row",
-          gap: desktop ? 4 : 3,
+          gap: desktop ? 6 : 4,
           zIndex: 1,
           animation: `${fadeInUp} 0.65s ease-out 0.26s both`,
         }}
@@ -367,8 +367,8 @@ export default function WebinarConfirmation() {
         >
           <Box
             sx={{
-              width: desktop ? 96 : 88,
-              height: desktop ? 96 : 88,
+              width: desktop ? 100 : 88,
+              height: desktop ? 100 : 88,
               borderRadius: "50%",
               background:
                 hoveredBtn === "yes"
@@ -397,7 +397,7 @@ export default function WebinarConfirmation() {
           >
             <Check
               sx={{
-                fontSize: desktop ? 38 : 32,
+                fontSize: desktop ? 40 : 32,
                 color: "#ffffff",
               }}
             />
