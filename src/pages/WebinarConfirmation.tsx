@@ -1,27 +1,22 @@
 import { Typography, Box, keyframes } from "@mui/material";
-import { CheckCircle, PlayArrow } from "@mui/icons-material";
+import { Close, Check } from "@mui/icons-material";
 import { useAppProvider } from "../providers/AppProvider";
 import useAxios from "../hooks/useAxios";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const fadeInUp = keyframes`
   from { opacity: 0; transform: translateY(36px); }
   to   { opacity: 1; transform: translateY(0); }
 `;
 
-const float = keyframes`
-  0%, 100% { transform: translateY(0) rotate(-1deg); }
-  50%      { transform: translateY(-14px) rotate(1deg); }
-`;
-
 const softPulse = keyframes`
-  0%, 100% { box-shadow: 0 8px 32px rgba(25,118,210,0.25), inset 0 1px 0 rgba(255,255,255,0.15); }
-  50%      { box-shadow: 0 12px 48px rgba(25,118,210,0.40), inset 0 1px 0 rgba(255,255,255,0.15); }
+  0%, 100% { box-shadow: 0 8px 32px rgba(25,118,210,0.35), inset 0 1px 0 rgba(255,255,255,0.15); }
+  50%      { box-shadow: 0 12px 48px rgba(25,118,210,0.55), inset 0 1px 0 rgba(255,255,255,0.15); }
 `;
 
-const iconBounce = keyframes`
-  0%, 100% { transform: scale(1); }
-  50%      { transform: scale(1.12); }
+const shimmer = keyframes`
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
 `;
 
 export default function WebinarConfirmation() {
@@ -37,7 +32,7 @@ export default function WebinarConfirmation() {
       const response = await axios.post(
         "/agent/confirm-nao-attendance",
         { status },
-        { headers: { "Content-Type": "application/json" } }
+        { headers: { "Content-Type": "application/json" } },
       );
       const { data } = response.data;
       setUserData(data);
@@ -48,412 +43,312 @@ export default function WebinarConfirmation() {
     }
   };
 
+  // ── live blob background (same as welcome page) ─────────────────────────
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let animId: number;
+
+    const resize = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
+    resize();
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas);
+
+    const blobs = [
+      {
+        x: 0.25,
+        y: 0.2,
+        r: 0.55,
+        ox: 0,
+        oy: 0,
+        speed: 0.000035,
+        color: [0, 85, 179] as [number, number, number],
+      },
+      {
+        x: 0.75,
+        y: 0.7,
+        r: 0.5,
+        ox: 1,
+        oy: 2,
+        speed: 0.000025,
+        color: [0, 55, 140] as [number, number, number],
+      },
+      {
+        x: 0.5,
+        y: 0.45,
+        r: 0.42,
+        ox: 2,
+        oy: 1,
+        speed: 0.00002,
+        color: [220, 235, 255] as [number, number, number],
+      },
+      {
+        x: 0.2,
+        y: 0.75,
+        r: 0.38,
+        ox: 3,
+        oy: 3,
+        speed: 0.000015,
+        color: [200, 218, 255] as [number, number, number],
+      },
+    ];
+
+    let t = 0;
+    const draw = () => {
+      const W = canvas.width;
+      const H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      ctx.fillStyle = "#071020";
+      ctx.fillRect(0, 0, W, H);
+
+      blobs.forEach((b) => {
+        const cx = (b.x + Math.sin(t * b.speed * 1000 + b.ox) * 0.1) * W;
+        const cy = (b.y + Math.cos(t * b.speed * 800 + b.oy) * 0.08) * H;
+        const rad = b.r * Math.max(W, H);
+        const [r, g, bl] = b.color;
+        const isLight = r > 150;
+        const peak = isLight ? 0.06 : 0.2;
+        const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, rad);
+        grd.addColorStop(0, `rgba(${r},${g},${bl},${peak})`);
+        grd.addColorStop(0.45, `rgba(${r},${g},${bl},${peak * 0.35})`);
+        grd.addColorStop(1, `rgba(${r},${g},${bl},0)`);
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, 0, W, H);
+      });
+
+      t++;
+      animId = requestAnimationFrame(draw);
+    };
+
+    draw();
+    return () => {
+      cancelAnimationFrame(animId);
+      ro.disconnect();
+    };
+  }, []);
+
   return (
     <Box
       sx={{
         display: "flex",
         justifyContent: "center",
         flexDirection: "column",
-        minHeight: desktop ? "82vh" : "auto",
+        height: "100.5vh",
         alignItems: "center",
         px: desktop ? 4 : 2.5,
-        pt: desktop ? 2 : 3,
-        pb: desktop ? 4 : 3,
         position: "relative",
         overflow: "hidden",
+        background: "#071020",
       }}
     >
-      {/* ── Ambient background ── */}
-      <Box
-        sx={{
+      {/* ── Live canvas background ── */}
+      <canvas
+        ref={canvasRef}
+        style={{
           position: "absolute",
           inset: 0,
-          pointerEvents: "none",
+          width: "100%",
+          height: "100%",
           zIndex: 0,
-          "&::before": {
-            content: '""',
-            position: "absolute",
-            top: "-20%",
-            right: "-10%",
-            width: desktop ? 600 : 300,
-            height: desktop ? 600 : 300,
-            borderRadius: "50%",
-            background:
-              "radial-gradient(circle, rgba(25,118,210,0.06) 0%, transparent 60%)",
-          },
-          "&::after": {
-            content: '""',
-            position: "absolute",
-            bottom: "-15%",
-            left: "-10%",
-            width: desktop ? 500 : 250,
-            height: desktop ? 500 : 250,
-            borderRadius: "50%",
-            background:
-              "radial-gradient(circle, rgba(25,118,210,0.04) 0%, transparent 60%)",
-          },
+          pointerEvents: "none",
         }}
       />
-
-      {/* ── Hero image — desktop only ── */}
-      {/* {desktop && (
-        <Box
-          sx={{
-            animation: `${float} 4s ease-in-out infinite, ${fadeInUp} 0.65s ease-out`,
-            mb: 2.5,
-            zIndex: 1,
-          }}
-        >
-          <img
-            src="/images/notify-phone-icon.png"
-            width={200}
-            height="auto"
-            alt="Orientation"
-            style={{
-              filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.15))",
-            }}
-          />
-        </Box>
-      )} */}
-
-      {/* ── Badge — mobile only (replaces image) ── */}
-      {/* {!desktop && (
-        <Box
-          sx={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 0.6,
-            bgcolor: "primary.main",
-            color: "#fff",
-            px: 2,
-            py: 0.5,
-            borderRadius: 6,
-            fontSize: "0.7rem",
-            fontWeight: 700,
-            letterSpacing: 1.2,
-            textTransform: "uppercase",
-            mb: 2,
-            zIndex: 1,
-            animation: `${fadeInUp} 0.5s ease-out`,
-          }}
-        >
-          Action Required
-        </Box>
-      )} */}
 
       {/* ── Heading ── */}
       <Box
         sx={{
           textAlign: "center",
           zIndex: 1,
-          mb: desktop ? 1.5 : 1,
+          mb: desktop ? 5 : 4,
           animation: `${fadeInUp} 0.65s ease-out 0.1s both`,
         }}
       >
         <Typography
           sx={{
+            fontFamily: "'Outfit', sans-serif",
             fontSize: desktop
               ? "clamp(2.2rem, 4.5vw, 3.5rem)"
               : "clamp(1.6rem, 7vw, 2.2rem)",
             fontWeight: 900,
             lineHeight: 1.12,
             letterSpacing: "-0.025em",
-            color: "text.primary",
+            color: "#ffffff",
+            mb: 0.5,
           }}
         >
           Have you attended the
         </Typography>
         <Typography
           sx={{
+            fontFamily: "'Outfit', sans-serif",
             fontSize: desktop
               ? "clamp(2.2rem, 4.5vw, 3.5rem)"
               : "clamp(1.6rem, 7vw, 2.2rem)",
             fontWeight: 900,
-            lineHeight: 1.12,
+            lineHeight: 1.5,
             letterSpacing: "-0.025em",
-            background:
-              "linear-gradient(135deg, #1976d2 0%, #0d47a1 60%, #1565c0 100%)",
+            backgroundImage:
+              "linear-gradient(90deg, #7eb8ff 0%, #ffffff 35%, #f0d98a 50%, #ffffff 65%, #7eb8ff 100%)",
+            backgroundSize: "600px 100%",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
+            animation: `${shimmer} 3.5s linear infinite`,
           }}
         >
           New Agent's Orientation?
         </Typography>
       </Box>
 
-      {/* ── Subtitle pill ── */}
-      <Box
-        sx={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: desktop ? 2 : 0.8,
-          bgcolor: "rgba(25,118,210,0.06)",
-          border: "1px solid rgba(25,118,210,0.10)",
-          borderRadius: 8,
-          px: desktop ? 3 : 1.5,
-          py: 0.8,
-          mb: desktop ? 5 : 3,
-          zIndex: 1,
-          animation: `${fadeInUp} 0.65s ease-out 0.18s both`,
-          flexWrap: "nowrap",
-          whiteSpace: "nowrap",
-        }}
-      >
-        <Typography
-          sx={{
-            fontSize: desktop ? "0.88rem" : "0.68rem",
-            color: "text.secondary",
-            fontWeight: 500,
-          }}
-        >
-          🎥 <strong>NAW</strong> = Video
-        </Typography>
-        <Box
-          sx={{
-            width: 3,
-            height: 3,
-            borderRadius: "50%",
-            bgcolor: "text.disabled",
-            flexShrink: 0,
-          }}
-        />
-        <Typography
-          sx={{
-            fontSize: desktop ? "0.88rem" : "0.68rem",
-            color: "text.secondary",
-            fontWeight: 800,
-          
-          }}
-        >
-          🤝 <strong>NAO</strong> = Face-to-Face
-        </Typography>
-      </Box>
-
-      {/* ── CTA Cards ── */}
+      {/* ── YES / NO Buttons ── */}
       <Box
         sx={{
           display: "flex",
-          flexDirection: desktop ? "row" : "column-reverse",
-          gap: desktop ? 3 : 1.5,
-          width: "100%",
-          maxWidth: desktop ? 680 : "100%",
+          flexDirection: "row",
+          gap: desktop ? 4 : 2.5,
           zIndex: 1,
           animation: `${fadeInUp} 0.65s ease-out 0.26s both`,
-          alignItems: desktop ? "stretch" : "stretch",
         }}
       >
-        {/* ▶ NOT YET — Secondary (LEFT desktop / BOTTOM mobile) */}
+        {/* ✕ NO */}
         <Box
           onClick={() => !loading && handleConfirmAsync("no")}
           onMouseEnter={() => setHoveredBtn("no")}
           onMouseLeave={() => setHoveredBtn(null)}
           sx={{
-            flex: 1,
             display: "flex",
-            flexDirection: desktop ? "column" : "row",
+            flexDirection: "column",
             alignItems: "center",
-            justifyContent: desktop ? "center" : "flex-start",
-            gap: desktop ? 1 : 2,
-            py: desktop ? 5 : 2.2,
-            px: desktop ? 3 : 2.5,
-            borderRadius: desktop ? "20px" : "16px",
+            gap: 1.5,
             cursor: loading ? "default" : "pointer",
-            bgcolor: "background.paper",
-            border: "2px solid",
-            borderColor:
-              hoveredBtn === "no" ? "primary.main" : "rgba(0,0,0,0.08)",
-            boxShadow:
-              hoveredBtn === "no"
-                ? "0 16px 48px rgba(25,118,210,0.15), 0 0 0 1px rgba(25,118,210,0.1)"
-                : "0 2px 12px rgba(0,0,0,0.04)",
-            transform:
-              hoveredBtn === "no"
-                ? "translateY(-6px) scale(1.02)"
-                : "none",
-            transition: "all 0.4s cubic-bezier(0.34,1.56,0.64,1)",
             userSelect: "none",
-            "&:active": { transform: "translateY(1px) scale(0.98)" },
           }}
         >
           <Box
             sx={{
-              width: desktop ? 64 : 48,
-              height: desktop ? 64 : 48,
+              width: desktop ? 88 : 72,
+              height: desktop ? 88 : 72,
               borderRadius: "50%",
-              bgcolor:
+              background:
                 hoveredBtn === "no"
-                  ? "rgba(25,118,210,0.08)"
-                  : "rgba(0,0,0,0.04)",
+                  ? "rgba(255,255,255,0.18)"
+                  : "rgba(255,255,255,0.07)",
+              border: "1.5px solid",
+              borderColor:
+                hoveredBtn === "no"
+                  ? "rgba(255,255,255,0.55)"
+                  : "rgba(255,255,255,0.18)",
+              backdropFilter: "blur(12px)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              flexShrink: 0,
-              transition: "background-color 0.3s",
-              animation:
+              transition: "all 0.35s cubic-bezier(0.34,1.56,0.64,1)",
+              transform: hoveredBtn === "no" ? "scale(1.12)" : "scale(1)",
+              boxShadow:
                 hoveredBtn === "no"
-                  ? `${iconBounce} 0.5s ease`
-                  : "none",
+                  ? "0 8px 32px rgba(0,0,0,0.4)"
+                  : "0 2px 12px rgba(0,0,0,0.2)",
+              "&:active": { transform: "scale(0.94)" },
             }}
           >
-            <PlayArrow
+            <Close
               sx={{
-                fontSize: desktop ? 34 : 24,
+                fontSize: desktop ? 32 : 26,
                 color:
-                  hoveredBtn === "no" ? "primary.main" : "text.secondary",
+                  hoveredBtn === "no" ? "#ffffff" : "rgba(255,255,255,0.55)",
                 transition: "color 0.3s",
               }}
             />
           </Box>
-          <Box sx={{ textAlign: desktop ? "center" : "left" }}>
-            <Typography
-              sx={{
-                fontSize: desktop
-                  ? "clamp(1.2rem, 2.2vw, 1.75rem)"
-                  : "1.1rem",
-                fontWeight: 800,
-                lineHeight: 1.2,
-                color:
-                  hoveredBtn === "no" ? "primary.main" : "text.primary",
-                transition: "color 0.3s",
-              }}
-            >
-              {loading === "no" ? "Redirecting..." : "Not Yet"}
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: desktop
-                  ? "clamp(0.75rem, 1.1vw, 0.9rem)"
-                  : "0.75rem",
-                color: "text.secondary",
-                fontWeight: 500,
-                mt: 0.3,
-              }}
-            >
-              Continue watching the NAW
-            </Typography>
-          </Box>
+          <Typography
+            sx={{
+              fontFamily: "'Outfit', sans-serif",
+              fontSize: desktop ? "1.2rem" : "0.82rem",
+              fontWeight: 700,
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              color: hoveredBtn === "no" ? "#ffffff" : "rgba(255,255,255,0.45)",
+              transition: "color 0.3s",
+            }}
+          >
+            {loading === "no" ? "..." : "No"}
+          </Typography>
         </Box>
 
-        {/* ✅ YES — Primary CTA (RIGHT desktop / TOP mobile) */}
+        {/* ✓ YES */}
         <Box
           onClick={() => !loading && handleConfirmAsync("yes")}
           onMouseEnter={() => setHoveredBtn("yes")}
           onMouseLeave={() => setHoveredBtn(null)}
           sx={{
-            flex: 1,
             display: "flex",
-            flexDirection: desktop ? "column" : "row",
+            flexDirection: "column",
             alignItems: "center",
-            justifyContent: desktop ? "center" : "flex-start",
-            gap: desktop ? 1 : 2,
-            py: desktop ? 5 : 2.5,
-            px: desktop ? 3 : 2.5,
-            borderRadius: desktop ? "20px" : "16px",
+            gap: 1.5,
             cursor: loading ? "default" : "pointer",
-            background:
-              "linear-gradient(150deg, #1e88e5 0%, #1565c0 50%, #0d47a1 100%)",
-            color: "#fff",
-            position: "relative",
-            overflow: "hidden",
-            animation:
-              hoveredBtn !== "yes"
-                ? `${softPulse} 3s ease-in-out infinite`
-                : "none",
-            boxShadow:
-              hoveredBtn === "yes"
-                ? "0 16px 56px rgba(25,118,210,0.50)"
-                : undefined,
-            transform:
-              hoveredBtn === "yes"
-                ? "translateY(-6px) scale(1.02)"
-                : "none",
-            transition:
-              "transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.35s ease",
             userSelect: "none",
-            "&:active": { transform: "translateY(1px) scale(0.98)" },
-            "&::after": {
-              content: '""',
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background:
-                "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.12) 45%, rgba(255,255,255,0.12) 55%, transparent 60%)",
-              backgroundSize: "250% 100%",
-              backgroundPosition:
-                hoveredBtn === "yes" ? "100% 0" : "0% 0",
-              transition: "background-position 0.6s ease",
-              borderRadius: "inherit",
-              pointerEvents: "none",
-            },
           }}
         >
           <Box
             sx={{
-              width: desktop ? 64 : 48,
-              height: desktop ? 64 : 48,
+              width: desktop ? 88 : 72,
+              height: desktop ? 88 : 72,
               borderRadius: "50%",
-              bgcolor: "rgba(255,255,255,0.15)",
+              background:
+                hoveredBtn === "yes"
+                  ? "linear-gradient(135deg, #2196f3 0%, #0d47a1 100%)"
+                  : "linear-gradient(135deg, #1565c0 0%, #0a2d6e 100%)",
+              border: "1.5px solid",
+              borderColor:
+                hoveredBtn === "yes"
+                  ? "rgba(100,180,255,0.6)"
+                  : "rgba(25,118,210,0.35)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              flexShrink: 0,
-              position: "relative",
+              transition: "all 0.35s cubic-bezier(0.34,1.56,0.64,1)",
+              transform: hoveredBtn === "yes" ? "scale(1.12)" : "scale(1)",
               animation:
-                hoveredBtn === "yes"
-                  ? `${iconBounce} 0.5s ease`
+                hoveredBtn !== "yes"
+                  ? `${softPulse} 3s ease-in-out infinite`
                   : "none",
+              boxShadow:
+                hoveredBtn === "yes"
+                  ? "0 8px 40px rgba(25,118,210,0.6)"
+                  : "0 4px 20px rgba(25,118,210,0.3)",
+              "&:active": { transform: "scale(0.94)" },
             }}
           >
-            <CheckCircle sx={{ fontSize: desktop ? 34 : 24 }} />
+            <Check
+              sx={{
+                fontSize: desktop ? 34 : 28,
+                color: "#ffffff",
+              }}
+            />
           </Box>
-          <Box
+          <Typography
             sx={{
-              textAlign: desktop ? "center" : "left",
-              position: "relative",
+              fontFamily: "'Outfit', sans-serif",
+              fontSize: desktop ? "1.2rem" : "0.82rem",
+              fontWeight: 700,
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              color: hoveredBtn === "yes" ? "#ffffff" : "rgba(255,255,255,0.7)",
+              transition: "color 0.3s",
             }}
           >
-            <Typography
-              sx={{
-                fontSize: desktop
-                  ? "clamp(1.2rem, 2.2vw, 1.75rem)"
-                  : "1.15rem",
-                fontWeight: 800,
-                lineHeight: 1.2,
-              }}
-            >
-              {loading === "yes" ? "Confirming..." : "Yes, I Have"}
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: desktop
-                  ? "clamp(0.75rem, 1.1vw, 0.9rem)"
-                  : "0.75rem",
-                opacity: 0.75,
-                fontWeight: 500,
-                mt: 0.3,
-              }}
-            >
-              I already attended the NAO
-            </Typography>
-          </Box>
+            {loading === "yes" ? "..." : "Yes"}
+          </Typography>
         </Box>
       </Box>
-
-      {/* ── Bottom hint ── */}
-      <Typography
-        sx={{
-          mt: desktop ? 4 : 2.5,
-          fontSize: "clamp(0.7rem, 1vw, 0.82rem)",
-          color: "text.disabled",
-          textAlign: "center",
-          zIndex: 1,
-          animation: `${fadeInUp} 0.65s ease-out 0.35s both`,
-        }}
-      >
-        Select one to continue
-      </Typography>
     </Box>
   );
 }

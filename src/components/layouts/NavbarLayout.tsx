@@ -14,26 +14,29 @@ export default function NavbarLayout({ children }: { children: ReactNode }) {
           alignItems: "center",
           px: desktop ? 5 : 1,
           py: 2,
+          mb: -14,
+          zIndex: 2,
+          position: "relative",
         }}
       >
         <Box>
           <img
-            src="/images/rentph-logo.png"
-            width={desktop ? 150 : 110}
+            src="/images/rentph-logo-white.png"
+            width={desktop ? 160 : 110}
             height="auto"
           />
         </Box>
         <Box>
           <img
-            src="/images/lr-logo.png"
-            width={desktop ? 120 : 90}
+            src="/images/lr-logo-white.png"
+            width={desktop ? 140 : 90}
             height="auto"
           />
         </Box>
         <Box>
           <img
-            src="/images/fh-logo.png"
-            width={desktop ? 220 : 130}
+            src="/images/fh-logo-white.png"
+            width={desktop ? 210 : 130}
             height="auto"
           />
         </Box>

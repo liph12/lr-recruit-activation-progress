@@ -9,7 +9,7 @@ export default function MainLayout() {
         sx={{
           minHeight: "100vh",
           width: "100%",
-          backgroundImage: "url('/images/lr-main-bg.png')",
+          // backgroundImage: "url('/images/lr-main-bg.png')",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
