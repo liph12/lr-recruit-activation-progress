@@ -32,8 +32,23 @@ const shimmerLine = keyframes`
   to   { width: 48px; opacity: 1; }
 `;
 
+// ── Mobile logo slider animations (reuse pattern from Welcome) ────────────
+const logoSlideIn = keyframes`
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+`;
+const logoSlideOut = keyframes`
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-30px); }
+`;
+const LOGOS = [
+  { src: "/images/rentph-logo-white.png", alt: "Rent.ph" },
+  { src: "/images/lr-logo-white.png", alt: "Leuterio Realty & Brokerage" },
+  { src: "/images/fh-logo-white.png", alt: "Filipino Homes" },
+];
+
 export default function WebinarConfirmationContacts() {
-  const { user } = useAppProvider();
+  const { user, desktop } = useAppProvider();
   const isDirect = user?.sponsor?.id === 17;
 
   const contactName = isDirect ? "Chijah Ilaida" : user?.sponsor?.name;
@@ -46,6 +61,8 @@ export default function WebinarConfirmationContacts() {
   // ── Toast state — show checkmark animation for 2.2s then reveal content ──
   const [showToast, setShowToast] = useState(true);
   const [contentVisible, setContentVisible] = useState(false);
+  const [logoIndex, setLogoIndex] = useState(0);
+  const [logoAnim, setLogoAnim] = useState<"in" | "out">("in");
 
   useEffect(() => {
     // Show toast for 4.5s so user can read, then fade out and reveal content
@@ -55,6 +72,18 @@ export default function WebinarConfirmationContacts() {
       clearTimeout(t1);
       clearTimeout(t2);
     };
+  }, []);
+
+  // rotate logos on mobile
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLogoAnim("out");
+      setTimeout(() => {
+        setLogoIndex((p) => (p + 1) % LOGOS.length);
+        setLogoAnim("in");
+      }, 420);
+    }, 2800);
+    return () => clearInterval(interval);
   }, []);
 
   // ── Live canvas background ───────────────────────────────────────────────
@@ -161,29 +190,78 @@ export default function WebinarConfirmationContacts() {
       sx={{
         minHeight: "100vh",
         display: "flex",
-        justifyContent: "center",
+        justifyContent: { xs: "flex-start", md: "center" },
         alignItems: "center",
         // responsive horizontal padding
         px: { xs: 2, sm: 4, md: 6 },
         // vertical padding ensures content never touches edges on short screens
-        py: { xs: 4, sm: 5, md: 4 },
-        pt: { xs: 4, sm: 20 },
+        py: { xs: 3, sm: 5, md: 4 },
+        pt: { xs: 7, sm: 12 },
         position: "relative",
         overflow: "hidden",
         background: "#071020",
         boxSizing: "border-box",
       }}
     >
+      {/* ── Sliding single-logo header (mobile-only) ── */}
+      <Box
+        sx={{
+          display: desktop ? "none" : "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          position: "absolute",
+          top: 12,
+          left: 0,
+          right: 0,
+          zIndex: 2,
+          width: "100%",
+          overflow: "hidden",
+          minHeight: 70,
+          pointerEvents: "none",
+        }}
+      >
+        <Box
+          component="img"
+          key={`logo-${logoIndex}`}
+          src={LOGOS[logoIndex].src}
+          alt={LOGOS[logoIndex].alt}
+          sx={{
+            height: 80,
+            maxWidth: 230,
+            width: "auto",
+            objectFit: "contain",
+            filter: "drop-shadow(0 2px 8px rgba(0,53,128,0.12))",
+            animation:
+              logoAnim === "in"
+                ? `${logoSlideIn} 0.5s cubic-bezier(0.22,1,0.36,1) both`
+                : `${logoSlideOut} 0.4s cubic-bezier(0.55,0,0.78,0) both`,
+          }}
+        />
+      </Box>
       {/* ── Live canvas background ── */}
       <canvas
         ref={canvasRef}
         style={{
           position: "absolute",
-          inset: 0,
+          inset: -1,
           width: "100%",
           height: "100%",
           zIndex: 0,
           pointerEvents: "none",
+        }}
+      />
+
+      {/* Subtle overlay to unify background tones on desktop */}
+      <Box
+        sx={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: "none",
+          background: `
+            radial-gradient(70% 90% at 15% 20%, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 60%),
+            linear-gradient(to top, rgba(0,10,30,0.25) 0%, rgba(0,10,30,0.05) 40%, transparent 70%)
+          `,
         }}
       />
 
@@ -358,9 +436,9 @@ export default function WebinarConfirmationContacts() {
             <Typography
               sx={{
                 fontSize: {
-                  xs: "clamp(1.6rem, 7vw, 2.1rem)",
-                  sm: "clamp(1.8rem, 5vw, 2.6rem)",
-                  md: "clamp(2rem, 4vw, 4.2rem)",
+                  xs: "clamp(2rem, 9vw, 2.8rem)",
+                  sm: "clamp(2.2rem, 6vw, 3rem)",
+                  md: "clamp(2.2rem, 4vw, 4.2rem)",
                 },
                 fontWeight: 900,
                 lineHeight: 1.1,
@@ -373,9 +451,9 @@ export default function WebinarConfirmationContacts() {
             <Typography
               sx={{
                 fontSize: {
-                  xs: "clamp(1.6rem, 7vw, 2.1rem)",
-                  sm: "clamp(1.8rem, 5vw, 2.6rem)",
-                  md: "clamp(2rem, 4vw, 4.2rem)",
+                  xs: "clamp(2rem, 9vw, 2.8rem)",
+                  sm: "clamp(2.2rem, 6vw, 3rem)",
+                  md: "clamp(2.2rem, 4vw, 4.2rem)",
                 },
                 fontWeight: 900,
                 lineHeight: 1.1,
@@ -413,7 +491,7 @@ export default function WebinarConfirmationContacts() {
               maxWidth: 500,
               mb: { xs: 3, sm: 4, md: 4.5 },
               lineHeight: 1.78,
-              fontSize: { xs: "0.85rem", sm: "0.92rem", md: "1.2rem" },
+              fontSize: { xs: "1rem", sm: "1.05rem", md: "1.2rem" },
               // center on mobile/tablet, left-align on desktop
               mx: { xs: "auto", md: 0 },
               animation: `${fadeInUp} 0.65s ease 0.16s both`,

@@ -35,6 +35,21 @@ const softPulse = keyframes`
   50%       { box-shadow: 0 12px 48px rgba(25,118,210,0.5); }
 `;
 
+// ── Mobile logo slider (match Welcome / other pages) ──────────────────────
+const logoSlideIn = keyframes`
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+`;
+const logoSlideOut = keyframes`
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-30px); }
+`;
+const LOGOS = [
+  { src: "/images/rentph-logo-white.png", alt: "Rent.ph" },
+  { src: "/images/lr-logo-white.png", alt: "Leuterio Realty & Brokerage" },
+  { src: "/images/fh-logo-white.png", alt: "Filipino Homes" },
+];
+
 const OUTFIT = "'Outfit', sans-serif";
 
 // Inject Outfit font from Google Fonts
@@ -481,6 +496,9 @@ function CropModal({ src, onCrop, onCancel }: CropModalProps) {
 // ── Main component ─────────────────────────────────────────────────────────
 export default function WebinarUploadAttendance() {
   const { desktop, setUserData, authToken, user } = useAppProvider();
+  // logo slider state
+  const [logoIndex, setLogoIndex] = useState(0);
+  const [logoAnim, setLogoAnim] = useState<"in" | "out">("in");
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [confirmation, setConfirmation] = useState<Confirmation>({
@@ -581,6 +599,18 @@ export default function WebinarUploadAttendance() {
       cancelAnimationFrame(animId);
       ro.disconnect();
     };
+  }, []);
+
+  // ── cycle logos on mobile ───────────────────────────────────────────────
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLogoAnim("out");
+      setTimeout(() => {
+        setLogoIndex((prev) => (prev + 1) % LOGOS.length);
+        setLogoAnim("in");
+      }, 420);
+    }, 2800);
+    return () => clearInterval(interval);
   }, []);
 
   const fireworkAnimation = () => {
@@ -700,23 +730,59 @@ export default function WebinarUploadAttendance() {
         sx={{
           minHeight: "100.5vh",
           display: "flex",
-          justifyContent: "center",
+          justifyContent: { xs: "flex-start", md: "center" },
           alignItems: "center",
           position: "relative",
           overflow: "hidden",
           background: "#071020",
           px: { xs: 2, sm: 4, md: 6 },
-          py: { xs: 4, sm: 5 },
+          py: { xs: 3, sm: 5 },
+          pt: { xs: 14, sm: 16 },
           boxSizing: "border-box",
           fontFamily: OUTFIT,
         }}
       >
         <style>{outfitFontStyle}</style>
+        {/* Sliding single-logo header (mobile-only) */}
+        <Box
+          sx={{
+            display: desktop ? "none" : "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "absolute",
+            top: 12,
+            left: 0,
+            right: 0,
+            zIndex: 2,
+            width: "100%",
+            overflow: "hidden",
+            minHeight: 70,
+            pointerEvents: "none",
+          }}
+        >
+          <Box
+            component="img"
+            key={`logo-${logoIndex}`}
+            src={LOGOS[logoIndex].src}
+            alt={LOGOS[logoIndex].alt}
+            sx={{
+              height: 80,
+              maxWidth: 230,
+              width: "auto",
+              objectFit: "contain",
+              filter: "drop-shadow(0 2px 8px rgba(0,53,128,0.12))",
+              animation:
+                logoAnim === "in"
+                  ? `${logoSlideIn} 0.5s cubic-bezier(0.22,1,0.36,1) both`
+                  : `${logoSlideOut} 0.4s cubic-bezier(0.55,0,0.78,0) both`,
+            }}
+          />
+        </Box>
         <canvas
           ref={canvasRef}
           style={{
             position: "absolute",
-            inset: 0,
+            inset: -1,
             width: "100%",
             height: "100%",
             zIndex: 0,
