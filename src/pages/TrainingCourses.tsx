@@ -602,11 +602,7 @@ export default function TrainingCourses() {
                 >
                   <Box
                     component={isLocked ? "div" : Link}
-                    to={
-                      isLocked
-                        ? undefined
-                        : `/welcome/get-started/training/${c.id}`
-                    }
+                    to={isLocked ? undefined : `/welcome/fire/training/${c.id}`}
                     onMouseEnter={() => !isLocked && setHoveredCard(k)}
                     onMouseLeave={() => setHoveredCard(null)}
                     sx={{
