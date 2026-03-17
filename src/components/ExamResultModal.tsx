@@ -80,10 +80,14 @@ export default function ExamResultModal({
   return (
     <Dialog
       open={open}
-      onClose={onClose}
+      onClose={(_event, reason) => {
+        if (reason === "backdropClick" || reason === "escapeKeyDown") return;
+        onClose();
+      }}
       fullWidth
       maxWidth="sm"
       scroll="body"
+      disableEscapeKeyDown
       PaperProps={{
         sx: {
           overflow: "hidden",
