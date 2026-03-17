@@ -68,14 +68,22 @@ export default function AccountDefault() {
         const takenCourses = response.data.data;
         const coursesHistory = takenCourses.map((c: any) => ({
           id: stepper.length + c.id,
-          title: "FIRE Module Examination",
+          title: "FIRE Exam Module",
           description: `Congratulations! You have passed Module ${c.id}: ${c.title} with a score of ${c.scores[0].score} out of 10`,
           completed: true,
           icon: <SchoolRounded sx={{ fontSize: 26 }} />,
         }));
 
         setHasCourses(takenCourses.length > 0);
-        setStepper((prev) => [...prev, ...coursesHistory]);
+        setStepper((prev) => {
+          const existingIds = new Set(prev.map((item) => item.id));
+
+          const newItems = coursesHistory.filter(
+            (item: any) => !existingIds.has(item.id)
+          );
+
+          return [...prev, ...newItems];
+        });
       } catch (e) {
         // to do
       }
@@ -203,8 +211,8 @@ export default function AccountDefault() {
             <Box
               sx={{
                 flexGrow: 1,
+                minHeight: 0,
                 p: { xs: 3, md: 6 },
-                // background: "rgba(255, 255, 255, 0.015)",
                 backdropFilter: "blur(30px)",
                 display: "flex",
                 flexDirection: "column",
@@ -227,7 +235,9 @@ export default function AccountDefault() {
                   display: "flex",
                   flexDirection: "column",
                   gap: 4,
-                  minHeight: 300,
+                  flex: 1,
+                  overflowY: "auto",
+                  pr: 1, // optional: space for scrollbar
                 }}
               >
                 {stepper
