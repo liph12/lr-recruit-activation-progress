@@ -589,10 +589,8 @@ export default function TrainingCourses() {
             alignItems="stretch"
           >
             {courses.map((c, k) => {
-              // Per request: do not lock any course
               const isLocked = false;
               const isDone = c.status === "done";
-              const isNext = c.status === "next";
               const isHovered = hoveredCard === k;
 
               return (
@@ -618,24 +616,16 @@ export default function TrainingCourses() {
                       borderRadius: "20px",
                       overflow: "hidden",
                       position: "relative",
-                      background: isDone
-                        ? "rgba(76,175,80,0.06)"
-                        : "rgba(255,255,255,0.05)",
+                      background: "rgba(255,255,255,0.05)",
                       border: "1px solid",
                       borderColor: isHovered
-                        ? isDone
-                          ? "rgba(76,175,80,0.5)"
-                          : "rgba(126,184,255,0.45)"
-                        : isDone
-                          ? "rgba(76,175,80,0.2)"
-                          : "rgba(255,255,255,0.09)",
+                        ? "rgba(126,184,255,0.45)"
+                        : "rgba(255,255,255,0.09)",
                       backdropFilter: "blur(16px)",
                       cursor: isLocked ? "default" : "pointer",
                       transform: isHovered ? "translateY(-5px)" : "none",
                       boxShadow: isHovered
-                        ? isDone
-                          ? "0 20px 50px rgba(76,175,80,0.15)"
-                          : "0 20px 50px rgba(25,118,210,0.18)"
+                        ? "0 20px 50px rgba(25,118,210,0.18)"
                         : "0 2px 16px rgba(0,0,0,0.15)",
                       transition: "all 0.3s cubic-bezier(0.34,1.56,0.64,1)",
                       textDecoration: "none",

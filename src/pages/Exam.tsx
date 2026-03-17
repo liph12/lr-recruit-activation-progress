@@ -8,8 +8,11 @@ import {
   EmojiEventsRounded,
 } from "@mui/icons-material";
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import type { Questionaire, ChoiceValue, Course } from "../types/course";
 import useExternalAxios from "../hooks/useExternalAxios";
+import ExamResultModal from "../components/ExamResultModal";
+import GlobalLoader from "../components/GlobalLoader";
 
 interface Answer {
   question: number;
@@ -532,6 +535,7 @@ type NavButtonsProps = {
   createResults: (results: Result[]) => void;
   onPrev: () => void;
   onNext: () => void;
+  onSubmittingChange?: (loading: boolean) => void;
 };
 
 function NavButtons({
@@ -542,6 +546,7 @@ function NavButtons({
   createResults,
   onPrev,
   onNext,
+  onSubmittingChange,
 }: NavButtonsProps) {
   const [loading, setLoading] = useState(false);
   const axios = useExternalAxios();
@@ -550,6 +555,7 @@ function NavButtons({
   const handleSubmitAsync = async () => {
     try {
       setLoading(true);
+      onSubmittingChange?.(true);
       const payLoad = {
         course_id: courseId,
         answers: answers,
@@ -569,6 +575,7 @@ function NavButtons({
       // to do
     } finally {
       setLoading(false);
+      onSubmittingChange?.(false);
     }
   };
 
@@ -745,6 +752,9 @@ export default function Exam({
   const [animKey, setAnimKey] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [results, setResults] = useState<Result[]>([]);
+  const [showResultModal, setShowResultModal] = useState(false);
+  const navigateRouter = useNavigate();
+  const [submitting, setSubmitting] = useState(false);
 
   const total = exam.length;
   const isLast = step === total - 1;
@@ -841,8 +851,7 @@ export default function Exam({
 
   useEffect(() => {
     if (results.length === 0) return;
-
-    console.log(results);
+    setShowResultModal(true);
   }, [results]);
 
   const handleSelect = (
@@ -869,6 +878,20 @@ export default function Exam({
     setDirection(nextStep > step ? "forward" : "back");
     setAnimKey((k) => k + 1);
     setStep(nextStep);
+  };
+
+  const handleRetake = () => {
+    setSelected({});
+    setAnswers([]);
+    setResults([]);
+    setShowResultModal(false);
+    setStep(0);
+  };
+
+  const handleNextModule = () => {
+    const path = window.location.pathname;
+    const nextPath = path.replace(/(\d+)(\/?$)/, (_m, d, rest) => `${Number(d) + 1}${rest || ""}`);
+    navigateRouter(nextPath);
   };
 
   return (
@@ -962,10 +985,24 @@ export default function Exam({
               createResults={createResults}
               onPrev={() => navigate(Math.max(step - 1, 0))}
               onNext={() => navigate(Math.min(step + 1, total - 1))}
+              onSubmittingChange={setSubmitting}
             />
           </Box>
         </Box>
       </Box>
+
+      {/* Result Modal */}
+      <ExamResultModal
+        open={showResultModal}
+        total={total}
+        results={results}
+        onClose={() => setShowResultModal(false)}
+        onRetake={handleRetake}
+        onNextModule={handleNextModule}
+      />
+
+      {/* Global submit loader */}
+      <GlobalLoader open={submitting} title="submitting exam" />
     </Box>
   );
 }
