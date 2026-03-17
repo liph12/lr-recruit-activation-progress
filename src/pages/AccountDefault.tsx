@@ -7,6 +7,7 @@ import {
   Container,
   Chip,
   keyframes,
+  CircularProgress,
 } from "@mui/material";
 import {
   VerifiedRounded,
@@ -32,6 +33,7 @@ export default function AccountDefault() {
   const { user } = useAppProvider();
   const axios = useExternalAxios();
   const [hasCourses, setHasCourses] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [stepper, setStepper] = useState([
     {
       id: 0,
@@ -62,6 +64,7 @@ export default function AccountDefault() {
   useEffect(() => {
     const getFireProgressAsync = async () => {
       try {
+        setLoading(true);
         const response = await axios.get(
           `/integration/agent/taken-courses?email=${user?.email}`
         );
@@ -86,6 +89,8 @@ export default function AccountDefault() {
         });
       } catch (e) {
         // to do
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -240,108 +245,123 @@ export default function AccountDefault() {
                   pr: 1, // optional: space for scrollbar
                 }}
               >
-                {stepper
-                  .filter((s) => hasCourses && s.id !== 2)
-                  .map((item, idx) => (
-                    <Box
-                      key={item.id}
-                      sx={{ display: "flex", gap: 3, position: "relative" }}
-                    >
-                      {/* Progress Connecting Line */}
-                      {idx !== stepper.length - 1 && (
+                {loading ? (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: "100%",
+                    }}
+                  >
+                    <CircularProgress size={45} />
+                  </Box>
+                ) : (
+                  <>
+                    {stepper
+                      .filter((s) => hasCourses && s.id !== 2)
+                      .map((item, idx) => (
                         <Box
-                          sx={{
-                            position: "absolute",
-                            left: 26,
-                            top: 55,
-                            bottom: -32,
-                            width: 2,
-                            background: item.completed
-                              ? "#1e88e5"
-                              : "rgba(255,255,255,0.1)",
-                            zIndex: 0,
-                          }}
-                        />
-                      )}
-
-                      <Box
-                        sx={{
-                          zIndex: 1,
-                          width: 50,
-                          height: 50,
-                          borderRadius: "50%",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          bgcolor: item.completed
-                            ? "rgba(30,136,229,0.2)"
-                            : "rgba(255,255,255,0.05)",
-                          border: "2px solid",
-                          borderColor: item.completed
-                            ? "#1e88e5"
-                            : "rgba(255,255,255,0.1)",
-                          color: item.completed
-                            ? "#7eb8ff"
-                            : "rgba(255,255,255,0.3)",
-                        }}
-                      >
-                        {item.icon}
-                      </Box>
-
-                      <Box
-                        sx={{
-                          flex: 1,
-                          p: 3,
-                          borderRadius: "20px",
-                          background: item.completed
-                            ? "rgba(30,136,229,0.04)"
-                            : "transparent",
-                          border: "1px solid",
-                          borderColor: item.completed
-                            ? "rgba(30,136,229,0.15)"
-                            : "rgba(255,255,255,0.03)",
-                        }}
-                      >
-                        <Typography
-                          sx={{
-                            fontWeight: 700,
-                            color: item.completed
-                              ? "#fff"
-                              : "rgba(255,255,255,0.3)",
-                            fontSize: "1.2rem",
-                            mb: 0.5,
-                          }}
+                          key={item.id}
+                          sx={{ display: "flex", gap: 3, position: "relative" }}
                         >
-                          {item.title}
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "rgba(255,255,255,0.4)",
-                            fontWeight: 400,
-                            lineHeight: 1.6,
-                          }}
-                        >
-                          {item.description}
-                        </Typography>
-                        {!item.completed && (
+                          {/* Progress Connecting Line */}
+                          {idx !== stepper.length - 1 && (
+                            <Box
+                              sx={{
+                                position: "absolute",
+                                left: 26,
+                                top: 55,
+                                bottom: -32,
+                                width: 2,
+                                background: item.completed
+                                  ? "#1e88e5"
+                                  : "rgba(255,255,255,0.1)",
+                                zIndex: 0,
+                              }}
+                            />
+                          )}
+
                           <Box
                             sx={{
-                              mt: 2,
+                              zIndex: 1,
+                              width: 50,
+                              height: 50,
+                              borderRadius: "50%",
                               display: "flex",
                               alignItems: "center",
-                              gap: 1,
-                              color: "#1e88e5",
-                              cursor: "pointer",
-                              fontWeight: 700,
+                              justifyContent: "center",
+                              bgcolor: item.completed
+                                ? "rgba(30,136,229,0.2)"
+                                : "rgba(255,255,255,0.05)",
+                              border: "2px solid",
+                              borderColor: item.completed
+                                ? "#1e88e5"
+                                : "rgba(255,255,255,0.1)",
+                              color: item.completed
+                                ? "#7eb8ff"
+                                : "rgba(255,255,255,0.3)",
                             }}
                           >
-                            PROCEED NOW{" "}
-                            <ArrowForwardRounded sx={{ fontSize: 18 }} />
+                            {item.icon}
                           </Box>
-                        )}
-                      </Box>
-                    </Box>
-                  ))}
+
+                          <Box
+                            sx={{
+                              flex: 1,
+                              p: 3,
+                              borderRadius: "20px",
+                              background: item.completed
+                                ? "rgba(30,136,229,0.04)"
+                                : "transparent",
+                              border: "1px solid",
+                              borderColor: item.completed
+                                ? "rgba(30,136,229,0.15)"
+                                : "rgba(255,255,255,0.03)",
+                            }}
+                          >
+                            <Typography
+                              sx={{
+                                fontWeight: 700,
+                                color: item.completed
+                                  ? "#fff"
+                                  : "rgba(255,255,255,0.3)",
+                                fontSize: "1.2rem",
+                                mb: 0.5,
+                              }}
+                            >
+                              {item.title}
+                            </Typography>
+                            <Typography
+                              sx={{
+                                color: "rgba(255,255,255,0.4)",
+                                fontWeight: 400,
+                                lineHeight: 1.6,
+                              }}
+                            >
+                              {item.description}
+                            </Typography>
+                            {!item.completed && (
+                              <Box
+                                sx={{
+                                  mt: 2,
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: 1,
+                                  color: "#1e88e5",
+                                  cursor: "pointer",
+                                  fontWeight: 700,
+                                }}
+                              >
+                                PROCEED NOW{" "}
+                                <ArrowForwardRounded sx={{ fontSize: 18 }} />
+                              </Box>
+                            )}
+                          </Box>
+                        </Box>
+                      ))}
+                  </>
+                )}
               </Box>
             </Box>
           </Grid>
