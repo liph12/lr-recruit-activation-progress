@@ -69,7 +69,10 @@ export default function Course() {
         console.error("Failed to fetch exam:", error);
       }
     };
-    fetchExam();
+
+    if (user) {
+      fetchExam();
+    }
   }, [axios, course_id, user?.email]);
 
   // ── Live canvas background ─────────────────────────────────────────────

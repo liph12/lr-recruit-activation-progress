@@ -13,6 +13,7 @@ import type { Questionaire, ChoiceValue, Course } from "../types/course";
 import useExternalAxios from "../hooks/useExternalAxios";
 import ExamResultModal from "../components/ExamResultModal";
 import GlobalLoader from "../components/GlobalLoader";
+import { useAppProvider } from "../providers/AppProvider";
 
 interface Answer {
   question: number;
@@ -551,6 +552,7 @@ function NavButtons({
   const [loading, setLoading] = useState(false);
   const axios = useExternalAxios();
   const completed = answers.length === 10;
+  const { user } = useAppProvider();
 
   const handleSubmitAsync = async () => {
     try {
@@ -559,6 +561,7 @@ function NavButtons({
       const payLoad = {
         course_id: courseId,
         answers: answers,
+        email: user?.email,
       };
       const response = await axios.post(
         "/integration/agent/store-exam-answers",
@@ -890,7 +893,10 @@ export default function Exam({
 
   const handleNextModule = () => {
     const path = window.location.pathname;
-    const nextPath = path.replace(/(\d+)(\/?$)/, (_m, d, rest) => `${Number(d) + 1}${rest || ""}`);
+    const nextPath = path.replace(
+      /(\d+)(\/?$)/,
+      (_m, d, rest) => `${Number(d) + 1}${rest || ""}`
+    );
     navigateRouter(nextPath);
   };
 
