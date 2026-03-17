@@ -170,7 +170,8 @@ export default function AccountDefault() {
                     fontWeight: 700,
                   }}
                 >
-                  START TRAINING <RocketLaunchRounded sx={{ ml: 1.5 }} />
+                  Get Started with FIRE
+                  <RocketLaunchRounded sx={{ ml: 1.5 }} />
                 </StyledButton>
               </Link>
             </Box>
@@ -182,7 +183,7 @@ export default function AccountDefault() {
               sx={{
                 flexGrow: 1,
                 p: { xs: 3, md: 6 },
-                background: "rgba(255, 255, 255, 0.015)",
+                // background: "rgba(255, 255, 255, 0.015)",
                 backdropFilter: "blur(30px)",
                 display: "flex",
                 flexDirection: "column",
@@ -211,9 +212,9 @@ export default function AccountDefault() {
                       <Box
                         sx={{
                           position: "absolute",
-                          left: 24,
+                          left: 26,
                           top: 55,
-                          bottom: -40,
+                          bottom: -32,
                           width: 2,
                           background: item.completed
                             ? "#1e88e5"
