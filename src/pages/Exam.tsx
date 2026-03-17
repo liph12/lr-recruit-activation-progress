@@ -9,24 +9,18 @@ import {
 } from "@mui/icons-material";
 import { useState, useRef, useEffect } from "react";
 import type { Questionaire, ChoiceValue, Course } from "../types/course";
-import examData from "../../exam.json";
+import useExternalAxios from "../hooks/useExternalAxios";
 
-const course: Course = {
-  ...examData.course,
-  status: "pending",
-  learning_descriptions: examData.course.learning_descriptions,
-};
+interface Answer {
+  question: number;
+  answer: ChoiceValue;
+}
 
-const questions: Questionaire[] = examData.exam.map((item) => ({
-  id: item.id,
-  question: item.question,
-  answer: item.answer as ChoiceValue,
-  choices: item.choices.map((c) => ({
-    id: c.id,
-    description: c.choiceDesc,
-    value: c.choice as ChoiceValue,
-  })),
-}));
+interface Result {
+  question: number;
+  answer: ChoiceValue;
+  correct: boolean;
+}
 
 const OUTFIT = "'Outfit', sans-serif";
 
@@ -108,29 +102,8 @@ const examStyles = `
   }
 `;
 
-// ─── Canvas background ────────────────────────────────────────────────────────
-function CanvasBackground({
-  canvasRef,
-}: {
-  canvasRef: React.RefObject<HTMLCanvasElement>;
-}) {
-  return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        position: "fixed",
-        inset: 0,
-        width: "100%",
-        height: "100%",
-        zIndex: 0,
-        pointerEvents: "none",
-      }}
-    />
-  );
-}
-
 // ─── Header ───────────────────────────────────────────────────────────────────
-function CourseHeader() {
+function CourseHeader({ course }: { course: Course }) {
   return (
     <Box
       sx={{
@@ -297,6 +270,7 @@ type StepIndicatorProps = {
   answeredCount: number;
   selected: Record<number, ChoiceValue>;
   onJump: (i: number) => void;
+  exam: Questionaire[];
 };
 
 function StepIndicator({
@@ -305,6 +279,7 @@ function StepIndicator({
   answeredCount,
   selected,
   onJump,
+  exam,
 }: StepIndicatorProps) {
   return (
     <Box sx={{ mb: 3 }}>
@@ -340,7 +315,11 @@ function StepIndicator({
               answeredCount === total
                 ? "rgba(76,175,80,0.12)"
                 : "rgba(25,118,210,0.1)",
-            border: `1px solid ${answeredCount === total ? "rgba(76,175,80,0.3)" : "rgba(25,118,210,0.25)"}`,
+            border: `1px solid ${
+              answeredCount === total
+                ? "rgba(76,175,80,0.3)"
+                : "rgba(25,118,210,0.25)"
+            }`,
           }}
         >
           {answeredCount === total ? (
@@ -363,7 +342,7 @@ function StepIndicator({
 
       {/* Segment dots */}
       <Box sx={{ display: "flex", gap: "3px" }}>
-        {questions.map((q, i) => {
+        {exam.map((q, i) => {
           const isCurrent = i === step;
           const isAnswered = !!selected[q.id];
           return (
@@ -379,8 +358,8 @@ function StepIndicator({
                 background: isCurrent
                   ? "linear-gradient(90deg,#1e88e5,#7eb8ff)"
                   : isAnswered
-                    ? "#4caf50"
-                    : "rgba(255,255,255,0.1)",
+                  ? "#4caf50"
+                  : "rgba(255,255,255,0.1)",
                 boxShadow: isCurrent ? "0 0 8px rgba(30,136,229,0.6)" : "none",
                 alignSelf: "center",
               }}
@@ -397,7 +376,11 @@ type QuestionCardProps = {
   q: Questionaire;
   selectedValue: ChoiceValue | undefined;
   direction: "forward" | "back";
-  onSelect: (questionId: number, value: ChoiceValue) => void;
+  onSelect: (
+    questionId: number,
+    questionNo: number,
+    value: ChoiceValue
+  ) => void;
 };
 
 function QuestionCard({
@@ -444,7 +427,7 @@ function QuestionCard({
             />
           ) : (
             part
-          ),
+          )
         )}
       </Typography>
 
@@ -455,7 +438,7 @@ function QuestionCard({
           return (
             <Box
               key={choice.id}
-              onClick={() => onSelect(q.id, choice.value)}
+              onClick={() => onSelect(q.id, q.question_number, choice.value)}
               className={`exam-choice-row${isSelected ? " selected" : ""}`}
             >
               {/* Checkbox */}
@@ -544,11 +527,51 @@ function QuestionCard({
 type NavButtonsProps = {
   step: number;
   isLast: boolean;
+  answers: Answer[];
+  courseId: number;
+  createResults: (results: Result[]) => void;
   onPrev: () => void;
   onNext: () => void;
 };
 
-function NavButtons({ step, isLast, onPrev, onNext }: NavButtonsProps) {
+function NavButtons({
+  step,
+  isLast,
+  answers,
+  courseId,
+  createResults,
+  onPrev,
+  onNext,
+}: NavButtonsProps) {
+  const [loading, setLoading] = useState(false);
+  const axios = useExternalAxios();
+  const completed = answers.length === 10;
+
+  const handleSubmitAsync = async () => {
+    try {
+      setLoading(true);
+      const payLoad = {
+        course_id: courseId,
+        answers: answers,
+      };
+      const response = await axios.post(
+        "/integration/agent/store-exam-answers",
+        payLoad,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      createResults(response.data.results);
+    } catch (e) {
+      // to do
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -603,6 +626,7 @@ function NavButtons({ step, isLast, onPrev, onNext }: NavButtonsProps) {
       {/* Next / Submit */}
       {isLast ? (
         <Box
+          onClick={handleSubmitAsync}
           sx={{
             display: "inline-flex",
             alignItems: "center",
@@ -610,17 +634,32 @@ function NavButtons({ step, isLast, onPrev, onNext }: NavButtonsProps) {
             px: 2.8,
             py: 1.1,
             borderRadius: "10px",
-            cursor: "pointer",
+            cursor: completed ? "pointer" : "not-allowed",
             userSelect: "none",
-            background: "linear-gradient(135deg,#c9a84c,#a0782e)",
+            pointerEvents: completed && !loading ? "auto" : "none",
+
+            background: completed
+              ? "linear-gradient(135deg,#c9a84c,#a0782e)"
+              : "linear-gradient(135deg,#888,#666)",
+
             border: "1px solid rgba(240,217,138,0.35)",
-            boxShadow: "0 4px 20px rgba(201,168,76,0.35)",
-            animation: "exam-soft-pulse 3s ease-in-out infinite",
+
+            boxShadow: completed ? "0 4px 20px rgba(201,168,76,0.35)" : "none",
+
+            animation: completed
+              ? "exam-soft-pulse 3s ease-in-out infinite"
+              : "none",
+
+            opacity: completed ? 1 : 0.6,
+
             transition: "all 0.25s ease",
-            "&:hover": {
-              transform: "translateY(-2px)",
-              boxShadow: "0 10px 36px rgba(201,168,76,0.5)",
-            },
+
+            "&:hover": completed
+              ? {
+                  transform: "translateY(-2px)",
+                  boxShadow: "0 10px 36px rgba(201,168,76,0.5)",
+                }
+              : {},
           }}
         >
           <EmojiEventsRounded sx={{ fontSize: 17, color: "#ffffff" }} />
@@ -634,7 +673,11 @@ function NavButtons({ step, isLast, onPrev, onNext }: NavButtonsProps) {
               fontFamily: OUTFIT,
             }}
           >
-            Submit Exam
+            {loading
+              ? "Submitting..."
+              : completed
+              ? "Submit Exam"
+              : "Complete All Questions"}
           </Typography>
         </Box>
       ) : (
@@ -688,16 +731,25 @@ function NavButtons({ step, isLast, onPrev, onNext }: NavButtonsProps) {
   );
 }
 
-// ─── Main ────────────────────────────────────────────────────────────────────
-export default function Exam() {
+export default function Exam({
+  exam,
+  course,
+}: {
+  exam: Questionaire[];
+  course: Course;
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [selected, setSelected] = useState<Record<number, ChoiceValue>>({});
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
   const [animKey, setAnimKey] = useState(0);
+  const [answers, setAnswers] = useState<Answer[]>([]);
+  const [results, setResults] = useState<Result[]>([]);
 
-  const total = questions.length;
+  const total = exam.length;
   const isLast = step === total - 1;
+
+  const createResults = (results: Result[]) => setResults(results);
 
   // Live canvas background
   useEffect(() => {
@@ -787,8 +839,31 @@ export default function Exam() {
     };
   }, []);
 
-  const handleSelect = (questionId: number, value: ChoiceValue) =>
+  useEffect(() => {
+    if (results.length === 0) return;
+
+    console.log(results);
+  }, [results]);
+
+  const handleSelect = (
+    questionId: number,
+    questionNo: number,
+    value: ChoiceValue
+  ) => {
+    setAnswers((prev) => {
+      const exists = prev.find((a) => a.question === questionNo);
+
+      if (exists) {
+        return prev.map((a) =>
+          a.question === questionNo ? { ...a, answer: value } : a
+        );
+      }
+
+      return [...prev, { question: questionNo, answer: value }];
+    });
+
     setSelected((prev) => ({ ...prev, [questionId]: value }));
+  };
 
   const navigate = (nextStep: number) => {
     setDirection(nextStep > step ? "forward" : "back");
@@ -845,7 +920,7 @@ export default function Exam() {
             justifyContent: "center",
           }}
         >
-          <CourseHeader />
+          <CourseHeader course={course} />
         </Box>
 
         {/* ── RIGHT: Questions ── */}
@@ -867,13 +942,14 @@ export default function Exam() {
                 answeredCount={Object.keys(selected).length}
                 selected={selected}
                 onJump={navigate}
+                exam={exam}
               />
             </Box>
 
             <QuestionCard
               key={animKey}
-              q={questions[step]}
-              selectedValue={selected[questions[step].id]}
+              q={exam[step]}
+              selectedValue={selected[exam[step].id]}
               direction={direction}
               onSelect={handleSelect}
             />
@@ -881,6 +957,9 @@ export default function Exam() {
             <NavButtons
               step={step}
               isLast={isLast}
+              answers={answers}
+              courseId={course.id}
+              createResults={createResults}
               onPrev={() => navigate(Math.max(step - 1, 0))}
               onNext={() => navigate(Math.min(step + 1, total - 1))}
             />

@@ -3,12 +3,12 @@ import Grid from "@mui/material/Grid";
 import { useAppProvider } from "../providers/AppProvider";
 import useExternalAxios from "../hooks/useExternalAxios";
 import { useEffect, useState, useRef } from "react";
-import type { Course, Questionaire } from "../types/course";
-import { useOutletContext } from "react-router-dom";
+import type { Course, Questionaire, ChoiceValue } from "../types/course";
 import PageLoader from "../components/PageLoader";
 import { CheckCircleRounded, PlayArrowRounded } from "@mui/icons-material";
 import TrainingCourse from "./TrainingCourse";
 import { keyframes } from "@mui/material";
+import { useParams } from "react-router-dom";
 
 const fadeInUp = keyframes`
   from { opacity: 0; transform: translateY(22px); }
@@ -32,7 +32,7 @@ const OUTFIT = "'Outfit', sans-serif";
 type OutletContextProps = { course_id: string };
 
 export default function Course() {
-  const { course_id } = useOutletContext<OutletContextProps>();
+  const { course_id } = useParams<OutletContextProps>();
   const axios = useExternalAxios();
   const { user } = useAppProvider();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -47,11 +47,24 @@ export default function Course() {
     const fetchExam = async () => {
       try {
         const response = await axios.get(
-          `/integration/agent/course-exam?id=${course_id}&email=${user?.email}`,
+          `/integration/agent/course-exam?id=${course_id}&email=${user?.email}`
         );
         const { exam, course } = response.data;
         setCourse(course);
-        setExam(exam);
+
+        const questions: Questionaire[] = exam.map((item: any) => ({
+          id: item.id,
+          question: item.question,
+          question_number: item.questionNo,
+          answer: item.answer as ChoiceValue,
+          choices: item.choices.map((c: any) => ({
+            id: c.id,
+            description: c.choiceDesc,
+            value: c.choice as ChoiceValue,
+          })),
+        }));
+
+        setExam(questions);
       } catch (error) {
         console.error("Failed to fetch exam:", error);
       }
@@ -147,12 +160,18 @@ export default function Course() {
     };
   }, []);
 
+  useEffect(() => {
+    if (course_id) {
+      setCourse(null);
+    }
+  }, [course_id]);
+
   if (!course) return <PageLoader title="getting module ready" />;
 
   return (
     <>
       {isTaking ? (
-        <TrainingCourse course={course} takeCourse={takeCourse} />
+        <TrainingCourse course={course} exam={exam} />
       ) : (
         <Box
           sx={{
@@ -163,7 +182,6 @@ export default function Course() {
           }}
         >
           <style>{`@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap'); * { font-family: 'Outfit', sans-serif !important; }`}</style>
-
           <canvas
             ref={canvasRef}
             style={{
@@ -175,7 +193,6 @@ export default function Course() {
               pointerEvents: "none",
             }}
           />
-
           <Box
             sx={{
               position: "relative",

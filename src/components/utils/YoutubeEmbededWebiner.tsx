@@ -29,7 +29,7 @@ export default function YoutubeEmbedWebinar() {
           headers: {
             "Content-Type": "application/json",
           },
-        },
+        }
       );
 
       const { data } = response.data;
@@ -57,7 +57,7 @@ export default function YoutubeEmbedWebinar() {
       setMaxWatchedPercent(
         savedPercent > user?.webinar_progress
           ? savedPercent
-          : user?.webinar_progress,
+          : user?.webinar_progress
       );
     }
 
@@ -256,7 +256,7 @@ export default function YoutubeEmbedWebinar() {
             top: 5,
             left: 0,
             width: "100%",
-            height: "95%",
+            height: "100%",
             border: 0,
           }}
         />

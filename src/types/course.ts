@@ -35,7 +35,7 @@ export interface Choice {
 
 export interface Questionaire {
   id: number;
+  question_number: number;
   question: string;
-  answer: ChoiceValue;
   choices: Choice[];
 }

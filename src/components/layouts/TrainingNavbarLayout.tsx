@@ -1,14 +1,10 @@
 import { Box, Container } from "@mui/material";
 import { useAppProvider } from "../../providers/AppProvider";
-import type { ReactNode } from "react";
 import { ArrowBackRounded } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
-export default function TrainingNavbarLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export default function TrainingNavbarLayout() {
   const navigate = useNavigate();
   const { desktop } = useAppProvider();
 
@@ -112,7 +108,9 @@ export default function TrainingNavbarLayout({
       </Box>
 
       {/* Offset content below fixed navbar */}
-      <Box sx={{ pt: desktop ? "68px" : "58px" }}>{children}</Box>
+      <Box sx={{ pt: desktop ? "68px" : "58px" }}>
+        <Outlet />
+      </Box>
     </>
   );
 }

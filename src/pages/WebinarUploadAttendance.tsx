@@ -229,7 +229,7 @@ function CropModal({ src, onCrop, onCancel }: CropModalProps) {
         onCrop(file, preview);
       },
       "image/jpeg",
-      0.92,
+      0.92
     );
   };
 
@@ -661,7 +661,7 @@ export default function WebinarUploadAttendance() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const key = e.target.name;
     setConfirmation((prev) => ({ ...prev, [key]: e.target.value }));
@@ -737,7 +737,7 @@ export default function WebinarUploadAttendance() {
           background: "#071020",
           px: { xs: 2, sm: 4, md: 6 },
           py: { xs: 3, sm: 5 },
-          pt: { xs: 14, sm: 16 },
+          pt: { xs: 14, sm: 0 },
           boxSizing: "border-box",
           fontFamily: OUTFIT,
         }}
@@ -1072,14 +1072,14 @@ export default function WebinarUploadAttendance() {
                     background: confirmed
                       ? "linear-gradient(135deg,rgba(76,175,80,0.25) 0%,rgba(46,125,50,0.2) 100%)"
                       : isReady
-                        ? "linear-gradient(135deg,#1e88e5 0%,#0d47a1 100%)"
-                        : "rgba(255,255,255,0.05)",
+                      ? "linear-gradient(135deg,#1e88e5 0%,#0d47a1 100%)"
+                      : "rgba(255,255,255,0.05)",
                     border: "1px solid",
                     borderColor: confirmed
                       ? "rgba(76,175,80,0.45)"
                       : isReady
-                        ? "rgba(100,180,255,0.35)"
-                        : "rgba(255,255,255,0.08)",
+                      ? "rgba(100,180,255,0.35)"
+                      : "rgba(255,255,255,0.08)",
                     opacity: !isReady && !confirmed ? 0.6 : 1,
                     transition: "all 0.35s cubic-bezier(0.34,1.56,0.64,1)",
                     animation:
@@ -1136,8 +1136,8 @@ export default function WebinarUploadAttendance() {
                     {confirming
                       ? "Uploading…"
                       : confirmed
-                        ? "Upload Successful"
-                        : "Submit Attendance"}
+                      ? "Upload Successful"
+                      : "Submit Attendance"}
                   </Typography>
                 </Box>
               </Box>
@@ -1174,13 +1174,13 @@ export default function WebinarUploadAttendance() {
                   borderColor: dragOver
                     ? "rgba(126,184,255,0.7)"
                     : confirmation.photo
-                      ? "rgba(76,175,80,0.45)"
-                      : "rgba(255,255,255,0.14)",
+                    ? "rgba(76,175,80,0.45)"
+                    : "rgba(255,255,255,0.14)",
                   background: dragOver
                     ? "rgba(126,184,255,0.06)"
                     : confirmation.photo
-                      ? "transparent"
-                      : "rgba(255,255,255,0.03)",
+                    ? "transparent"
+                    : "rgba(255,255,255,0.03)",
                   backdropFilter: "blur(8px)",
                   cursor: "pointer",
                   position: "relative",
@@ -1233,7 +1233,7 @@ export default function WebinarUploadAttendance() {
                             e.preventDefault();
                             if (pendingFile)
                               openCropper(
-                                URL.createObjectURL(pendingFile) as any,
+                                URL.createObjectURL(pendingFile) as any
                               );
                           }}
                           sx={{

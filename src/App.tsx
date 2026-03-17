@@ -3,18 +3,20 @@ import MainLayout from "./components/layouts/MainLayout";
 import Welcome from "./pages/Welcome";
 import GetStarted from "./pages/GetStarted";
 import Training from "./pages/Training";
-import Exam from "./pages/Exam";
+import TrainingCourses from "./pages/TrainingCourses";
+import TrainingNavbarLayout from "./components/layouts/TrainingNavbarLayout";
 
 function App() {
   return (
     <Routes>
       <Route path="welcome" element={<MainLayout />}>
         <Route index element={<Welcome />} />
-        <Route path="get-started" element={<GetStarted />}>
+        <Route path="get-started" element={<GetStarted />} />
+        <Route path="fire" element={<TrainingNavbarLayout />}>
+          <Route index element={<TrainingCourses />} />
           <Route path="training/:course_id" element={<Training />} />
         </Route>
       </Route>
-      <Route path="exam" element={<Exam />} />
     </Routes>
   );
 }

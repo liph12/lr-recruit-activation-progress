@@ -10,6 +10,9 @@ import {
 } from "@mui/icons-material";
 import PresentationPDF from "../components/PresentationPDF";
 import { keyframes } from "@mui/material";
+import type { Questionaire } from "../types/course";
+import { useNavigate } from "react-router-dom";
+import Exam from "./Exam";
 
 const fadeInUp = keyframes`
   from { opacity: 0; transform: translateY(16px); }
@@ -71,13 +74,15 @@ const pdfStyles = `
 
 interface CourseProps {
   course: Course;
-  takeCourse: () => void;
+  exam: Questionaire[];
 }
 
-export default function TrainingCourse({ course, takeCourse }: CourseProps) {
+export default function TrainingCourse({ course, exam }: CourseProps) {
   const { desktop } = useAppProvider();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isVideo, setIsVideo] = useState(true);
+  const [takingExam, setTakingExam] = useState(false);
+  const navigate = useNavigate();
 
   const NAVBAR_HEIGHT = desktop ? 68 : 58;
 
@@ -85,8 +90,15 @@ export default function TrainingCourse({ course, takeCourse }: CourseProps) {
     .replace(/width="\d+px"/i, 'width="100%"')
     .replace(/height="\d+px"/i, 'height="100%"')
     // Ensure fullscreen is permitted on the embedded video
-    .replace(/<iframe(?![^>]*allowfullscreen)/i,
-      '<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowfullscreen');
+    .replace(
+      /<iframe(?![^>]*allowfullscreen)/i,
+      '<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowfullscreen'
+    );
+
+  const takeExam = () => setTakingExam((prev) => !prev);
+
+  const handleNextCourse = () =>
+    navigate(`/welcome/fire/training/${course.id + 1}`);
 
   // ── Live canvas background ─────────────────────────────────────────────
   useEffect(() => {
@@ -177,305 +189,315 @@ export default function TrainingCourse({ course, takeCourse }: CourseProps) {
   }, []);
 
   return (
-    <Box
-      sx={{
-        position: "relative",
-        height: `calc(100vh - ${NAVBAR_HEIGHT}px)`,
-        overflow: "hidden",
-        background: "#071020",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <style>{pdfStyles}</style>
-
-      {/* Canvas background */}
-      <canvas
-        ref={canvasRef}
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          zIndex: 0,
-          pointerEvents: "none",
-        }}
-      />
-
-      <Box
-        sx={{
-          position: "relative",
-          zIndex: 1,
-          flex: 1,
-          display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-          px: { xs: 2, sm: 3, md: 4 },
-          pt: { xs: 3, md: 5 },
-          pb: { xs: 1.5, md: 2 },
-          gap: { xs: 2, md: 4 },
-          overflow: "hidden",
-        }}
-      >
-        {/* ── LEFT: Title + tabs + CTA ── */}
+    <>
+      {takingExam ? (
+        <Exam exam={exam} course={course} />
+      ) : (
         <Box
           sx={{
+            position: "relative",
+            height: `calc(100vh - ${NAVBAR_HEIGHT}px)`,
+            overflow: "hidden",
+            background: "#071020",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
-            flexShrink: 0,
-            width: { xs: "100%", md: "32%" },
-            gap: { xs: 2, md: 2.5 },
-            animation: `${fadeInUp} 0.5s ease both`,
           }}
         >
-          {/* Module pill */}
+          <style>{pdfStyles}</style>
+
+          {/* Canvas background */}
+          <canvas
+            ref={canvasRef}
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              zIndex: 0,
+              pointerEvents: "none",
+            }}
+          />
+
           <Box
             sx={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 0.8,
-              px: 1.4,
-              py: 0.4,
-              borderRadius: "100px",
-              border: "1px solid rgba(25,118,210,0.35)",
-              background: "rgba(25,118,210,0.09)",
-              alignSelf: "flex-start",
+              position: "relative",
+              zIndex: 1,
+              flex: 1,
+              display: "flex",
+              flexDirection: { xs: "column", md: "row" },
+              px: { xs: 2, sm: 3, md: 4 },
+              pt: { xs: 3, md: 5 },
+              pb: { xs: 1.5, md: 2 },
+              gap: { xs: 2, md: 4 },
+              overflow: "hidden",
             }}
           >
+            {/* ── LEFT: Title + tabs + CTA ── */}
             <Box
               sx={{
-                width: 6,
-                height: 6,
-                borderRadius: "50%",
-                background: "#7eb8ff",
-              }}
-            />
-            <Typography
-              sx={{
-                fontSize: "1rem",
-                fontWeight: 700,
-                letterSpacing: "0.14em",
-                textTransform: "uppercase",
-                color: "#7eb8ff",
-                fontFamily: OUTFIT,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                flexShrink: 0,
+                width: { xs: "100%", md: "32%" },
+                gap: { xs: 2, md: 2.5 },
+                animation: `${fadeInUp} 0.5s ease both`,
               }}
             >
-              Module {course.id}
-            </Typography>
-          </Box>
-
-          {/* Title */}
-          <Box>
-            <Typography
-              sx={{
-                fontSize: {
-                  xs: "clamp(1.8rem,7vw,2.4rem)",
-                  md: "clamp(3.5rem,3.8vw,3rem)",
-                },
-                fontWeight: 900,
-                lineHeight: 1.08,
-                letterSpacing: "-0.03em",
-                fontFamily: OUTFIT,
-                backgroundImage:
-                  "linear-gradient(90deg,#7eb8ff 0%,#ffffff 35%,#f0d98a 50%,#ffffff 65%,#7eb8ff 100%)",
-                backgroundSize: "600px 100%",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                animation: `${shimmer} 4s linear infinite`,
-                mb: 0.7,
-              }}
-            >
-              {course.title}
-            </Typography>
-            {/* Gold accent line */}
-            <Box
-              sx={{
-                height: "2px",
-                background:
-                  "linear-gradient(90deg,#c9a84c,#f0d98a,transparent)",
-                animation: `${shimmerLine} 1s cubic-bezier(0.22,1,0.36,1) 0.3s both`,
-                width: 0,
-              }}
-            />
-          </Box>
-
-          {/* Toggle tabs */}
-          <Box sx={{ display: "flex", gap: 1.8 }}>
-            {[
-              {
-                label: "Video",
-                icon: <SubscriptionsRounded sx={{ fontSize: 18 }} />,
-                active: isVideo,
-                onClick: () => setIsVideo(true),
-              },
-              {
-                label: "Powerpoint",
-                icon: <AutoStoriesRounded sx={{ fontSize: 18 }} />,
-                active: !isVideo,
-                onClick: () => setIsVideo(false),
-              },
-            ].map((tab) => (
+              {/* Module pill */}
               <Box
-                key={tab.label}
-                onClick={tab.onClick}
                 sx={{
                   display: "inline-flex",
                   alignItems: "center",
-                  gap: 0.9,
-                  px: 2.4,
-                  py: 1.05,
-                  borderRadius: "12px",
-                  cursor: "pointer",
-                  userSelect: "none",
-                  background: tab.active
-                    ? "linear-gradient(135deg,rgba(30,136,229,0.3),rgba(13,71,161,0.2))"
-                    : "rgba(255,255,255,0.04)",
-                  border: "1px solid",
-                  borderColor: tab.active
-                    ? "rgba(126,184,255,0.45)"
-                    : "rgba(255,255,255,0.08)",
-                  transition: "all 0.2s ease",
-                  "&:hover": tab.active
-                    ? {}
-                    : {
-                        background: "rgba(255,255,255,0.07)",
-                        borderColor: "rgba(255,255,255,0.14)",
-                      },
+                  gap: 0.8,
+                  px: 1.4,
+                  py: 0.4,
+                  borderRadius: "100px",
+                  border: "1px solid rgba(25,118,210,0.35)",
+                  background: "rgba(25,118,210,0.09)",
+                  alignSelf: "flex-start",
                 }}
               >
                 <Box
                   sx={{
-                    color: tab.active ? "#7eb8ff" : "rgba(255,255,255,0.4)",
+                    width: 6,
+                    height: 6,
+                    borderRadius: "50%",
+                    background: "#7eb8ff",
                   }}
-                >
-                  {tab.icon}
-                </Box>
+                />
                 <Typography
                   sx={{
-                    fontSize: "1.3rem",
-                    fontWeight: tab.active ? 700 : 500,
-                    color: tab.active ? "#ffffff" : "rgba(255,255,255,0.45)",
+                    fontSize: "1rem",
+                    fontWeight: 700,
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                    color: "#7eb8ff",
                     fontFamily: OUTFIT,
                   }}
                 >
-                  {tab.label}
+                  Module {course.id}
                 </Typography>
               </Box>
-            ))}
-          </Box>
 
-          {/* CTA button */}
-          <Box
-            onClick={takeCourse}
-            sx={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 1,
-              px: 2.8,
-              py: 1.4,
-              borderRadius: "12px",
-              cursor: "pointer",
-              userSelect: "none",
-              alignSelf: "flex-start",
-              background:
-                "linear-gradient(135deg,rgba(30,136,229,0.35),rgba(13,71,161,0.25))",
-              border: "1px solid rgba(30,136,229,0.4)",
-              animation: `${softPulse} 3s ease-in-out infinite`,
-              transition: "all 0.3s cubic-bezier(0.34,1.56,0.64,1)",
-              "&:hover": {
-                background: "linear-gradient(135deg,#1e88e5,#0d47a1)",
-                borderColor: "rgba(126,184,255,0.55)",
-                transform: "translateY(-2px)",
-                animation: "none",
-                boxShadow: "0 10px 36px rgba(25,118,210,0.5)",
-              },
-              "&:hover .cta-arrow": { transform: "translateX(3px)" },
-            }}
-          >
-            <PlayArrowRounded sx={{ fontSize: 20, color: "#ffffff" }} />
-            <Typography
-              sx={{
-                fontWeight: 800,
-                fontSize: "1.4rem",
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                color: "#ffffff",
-                fontFamily: OUTFIT,
-              }}
-            >
-              Ready to Take Quiz?
-            </Typography>
-            <ArrowForwardRounded
-              className="cta-arrow"
-              sx={{
-                fontSize: 15,
-                color: "rgba(255,255,255,0.7)",
-                transition: "transform 0.2s",
-              }}
-            />
-          </Box>
-        </Box>
+              {/* Title */}
+              <Box>
+                <Typography
+                  sx={{
+                    fontSize: {
+                      xs: "clamp(1.8rem,7vw,2.4rem)",
+                      md: "clamp(3.5rem,3.8vw,3rem)",
+                    },
+                    fontWeight: 900,
+                    lineHeight: 1.08,
+                    letterSpacing: "-0.03em",
+                    fontFamily: OUTFIT,
+                    backgroundImage:
+                      "linear-gradient(90deg,#7eb8ff 0%,#ffffff 35%,#f0d98a 50%,#ffffff 65%,#7eb8ff 100%)",
+                    backgroundSize: "600px 100%",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    animation: `${shimmer} 4s linear infinite`,
+                    mb: 0.7,
+                  }}
+                >
+                  {course.title}
+                </Typography>
+                {/* Gold accent line */}
+                <Box
+                  sx={{
+                    height: "2px",
+                    background:
+                      "linear-gradient(90deg,#c9a84c,#f0d98a,transparent)",
+                    animation: `${shimmerLine} 1s cubic-bezier(0.22,1,0.36,1) 0.3s both`,
+                    width: 0,
+                  }}
+                />
+              </Box>
 
-        {/* ── RIGHT: Video / PDF — no background ── */}
-        <Box
-          sx={{
-            flex: 1,
-            minWidth: 0,
-            minHeight: 0,
-            display: "flex",
-            alignItems: "stretch",
-            justifyContent: "stretch",
-            animation: `${fadeInUp} 0.55s ease 0.1s both`,
-            overflow: "hidden",
-          }}
-        >
-          {isVideo ? (
-            <Box
-              sx={{
-                width: "100%",
-                aspectRatio: "16 / 9",
-                borderRadius: "16px",
-                overflow: "hidden",
-                boxShadow: "0 24px 64px rgba(0,0,0,0.5)",
-              }}
-            >
-              <div
-                dangerouslySetInnerHTML={{ __html: iframeString }}
-                style={{ width: "100%", height: "100%" }}
-              />
+              {/* Toggle tabs */}
+              <Box sx={{ display: "flex", gap: 1.8 }}>
+                {[
+                  {
+                    label: "Video",
+                    icon: <SubscriptionsRounded sx={{ fontSize: 18 }} />,
+                    active: isVideo,
+                    onClick: () => setIsVideo(true),
+                  },
+                  {
+                    label: "Powerpoint",
+                    icon: <AutoStoriesRounded sx={{ fontSize: 18 }} />,
+                    active: !isVideo,
+                    onClick: () => setIsVideo(false),
+                  },
+                ].map((tab) => (
+                  <Box
+                    key={tab.label}
+                    onClick={tab.onClick}
+                    sx={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 0.9,
+                      px: 2.4,
+                      py: 1.05,
+                      borderRadius: "12px",
+                      cursor: "pointer",
+                      userSelect: "none",
+                      background: tab.active
+                        ? "linear-gradient(135deg,rgba(30,136,229,0.3),rgba(13,71,161,0.2))"
+                        : "rgba(255,255,255,0.04)",
+                      border: "1px solid",
+                      borderColor: tab.active
+                        ? "rgba(126,184,255,0.45)"
+                        : "rgba(255,255,255,0.08)",
+                      transition: "all 0.2s ease",
+                      "&:hover": tab.active
+                        ? {}
+                        : {
+                            background: "rgba(255,255,255,0.07)",
+                            borderColor: "rgba(255,255,255,0.14)",
+                          },
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        color: tab.active ? "#7eb8ff" : "rgba(255,255,255,0.4)",
+                      }}
+                    >
+                      {tab.icon}
+                    </Box>
+                    <Typography
+                      sx={{
+                        fontSize: "1.3rem",
+                        fontWeight: tab.active ? 700 : 500,
+                        color: tab.active
+                          ? "#ffffff"
+                          : "rgba(255,255,255,0.45)",
+                        fontFamily: OUTFIT,
+                      }}
+                    >
+                      {tab.label}
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
+
+              {/* CTA button */}
+              <Box
+                onClick={() =>
+                  exam.length > 0 ? takeExam() : handleNextCourse()
+                }
+                sx={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 1,
+                  px: 2.8,
+                  py: 1.4,
+                  borderRadius: "12px",
+                  cursor: "pointer",
+                  userSelect: "none",
+                  alignSelf: "flex-start",
+                  background:
+                    "linear-gradient(135deg,rgba(30,136,229,0.35),rgba(13,71,161,0.25))",
+                  border: "1px solid rgba(30,136,229,0.4)",
+                  animation: `${softPulse} 3s ease-in-out infinite`,
+                  transition: "all 0.3s cubic-bezier(0.34,1.56,0.64,1)",
+                  "&:hover": {
+                    background: "linear-gradient(135deg,#1e88e5,#0d47a1)",
+                    borderColor: "rgba(126,184,255,0.55)",
+                    transform: "translateY(-2px)",
+                    animation: "none",
+                    boxShadow: "0 10px 36px rgba(25,118,210,0.5)",
+                  },
+                  "&:hover .cta-arrow": { transform: "translateX(3px)" },
+                }}
+              >
+                <PlayArrowRounded sx={{ fontSize: 20, color: "#ffffff" }} />
+                <Typography
+                  sx={{
+                    fontWeight: 800,
+                    fontSize: "1.4rem",
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    color: "#ffffff",
+                    fontFamily: OUTFIT,
+                  }}
+                >
+                  {exam.length > 0 ? "Ready to Take Quiz?" : "Next Module"}
+                </Typography>
+                <ArrowForwardRounded
+                  className="cta-arrow"
+                  sx={{
+                    fontSize: 15,
+                    color: "rgba(255,255,255,0.7)",
+                    transition: "transform 0.2s",
+                  }}
+                />
+              </Box>
             </Box>
-          ) : (
+
+            {/* ── RIGHT: Video / PDF — no background ── */}
             <Box
               sx={{
-                width: "100%",
-                height: "100%",
-                overflow: "hidden",
+                flex: 1,
+                minWidth: 0,
+                minHeight: 0,
                 display: "flex",
-                flexDirection: "column",
-                borderRadius: "16px",
-                "& > *": {
-                  flex: 1,
-                  height: "100% !important",
-                  width: "calc(100% + 80px) !important",
-                  maxWidth: "none !important",
-                  maxHeight: "100% !important",
-                  marginLeft: "-40px !important",
-                },
-                "& canvas, & img": {
-                  width: "100% !important",
-                  height: "auto !important",
-                  maxHeight: "100% !important",
-                  objectFit: "contain",
-                },
+                alignItems: "stretch",
+                justifyContent: "stretch",
+                animation: `${fadeInUp} 0.55s ease 0.1s both`,
+                overflow: "hidden",
               }}
             >
-              <PresentationPDF
-                document={`https://socket.leuteriorealty.com/proxy?url=${course.presentation}`}
-              />
+              {isVideo ? (
+                <Box
+                  sx={{
+                    width: "100%",
+                    aspectRatio: "16 / 9",
+                    borderRadius: "16px",
+                    overflow: "hidden",
+                    boxShadow: "0 24px 64px rgba(0,0,0,0.5)",
+                  }}
+                >
+                  <div
+                    dangerouslySetInnerHTML={{ __html: iframeString }}
+                    style={{ width: "100%", height: "100%" }}
+                  />
+                </Box>
+              ) : (
+                <Box
+                  sx={{
+                    width: "100%",
+                    height: "100%",
+                    overflow: "hidden",
+                    display: "flex",
+                    flexDirection: "column",
+                    borderRadius: "16px",
+                    "& > *": {
+                      flex: 1,
+                      height: "100% !important",
+                      width: "calc(100% + 80px) !important",
+                      maxWidth: "none !important",
+                      maxHeight: "100% !important",
+                      marginLeft: "-40px !important",
+                    },
+                    "& canvas, & img": {
+                      width: "100% !important",
+                      height: "auto !important",
+                      maxHeight: "100% !important",
+                      objectFit: "contain",
+                    },
+                  }}
+                >
+                  <PresentationPDF
+                    document={`https://socket.leuteriorealty.com/proxy?url=${course.presentation}`}
+                  />
+                </Box>
+              )}
             </Box>
-          )}
+          </Box>
         </Box>
-      </Box>
-    </Box>
+      )}
+    </>
   );
 }

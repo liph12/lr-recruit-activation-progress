@@ -370,7 +370,7 @@ export default function WebinarConfirmationContacts() {
             </svg>
           </div>
           <div className="wcc-text">
-            <p className="wcc-text-title">Successfully Uploaded Proof!</p>
+            <p className="wcc-text-title">Proof successfully uploaded!</p>
             <p className="wcc-text-sub">Your attendance has been submitted.</p>
           </div>
         </div>
