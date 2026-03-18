@@ -1,5 +1,5 @@
 import { useAppProvider } from "../providers/AppProvider";
-import { Box, Typography, Avatar, Container } from "@mui/material";
+import { Box, Typography, Avatar } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import {
   VerifiedRounded,
@@ -23,10 +23,10 @@ const shimmerTitle = keyframes`
   0%   { background-position: -600px 0; }
   100% { background-position:  600px 0; }
 `;
-const softPulse = keyframes`
-  0%, 100% { box-shadow: 0 8px 32px rgba(25,118,210,0.35); }
-  50%       { box-shadow: 0 16px 52px rgba(25,118,210,0.6); }
-`;
+// const softPulse = keyframes`
+//   0%, 100% { box-shadow: 0 8px 32px rgba(25,118,210,0.35); }
+//   50%       { box-shadow: 0 16px 52px rgba(25,118,210,0.6); }
+// `;
 const spin = keyframes`
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
