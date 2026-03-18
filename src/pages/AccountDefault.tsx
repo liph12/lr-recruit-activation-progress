@@ -245,7 +245,7 @@ export default function AccountDefault() {
           borderRadius: "28px",
           overflow: "hidden",
           border: "1px solid rgba(255,255,255,0.08)",
-          background: "rgba(0,0,0,0.4)",
+          background: "rgba(255,255,255,0.15)",
           backdropFilter: "blur(24px)",
           margin: "0 auto",
           maxWidth: "1500px",
@@ -658,14 +658,14 @@ export default function AccountDefault() {
                             alignItems: "center",
                             justifyContent: "center",
                             background: item.completed
-                              ? "linear-gradient(135deg,rgba(30,136,229,0.22),rgba(13,71,161,0.12))"
+                              ? "linear-gradient(135deg,rgba(30,136,229,0.22),rgba(13,71,161,0.72))"
                               : "rgba(255,255,255,0.04)",
-                            border: "2px solid",
+                            border: "1px solid",
                             borderColor: item.completed
-                              ? "rgba(30,136,229,0.45)"
+                              ? "rgba(88, 164, 231, 0.85)"
                               : "rgba(255,255,255,0.07)",
                             color: item.completed
-                              ? "#7eb8ff"
+                              ? "#fff"
                               : "rgba(255,255,255,0.2)",
                             // boxShadow: item.completed
                             //   ? "0 4px 16px rgba(30,136,229,0.18)"
@@ -700,11 +700,11 @@ export default function AccountDefault() {
                             p: { xs: 2, md: 2.5 },
                             borderRadius: "16px",
                             background: item.completed
-                              ? "rgba(30,136,229,0.05)"
+                              ? "rgba(22, 124, 214, 0.35)"
                               : "rgba(255,255,255,0.02)",
                             border: "1px solid",
                             borderColor: item.completed
-                              ? "rgba(30,136,229,0.15)"
+                              ? "rgba(84, 165, 236, 0.45)"
                               : "rgba(255,255,255,0.05)",
                           }}
                         >
