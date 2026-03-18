@@ -6,16 +6,11 @@ import WebinarConfirmationContacts from "./WebinarConfirmationContacts";
 import NavbarLayout from "../components/layouts/NavbarLayout";
 import AccountDefault from "./AccountDefault";
 import UploadAvatar from "./UploadAvatar";
-import PageLoader from "../components/PageLoader";
 
 export default function GetStarted() {
   const { user } = useAppProvider();
 
   let content;
-
-  if (!user) {
-    return <PageLoader />;
-  }
 
   if (user?.photo) {
     if (user?.confirmation === "yes") {
