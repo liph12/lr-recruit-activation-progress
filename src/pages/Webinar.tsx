@@ -1,7 +1,7 @@
 import { Avatar, Box, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import YoutubeEmbedWebinar from "../components/utils/YoutubeEmbededWebiner";
-import { useAppProvider } from "../providers/AppProvider";
+// import { useAppProvider } from "../providers/AppProvider";
 import { keyframes } from "@mui/material";
 import { useEffect, useRef } from "react";
 
@@ -27,7 +27,7 @@ const avatarGlow = keyframes`
 `;
 
 export default function Webinar() {
-  const { desktop } = useAppProvider();
+  // const { desktop } = useAppProvider();
 
   // ── Live canvas background ───────────────────────────────────────────────
   const canvasRef = useRef<HTMLCanvasElement>(null);

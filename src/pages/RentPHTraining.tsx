@@ -165,7 +165,7 @@ export default function RentPHTraining() {
   const axios = useExternalAxios();
 
   // ── State ──
-  const [exam, setExam] = useState<Question[]>([]); // raw API data (kept for reference)
+  // const [exam, setExam] = useState<Question[]>([]); // raw API data (kept for reference)
   const [examQ, setExamQ] = useState<Questionaire[]>([]); // normalized data used by <Exam />
   const [results, setResults] = useState<ExamResultType[]>([]);
 
@@ -292,7 +292,7 @@ export default function RentPHTraining() {
         setLoading(true);
         const response = await axios.get("/integration/agent/rent-exam");
         const rawQuestions = response.data as Question[];
-        setExam(rawQuestions);
+        // setExam(rawQuestions);
 
         // Transform each raw question into the Questionaire shape
         const normalized: Questionaire[] = rawQuestions.map((q, index) => ({
