@@ -32,7 +32,6 @@ const OUTFIT = "'Outfit', sans-serif";
 export default function AccountDefault() {
   const { user } = useAppProvider();
   const axios = useExternalAxios();
-  const [hasCourses, setHasCourses] = useState(false);
   const [loading, setLoading] = useState(false);
   const [stepper, setStepper] = useState([
     {
@@ -66,24 +65,27 @@ export default function AccountDefault() {
       try {
         setLoading(true);
         const response = await axios.get(
-          `/integration/agent/taken-courses?email=${user?.email}`
+          `/integration/agent/taken-courses?email=${user?.email}`,
         );
         const takenCourses = response.data.data;
         const coursesHistory = takenCourses.map((c: any) => ({
           id: stepper.length + c.id,
-          title: "FIRE Exam Module",
+          title: "FIRE Certificate",
           description: `Congratulations! You have passed Module ${c.id}: ${c.title} with a score of ${c.scores[0].score} out of 10`,
           completed: true,
           icon: <SchoolRounded sx={{ fontSize: 26 }} />,
         }));
 
-        setHasCourses(takenCourses.length > 0);
         setStepper((prev) => {
           const existingIds = new Set(prev.map((item) => item.id));
 
           const newItems = coursesHistory.filter(
-            (item: any) => !existingIds.has(item.id)
+            (item: any) => !existingIds.has(item.id),
           );
+
+          if (newItems.length > 0) {
+            prev[2].completed = true;
+          }
 
           return [...prev, ...newItems];
         });
@@ -116,7 +118,7 @@ export default function AccountDefault() {
         <Grid
           container
           sx={{
-            minHeight: "80vh",
+            minHeight: "400px",
             borderRadius: "32px",
             overflow: "hidden",
             border: "1px solid rgba(255, 255, 255, 0.08)",
@@ -216,7 +218,7 @@ export default function AccountDefault() {
             <Box
               sx={{
                 flexGrow: 1,
-                minHeight: 0,
+                Height: "auto",
                 p: { xs: 3, md: 6 },
                 backdropFilter: "blur(30px)",
                 display: "flex",
@@ -235,32 +237,31 @@ export default function AccountDefault() {
                 Onboarding Progress
               </Typography>
 
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 4,
-                  flex: 1,
-                  overflowY: "auto",
-                  pr: 1, // optional: space for scrollbar
-                }}
-              >
-                {loading ? (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      height: "100%",
-                    }}
-                  >
-                    <CircularProgress size={45} />
-                  </Box>
-                ) : (
-                  <>
-                    {stepper
-                      .filter((s) => hasCourses && s.id !== 2)
-                      .map((item, idx) => (
+              <Box sx={{ height: "450px", overflowY: "scroll" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 4,
+                    flex: 1,
+                    overflowY: "auto",
+                    pr: 1, // optional: space for scrollbar
+                  }}
+                >
+                  {loading ? (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: "100%",
+                      }}
+                    >
+                      <CircularProgress size={45} />
+                    </Box>
+                  ) : (
+                    <>
+                      {stepper.map((item, idx) => (
                         <Box
                           key={item.id}
                           sx={{ display: "flex", gap: 3, position: "relative" }}
@@ -360,8 +361,9 @@ export default function AccountDefault() {
                           </Box>
                         </Box>
                       ))}
-                  </>
-                )}
+                    </>
+                  )}
+                </Box>
               </Box>
             </Box>
           </Grid>
