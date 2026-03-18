@@ -41,6 +41,14 @@ const AppProvider = ({ children }: AppProviderProps) => {
         const response = await axios.get(`/agent/auth`);
         const { data } = response.data;
 
+        if (data) {
+          const isPhotoHasUrl = data.photo.includes("https://");
+
+          data.photo = isPhotoHasUrl
+            ? data.photo
+            : `https://leuteriorealty.com/memberfiles/${data.agent_id}/${data.photo}`;
+        }
+
         setUser(data);
       } catch (e) {
         // to do
