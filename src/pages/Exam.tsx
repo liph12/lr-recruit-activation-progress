@@ -533,10 +533,15 @@ type NavButtonsProps = {
   isLast: boolean;
   answers: Answer[];
   courseId: number;
+  total: number;
   createResults: (results: Result[]) => void;
   onPrev: () => void;
   onNext: () => void;
   onSubmittingChange?: (loading: boolean) => void;
+  customSubmit?: (
+    answers: Answer[],
+    createResults: (results: Result[]) => void
+  ) => Promise<void>;
 };
 
 function NavButtons({
@@ -544,36 +549,43 @@ function NavButtons({
   isLast,
   answers,
   courseId,
+  total,
   createResults,
   onPrev,
   onNext,
   onSubmittingChange,
+  customSubmit,
 }: NavButtonsProps) {
   const [loading, setLoading] = useState(false);
   const axios = useExternalAxios();
-  const completed = answers.length === 10;
+  const completed = answers.length >= total;
   const { user } = useAppProvider();
 
   const handleSubmitAsync = async () => {
     try {
       setLoading(true);
       onSubmittingChange?.(true);
-      const payLoad = {
-        course_id: courseId,
-        answers: answers,
-        email: user?.email,
-      };
-      const response = await axios.post(
-        "/integration/agent/store-exam-answers",
-        payLoad,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
 
-      createResults(response.data.results);
+      if (customSubmit) {
+        await customSubmit(answers, createResults);
+      } else {
+        const payLoad = {
+          course_id: courseId,
+          answers: answers,
+          email: user?.email,
+        };
+        const response = await axios.post(
+          "/integration/agent/store-exam-answers",
+          payLoad,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        createResults(response.data.results);
+      }
     } catch (e) {
       // to do
     } finally {
@@ -744,9 +756,16 @@ function NavButtons({
 export default function Exam({
   exam,
   course,
+  customSubmit,
+  total: totalOverride,
 }: {
   exam: Questionaire[];
   course: Course;
+  customSubmit?: (
+    answers: Answer[],
+    createResults: (results: Result[]) => void
+  ) => Promise<void>;
+  total?: number;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [selected, setSelected] = useState<Record<number, ChoiceValue>>({});
@@ -759,7 +778,7 @@ export default function Exam({
   const navigateRouter = useNavigate();
   const [submitting, setSubmitting] = useState(false);
 
-  const total = exam.length;
+  const total = totalOverride ?? exam.length;
   const isLast = step === total - 1;
 
   const createResults = (results: Result[]) => setResults(results);
@@ -988,10 +1007,12 @@ export default function Exam({
               isLast={isLast}
               answers={answers}
               courseId={course.id}
+              total={total}
               createResults={createResults}
               onPrev={() => navigate(Math.max(step - 1, 0))}
               onNext={() => navigate(Math.min(step + 1, total - 1))}
               onSubmittingChange={setSubmitting}
+              customSubmit={customSubmit}
             />
           </Box>
         </Box>
