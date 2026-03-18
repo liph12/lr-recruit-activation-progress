@@ -5,6 +5,7 @@ import GetStarted from "./pages/GetStarted";
 import Training from "./pages/Training";
 import TrainingCourses from "./pages/TrainingCourses";
 import TrainingNavbarLayout from "./components/layouts/TrainingNavbarLayout";
+import RentPHTraining from "./pages/RentPHTraining";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="fire" element={<TrainingNavbarLayout />}>
           <Route index element={<TrainingCourses />} />
           <Route path="training/:course_id" element={<Training />} />
+          <Route path="training/rent" element={<RentPHTraining />} />
         </Route>
       </Route>
     </Routes>

@@ -222,6 +222,23 @@ export default function TrainingCourses() {
         );
         const { data } = res.data;
         const tmp: Course[] = data;
+
+        tmp.push({
+          id: 12,
+          title: "Become a Rent Manager",
+          description: "",
+          learning_descriptions: [],
+          speaker: {
+            name: "Rent PH",
+            avatar: "/images/rent-ph.png",
+            contact: "",
+          },
+          presentation: "",
+          video: "",
+          scores: [],
+          status: "pending",
+        });
+
         let certCount = tmp.filter((c) => c.scores.length > 0).length;
         let index = certCount + 1;
         setCourses(
@@ -412,173 +429,182 @@ export default function TrainingCourses() {
         {externalUser.requiresEndorsement ? (
           <Box
             sx={{
-              maxWidth: 560,
-              animation: `${fadeInUp} 0.65s ease 0.1s both`,
+              display: "flex",
+              justifyContent: "center",
             }}
           >
-            {/* Drop zone */}
             <Box
-              component="label"
-              onDragOver={(e) => {
-                e.preventDefault();
-                setDragOver(true);
-              }}
-              onDragLeave={() => setDragOver(false)}
-              onDrop={handleDrop}
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 1.5,
-                p: 4,
-                mb: 2.5,
-                borderRadius: "16px",
-                cursor: "pointer",
-                border: "1.5px dashed",
-                borderColor: dragOver
-                  ? "rgba(126,184,255,0.7)"
-                  : endorsement
-                  ? "rgba(76,175,80,0.45)"
-                  : "rgba(255,255,255,0.14)",
-                background: dragOver
-                  ? "rgba(126,184,255,0.06)"
-                  : endorsement
-                  ? "rgba(76,175,80,0.05)"
-                  : "rgba(255,255,255,0.03)",
-                backdropFilter: "blur(8px)",
-                transition: "all 0.3s ease",
-                "&:hover": {
-                  borderColor: "rgba(126,184,255,0.5)",
-                  background: "rgba(255,255,255,0.05)",
-                },
+                maxWidth: 700,
+                animation: `${fadeInUp} 0.65s ease 0.1s both`,
               }}
             >
+              {/* Drop zone */}
               <Box
+                component="label"
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setDragOver(true);
+                }}
+                onDragLeave={() => setDragOver(false)}
+                onDrop={handleDrop}
                 sx={{
-                  width: 56,
-                  height: 56,
-                  borderRadius: "50%",
-                  background: endorsement
-                    ? "rgba(76,175,80,0.12)"
-                    : "rgba(255,255,255,0.06)",
-                  border: "1px solid",
-                  borderColor: endorsement
-                    ? "rgba(76,175,80,0.35)"
-                    : "rgba(255,255,255,0.10)",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 1.5,
+                  p: 4,
+                  mb: 2.5,
+                  borderRadius: "16px",
+                  cursor: "pointer",
+                  border: "1.5px dashed",
+                  borderColor: dragOver
+                    ? "rgba(126,184,255,0.7)"
+                    : endorsement
+                    ? "rgba(76,175,80,0.45)"
+                    : "rgba(255,255,255,0.14)",
+                  background: dragOver
+                    ? "rgba(126,184,255,0.06)"
+                    : endorsement
+                    ? "rgba(76,175,80,0.05)"
+                    : "rgba(255,255,255,0.03)",
+                  backdropFilter: "blur(8px)",
+                  transition: "all 0.3s ease",
+                  "&:hover": {
+                    borderColor: "rgba(126,184,255,0.5)",
+                    background: "rgba(255,255,255,0.05)",
+                  },
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 56,
+                    height: 56,
+                    borderRadius: "50%",
+                    background: endorsement
+                      ? "rgba(76,175,80,0.12)"
+                      : "rgba(255,255,255,0.06)",
+                    border: "1px solid",
+                    borderColor: endorsement
+                      ? "rgba(76,175,80,0.35)"
+                      : "rgba(255,255,255,0.10)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {endorsement ? (
+                    <CheckCircleRounded
+                      sx={{ fontSize: 26, color: "#66bb6a" }}
+                    />
+                  ) : (
+                    <UploadFileRounded
+                      sx={{ fontSize: 26, color: "rgba(255,255,255,0.35)" }}
+                    />
+                  )}
+                </Box>
+                <Typography
+                  sx={{
+                    fontWeight: 700,
+                    color: "#ffffff",
+                    fontSize: "0.92rem",
+                    fontFamily: OUTFIT,
+                  }}
+                >
+                  {endorsement
+                    ? endorsement.name
+                    : "Drop your endorsement letter here"}
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: "0.75rem",
+                    color: "rgba(255,255,255,0.38)",
+                    fontFamily: OUTFIT,
+                  }}
+                >
+                  JPG, PNG, PDF · max 5MB
+                </Typography>
+                <input
+                  type="file"
+                  accept=".jpg,.jpeg,.png,.pdf"
+                  onChange={handleChangeFile}
+                  style={{ display: "none" }}
+                />
+              </Box>
+
+              {/* Upload button */}
+              <Box
+                onClick={endorsement && !uploading ? handleUpload : undefined}
+                sx={{
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
+                  gap: 1.2,
+                  py: 1.6,
+                  px: 3,
+                  borderRadius: "14px",
+                  cursor: endorsement && !uploading ? "pointer" : "not-allowed",
+                  userSelect: "none",
+                  background: uploaded
+                    ? "rgba(76,175,80,0.2)"
+                    : endorsement
+                    ? "linear-gradient(135deg,#1e88e5 0%,#0d47a1 100%)"
+                    : "rgba(255,255,255,0.05)",
+                  border: "1px solid",
+                  borderColor: uploaded
+                    ? "rgba(76,175,80,0.45)"
+                    : endorsement
+                    ? "rgba(100,180,255,0.35)"
+                    : "rgba(255,255,255,0.08)",
+                  opacity: !endorsement && !uploaded ? 0.5 : 1,
+                  animation:
+                    endorsement && !uploading && !uploaded
+                      ? `${softPulse} 3s ease-in-out infinite`
+                      : "none",
+                  transition: "all 0.3s ease",
+                  "&:hover":
+                    endorsement && !uploading
+                      ? {
+                          transform: "translateY(-2px)",
+                          boxShadow: "0 10px 36px rgba(25,118,210,0.45)",
+                        }
+                      : {},
                 }}
               >
-                {endorsement ? (
-                  <CheckCircleRounded sx={{ fontSize: 26, color: "#66bb6a" }} />
-                ) : (
-                  <UploadFileRounded
-                    sx={{ fontSize: 26, color: "rgba(255,255,255,0.35)" }}
+                {uploading ? (
+                  <Box
+                    sx={{
+                      width: 18,
+                      height: 18,
+                      borderRadius: "50%",
+                      border: "2.5px solid rgba(255,255,255,0.2)",
+                      borderTopColor: "#fff",
+                      animation: `${spin} 0.7s linear infinite`,
+                    }}
                   />
+                ) : uploaded ? (
+                  <CheckCircleRounded sx={{ fontSize: 20, color: "#66bb6a" }} />
+                ) : (
+                  <UploadFileRounded sx={{ fontSize: 20, color: "#ffffff" }} />
                 )}
-              </Box>
-              <Typography
-                sx={{
-                  fontWeight: 700,
-                  color: "#ffffff",
-                  fontSize: "0.92rem",
-                  fontFamily: OUTFIT,
-                }}
-              >
-                {endorsement
-                  ? endorsement.name
-                  : "Drop your endorsement letter here"}
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: "0.75rem",
-                  color: "rgba(255,255,255,0.38)",
-                  fontFamily: OUTFIT,
-                }}
-              >
-                JPG, PNG, PDF · max 5MB
-              </Typography>
-              <input
-                type="file"
-                accept=".jpg,.jpeg,.png,.pdf"
-                onChange={handleChangeFile}
-                style={{ display: "none" }}
-              />
-            </Box>
-
-            {/* Upload button */}
-            <Box
-              onClick={endorsement && !uploading ? handleUpload : undefined}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 1.2,
-                py: 1.6,
-                px: 3,
-                borderRadius: "14px",
-                cursor: endorsement && !uploading ? "pointer" : "not-allowed",
-                userSelect: "none",
-                background: uploaded
-                  ? "rgba(76,175,80,0.2)"
-                  : endorsement
-                  ? "linear-gradient(135deg,#1e88e5 0%,#0d47a1 100%)"
-                  : "rgba(255,255,255,0.05)",
-                border: "1px solid",
-                borderColor: uploaded
-                  ? "rgba(76,175,80,0.45)"
-                  : endorsement
-                  ? "rgba(100,180,255,0.35)"
-                  : "rgba(255,255,255,0.08)",
-                opacity: !endorsement && !uploaded ? 0.5 : 1,
-                animation:
-                  endorsement && !uploading && !uploaded
-                    ? `${softPulse} 3s ease-in-out infinite`
-                    : "none",
-                transition: "all 0.3s ease",
-                "&:hover":
-                  endorsement && !uploading
-                    ? {
-                        transform: "translateY(-2px)",
-                        boxShadow: "0 10px 36px rgba(25,118,210,0.45)",
-                      }
-                    : {},
-              }}
-            >
-              {uploading ? (
-                <Box
+                <Typography
                   sx={{
-                    width: 18,
-                    height: 18,
-                    borderRadius: "50%",
-                    border: "2.5px solid rgba(255,255,255,0.2)",
-                    borderTopColor: "#fff",
-                    animation: `${spin} 0.7s linear infinite`,
+                    fontWeight: 800,
+                    fontSize: "0.88rem",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    color: uploaded ? "#66bb6a" : "#ffffff",
+                    fontFamily: OUTFIT,
                   }}
-                />
-              ) : uploaded ? (
-                <CheckCircleRounded sx={{ fontSize: 20, color: "#66bb6a" }} />
-              ) : (
-                <UploadFileRounded sx={{ fontSize: 20, color: "#ffffff" }} />
-              )}
-              <Typography
-                sx={{
-                  fontWeight: 800,
-                  fontSize: "0.88rem",
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase",
-                  color: uploaded ? "#66bb6a" : "#ffffff",
-                  fontFamily: OUTFIT,
-                }}
-              >
-                {uploading
-                  ? "Uploading…"
-                  : uploaded
-                  ? "Uploaded!"
-                  : "Upload Endorsement"}
-              </Typography>
+                >
+                  {uploading
+                    ? "Uploading…"
+                    : uploaded
+                    ? "Uploaded!"
+                    : "Upload Endorsement"}
+                </Typography>
+              </Box>
             </Box>
           </Box>
         ) : (
@@ -593,6 +619,12 @@ export default function TrainingCourses() {
               const isDone = c.status === "done";
               const isNext = c.status === "next";
               const isHovered = hoveredCard === k;
+              const isRent = c.id === 12;
+              const trainingPath = isRent
+                ? "/welcome/fire/training/rent"
+                : isLocked
+                ? undefined
+                : `/welcome/fire/training/${c.id}`;
 
               return (
                 <Grid
@@ -602,7 +634,7 @@ export default function TrainingCourses() {
                 >
                   <Box
                     component={isLocked ? "div" : Link}
-                    to={isLocked ? undefined : `/welcome/fire/training/${c.id}`}
+                    to={trainingPath}
                     onMouseEnter={() => !isLocked && setHoveredCard(k)}
                     onMouseLeave={() => setHoveredCard(null)}
                     sx={{

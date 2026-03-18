@@ -97,9 +97,14 @@ export default function TrainingCourse({ course, exam }: CourseProps) {
 
   const takeExam = () => setTakingExam((prev) => !prev);
 
-  const handleNextCourse = () =>
-    navigate(`/welcome/fire/training/${course.id + 1}`);
+  const handleNextCourse = () => {
+    const isRent = course.id + 1 === 12;
+    const r = isRent
+      ? "/welcome/fire/training/rent"
+      : `/welcome/fire/training/${course.id + 1}`;
 
+    navigate(r);
+  };
   // ── Live canvas background ─────────────────────────────────────────────
   useEffect(() => {
     const canvas = canvasRef.current;
