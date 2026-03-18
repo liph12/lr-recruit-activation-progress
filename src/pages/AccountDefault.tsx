@@ -213,14 +213,14 @@ export default function AccountDefault() {
   return (
     <Box
       sx={{
-        minHeight: "88vh",
+        minHeight: { xs: "100dvh", md: "88vh" },
         position: "relative",
         overflow: "hidden",
         background: "#071020",
         display: "flex",
-        alignItems: "center",
-        // py: { xs: 4, md: 6 },
-        // mt: "-110px",
+        alignItems: { xs: "flex-start", md: "center" },
+        py: { xs: 3, md: 0 },
+        px: { xs: 1.5, md: 0 },
       }}
     >
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap'); * { font-family: 'Outfit', sans-serif !important; }`}</style>
@@ -242,20 +242,21 @@ export default function AccountDefault() {
       <Grid
         container
         sx={{
-          borderRadius: "28px",
+          borderRadius: { xs: "20px", md: "28px" },
           overflow: "hidden",
           border: "1px solid rgba(255,255,255,0.08)",
           background: "rgba(255,255,255,0.15)",
           backdropFilter: "blur(24px)",
           margin: "0 auto",
           maxWidth: "1500px",
+          width: "100%",
         }}
       >
         {/* ── LEFT: Profile + FIRE CTA ── */}
         <Grid size={{ md: 4, xs: 12 }}>
           <Box
             sx={{
-              px: { xs: 3, md: 7 },
+              px: { xs: 2.5, md: 7 },
               py: { xs: 3, md: 4 },
               display: "flex",
               flexDirection: "column",
@@ -287,8 +288,8 @@ export default function AccountDefault() {
               <Avatar
                 src={user?.photo ?? ""}
                 sx={{
-                  width: 110,
-                  height: 110,
+                  width: { xs: 80, md: 110 },
+                  height: { xs: 80, md: 110 },
                   border: "3px solid rgba(30,136,229,0.55)",
                   boxShadow: "0 8px 32px rgba(0,0,0,0.45)",
                   position: "relative",
@@ -299,8 +300,8 @@ export default function AccountDefault() {
                   position: "absolute",
                   bottom: 4,
                   right: 4,
-                  width: 28,
-                  height: 28,
+                  width: { xs: 22, md: 28 },
+                  height: { xs: 22, md: 28 },
                   borderRadius: "50%",
                   background: "#071020",
                   border: "2px solid rgba(30,136,229,0.5)",
@@ -309,7 +310,9 @@ export default function AccountDefault() {
                   justifyContent: "center",
                 }}
               >
-                <VerifiedRounded sx={{ fontSize: 18, color: "#1e88e5" }} />
+                <VerifiedRounded
+                  sx={{ fontSize: { xs: 14, md: 18 }, color: "#1e88e5" }}
+                />
               </Box>
             </Box>
 
@@ -318,10 +321,12 @@ export default function AccountDefault() {
               sx={{
                 fontWeight: 700,
                 color: "#ffffff",
-                fontSize: "2.2rem",
+                fontSize: { xs: "1.4rem", md: "2.2rem" },
                 fontFamily: OUTFIT,
                 lineHeight: 1.2,
                 mb: 0.5,
+                maxWidth: "100%",
+                wordBreak: "break-word",
               }}
             >
               {user?.name}
@@ -329,14 +334,30 @@ export default function AccountDefault() {
 
             {/* Email */}
             <Box
-              sx={{ display: "flex", alignItems: "center", gap: 0.6, mb: 4 }}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 0.6,
+                mb: { xs: 2.5, md: 4 },
+                maxWidth: "100%",
+                overflow: "hidden",
+              }}
             >
-              <EmailRounded sx={{ fontSize: 25, color: "#fff" }} />
+              <EmailRounded
+                sx={{
+                  fontSize: { xs: 18, md: 25 },
+                  color: "#fff",
+                  flexShrink: 0,
+                }}
+              />
               <Typography
                 sx={{
-                  fontSize: "1.5rem",
+                  fontSize: { xs: "0.85rem", md: "1.5rem" },
                   color: "#fff",
                   fontFamily: OUTFIT,
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
                 }}
               >
                 {user?.email}
@@ -454,7 +475,7 @@ export default function AccountDefault() {
                   <Typography
                     sx={{
                       fontWeight: 700,
-                      fontSize: "1.5rem",
+                      fontSize: { xs: "1.1rem", md: "1.5rem" },
                       color: "#ffffff",
                       fontFamily: OUTFIT,
                       lineHeight: 1.2,
@@ -468,7 +489,7 @@ export default function AccountDefault() {
               {/* Description */}
               <Typography
                 sx={{
-                  fontSize: "1.1rem",
+                  fontSize: { xs: "0.85rem", md: "1.1rem" },
                   color: "#fff",
                   fontFamily: OUTFIT,
                   lineHeight: 1.55,
@@ -527,10 +548,16 @@ export default function AccountDefault() {
         </Grid>
 
         {/* ── RIGHT: Onboarding progress ── */}
-        <Grid size={{ md: 8, xs: 12 }} sx={{ height: "700px", pb: "85px" }}>
+        <Grid
+          size={{ md: 8, xs: 12 }}
+          sx={{
+            height: { xs: "auto", md: "700px" },
+            pb: { xs: 3, md: "85px" },
+          }}
+        >
           <Box
             sx={{
-              p: { xs: 3, md: 5 },
+              p: { xs: 2.5, md: 5 },
               display: "flex",
               flexDirection: "column",
               height: "100%",
@@ -593,7 +620,13 @@ export default function AccountDefault() {
             </Box>
 
             {/* Timeline */}
-            <Box sx={{ flex: 1, overflowY: "auto", pr: 0.5 }}>
+            <Box
+              sx={{
+                flex: 1,
+                overflowY: { xs: "visible", md: "auto" },
+                pr: 0.5,
+              }}
+            >
               {loading ? (
                 <Box
                   sx={{
@@ -623,7 +656,7 @@ export default function AccountDefault() {
                         key={item.id}
                         sx={{
                           display: "flex",
-                          gap: 2.5,
+                          gap: { xs: 1.5, md: 2.5 },
                           position: "relative",
                           pb: isLast ? 0 : "32px",
                           alignItems: "flex-start",
@@ -634,8 +667,8 @@ export default function AccountDefault() {
                           <Box
                             sx={{
                               position: "absolute",
-                              left: 33,
-                              top: 68,
+                              left: { xs: 24, md: 33 },
+                              top: { xs: 52, md: 68 },
                               bottom: 0,
                               width: 2,
                               background: item.completed
@@ -651,8 +684,8 @@ export default function AccountDefault() {
                           sx={{
                             zIndex: 1,
                             flexShrink: 0,
-                            width: 65,
-                            height: 65,
+                            width: { xs: 50, md: 65 },
+                            height: { xs: 50, md: 65 },
                             borderRadius: "50%",
                             display: "flex",
                             alignItems: "center",
