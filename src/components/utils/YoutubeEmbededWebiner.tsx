@@ -256,7 +256,7 @@ export default function YoutubeEmbedWebinar() {
             top: 5,
             left: 0,
             width: "100%",
-            height: "100%",
+            height: "95%",
             border: 0,
           }}
         />
@@ -268,7 +268,7 @@ export default function YoutubeEmbedWebinar() {
           onChange={handleSeek}
           sx={{
             position: "absolute",
-            bottom: 0,
+            bottom: 5,
             left: 0,
             right: 0,
             width: "100%",

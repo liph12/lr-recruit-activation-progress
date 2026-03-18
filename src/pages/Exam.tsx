@@ -14,6 +14,7 @@ import useExternalAxios from "../hooks/useExternalAxios";
 import ExamResultModal from "../components/ExamResultModal";
 import GlobalLoader from "../components/GlobalLoader";
 import { useAppProvider } from "../providers/AppProvider";
+import useAxios from "../hooks/useAxios";
 
 interface Answer {
   question: number;
@@ -197,7 +198,10 @@ function CourseHeader({
             }}
           >
             {speakers.map((sp) => (
-              <Box key={sp.name} sx={{ display: "flex", alignItems: "center", gap: 1.4 }}>
+              <Box
+                key={sp.name}
+                sx={{ display: "flex", alignItems: "center", gap: 1.4 }}
+              >
                 <Avatar
                   src={sp.avatar}
                   sx={{
@@ -618,9 +622,26 @@ function NavButtons({
   customSubmit,
 }: NavButtonsProps) {
   const [loading, setLoading] = useState(false);
-  const axios = useExternalAxios();
+  const axiosExt = useExternalAxios();
+  const axios = useAxios();
   const completed = answers.length >= total;
   const { user } = useAppProvider();
+
+  const updateFireCertCountAsync = async (total: number) => {
+    try {
+      await axios.post(
+        "/agent/update-fire-certs-count",
+        { total_passed: total },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    } catch (e) {
+      // to do
+    }
+  };
 
   const handleSubmitAsync = async () => {
     try {
@@ -635,7 +656,7 @@ function NavButtons({
           answers: answers,
           email: user?.email,
         };
-        const response = await axios.post(
+        const response = await axiosExt.post(
           "/integration/agent/store-exam-answers",
           payLoad,
           {
@@ -645,6 +666,7 @@ function NavButtons({
           }
         );
 
+        await updateFireCertCountAsync(response.data.totalPassed);
         createResults(response.data.results);
       }
     } catch (e) {

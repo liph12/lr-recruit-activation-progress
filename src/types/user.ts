@@ -26,5 +26,8 @@ export interface User {
   confirmation: Confirmation;
   uploaded_attendance: string | null;
   certificates_count: number;
+  status: "active" | "inactive";
+  registeredAt: string;
+  activatedAt: string;
   sponsor: Sponsor;
 }

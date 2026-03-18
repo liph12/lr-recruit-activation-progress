@@ -43,8 +43,7 @@ export default function AccountDefault() {
     {
       id: 0,
       title: "Portal Registration",
-      description:
-        "Your account is officially registered. Welcome to the Filipino Homes community.",
+      description: `Your account is officially registered on ${user?.registeredAt}. Welcome to the Filipino Homes community.`,
       completed: true,
       icon: <HowToRegRounded sx={{ fontSize: 22 }} />,
     },
@@ -165,14 +164,20 @@ export default function AccountDefault() {
       try {
         setLoading(true);
         const response = await axios.get(
-          `/integration/agent/taken-courses?email=${user?.email}`,
+          `/integration/agent/taken-courses?email=${user?.email}`
         );
         const takenCourses = response.data.data;
 
         const coursesHistory = takenCourses.map((c: any) => ({
           id: stepper.length + c.id,
           title: `FIRE Certificate — Module ${c.id}: ${c.title}`,
-          description: `Congratulations! You have passed Module ${c.id}: ${c.title} with a score of ${c.scores[0].score} out of 10`,
+          description: `Congratulations! You successfully passed Module ${
+            c.id
+          }: ${c.title}, achieving a ${
+            c.scores[0].score === 10 ? "perfect score" : "score"
+          } of ${c.scores[0].score} out of 10, completed on ${
+            c.scores[0].dateTaken
+          }`,
           completed: true,
           icon: (
             <Typography
@@ -188,20 +193,25 @@ export default function AccountDefault() {
             </Typography>
           ),
         }));
+        const userActive = user?.status === "active";
 
         setStepper((prev) => {
           const existingIds = new Set(prev.map((item) => item.id));
           const newItems = coursesHistory.filter(
-            (item: any) => !existingIds.has(item.id),
+            (item: any) => !existingIds.has(item.id)
           );
           if (newItems.length >= 3) {
             prev[2].completed = true;
 
+            const finalStepperMsg = userActive
+              ? `Congratulation! Your account was activated on ${user.activatedAt}`
+              : `Yay! You've completed all FIRE modules. Please contact your team Secretary for the activation process. Please be advised that you must provide a Proof of Transaction of your SALE to be recorded in order to activate your account. Thank you!`;
+
             newItems.push({
               id: newItems.length,
               title: "For Activation",
-              description: `Yay! You've completed all FIRE modules. Please contact your team Secretary for the activation process. Please be advised that you must provide a Proof of Transaction of your SALE to be recorded in order to activate your account. Thank you!`,
-              completed: false,
+              description: finalStepperMsg,
+              completed: userActive,
               icon: <VerifiedRounded sx={{ fontSize: 22, color: "#fff" }} />,
             });
           }
@@ -725,7 +735,7 @@ export default function AccountDefault() {
                             >
                               {String((item as any).moduleNumber).padStart(
                                 2,
-                                "0",
+                                "0"
                               )}
                             </Typography>
                           ) : (

@@ -383,13 +383,7 @@ export default function Webinar() {
                 border: "1px solid rgba(255,255,255,0.10)",
                 boxShadow: "0 32px 80px rgba(0,0,0,0.55)",
                 position: "relative",
-                paddingTop: "56.25%",
-                "& > *": {
-                  position: "absolute",
-                  inset: 0,
-                  width: "100%",
-                  height: "100%",
-                },
+                py: 0,
               }}
             >
               <YoutubeEmbedWebinar />
