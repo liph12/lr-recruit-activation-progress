@@ -238,112 +238,113 @@ export default function AccountDefault() {
         }}
       />
 
-      <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1 }}>
-        <Grid
-          container
-          sx={{
-            borderRadius: "28px",
-            overflow: "hidden",
-            border: "1px solid rgba(255,255,255,0.08)",
-            background: "rgba(255,255,255,0.025)",
-            backdropFilter: "blur(24px)",
-          }}
-        >
-          {/* ── LEFT: Profile + FIRE CTA ── */}
-          <Grid size={{ md: 4, xs: 12 }}>
-            <Box
-              sx={{
-                p: { xs: 3, md: 4 },
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                textAlign: "center",
-                height: "100%",
-                justifyContent: "center",
-                borderRight: { md: "1px solid rgba(255,255,255,0.07)" },
-                borderBottom: {
-                  xs: "1px solid rgba(255,255,255,0.07)",
-                  md: "none",
-                },
-                animation: `${fadeInUp} 0.6s ease both`,
-                gap: 0,
-              }}
-            >
-              {/* Avatar with glow */}
-              <Box sx={{ position: "relative", mb: 3 }}>
-                <Box
-                  sx={{
-                    position: "absolute",
-                    inset: -8,
-                    borderRadius: "50%",
-                    background:
-                      "linear-gradient(135deg,rgba(30,136,229,0.4),rgba(240,217,138,0.12))",
-                    filter: "blur(12px)",
-                  }}
-                />
-                <Avatar
-                  src={user?.photo ?? ""}
-                  sx={{
-                    width: 110,
-                    height: 110,
-                    border: "3px solid rgba(30,136,229,0.55)",
-                    boxShadow: "0 8px 32px rgba(0,0,0,0.45)",
-                    position: "relative",
-                  }}
-                />
-                <Box
-                  sx={{
-                    position: "absolute",
-                    bottom: 4,
-                    right: 4,
-                    width: 28,
-                    height: 28,
-                    borderRadius: "50%",
-                    background: "#071020",
-                    border: "2px solid rgba(30,136,229,0.5)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <VerifiedRounded sx={{ fontSize: 18, color: "#1e88e5" }} />
-                </Box>
-              </Box>
-
-              {/* Name */}
-              <Typography
+      {/* <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1 }}> */}
+      <Grid
+        container
+        sx={{
+          borderRadius: "28px",
+          overflow: "hidden",
+          border: "1px solid rgba(255,255,255,0.08)",
+          background: "rgba(0,0,0,0.4)",
+          backdropFilter: "blur(24px)",
+          margin: "0 auto",
+          maxWidth: "1500px",
+        }}
+      >
+        {/* ── LEFT: Profile + FIRE CTA ── */}
+        <Grid size={{ md: 4, xs: 12 }}>
+          <Box
+            sx={{
+              px: { xs: 3, md: 7 },
+              py: { xs: 3, md: 4 },
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "center",
+              height: "100%",
+              justifyContent: "center",
+              borderRight: { md: "1px solid rgba(255,255,255,0.07)" },
+              borderBottom: {
+                xs: "1px solid rgba(255,255,255,0.07)",
+                md: "none",
+              },
+              animation: `${fadeInUp} 0.6s ease both`,
+              gap: 0,
+            }}
+          >
+            {/* Avatar with glow */}
+            <Box sx={{ position: "relative", mb: 3 }}>
+              <Box
                 sx={{
-                  fontWeight: 800,
-                  color: "#ffffff",
-                  fontSize: "1.2rem",
-                  fontFamily: OUTFIT,
-                  lineHeight: 1.2,
-                  mb: 0.5,
+                  position: "absolute",
+                  inset: -8,
+                  borderRadius: "50%",
+                  background:
+                    "linear-gradient(135deg,rgba(30,136,229,0.4),rgba(240,217,138,0.12))",
+                  filter: "blur(12px)",
+                }}
+              />
+              <Avatar
+                src={user?.photo ?? ""}
+                sx={{
+                  width: 110,
+                  height: 110,
+                  border: "3px solid rgba(30,136,229,0.55)",
+                  boxShadow: "0 8px 32px rgba(0,0,0,0.45)",
+                  position: "relative",
+                }}
+              />
+              <Box
+                sx={{
+                  position: "absolute",
+                  bottom: 4,
+                  right: 4,
+                  width: 28,
+                  height: 28,
+                  borderRadius: "50%",
+                  background: "#071020",
+                  border: "2px solid rgba(30,136,229,0.5)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                {user?.name}
-              </Typography>
-
-              {/* Email */}
-              <Box
-                sx={{ display: "flex", alignItems: "center", gap: 0.6, mb: 2 }}
-              >
-                <EmailRounded
-                  sx={{ fontSize: 13, color: "rgba(255,255,255,0.35)" }}
-                />
-                <Typography
-                  sx={{
-                    fontSize: "0.78rem",
-                    color: "rgba(255,255,255,0.45)",
-                    fontFamily: OUTFIT,
-                  }}
-                >
-                  {user?.email}
-                </Typography>
+                <VerifiedRounded sx={{ fontSize: 18, color: "#1e88e5" }} />
               </Box>
+            </Box>
 
-              {/* Role chip */}
-              {/* <Box
+            {/* Name */}
+            <Typography
+              sx={{
+                fontWeight: 700,
+                color: "#ffffff",
+                fontSize: "2.2rem",
+                fontFamily: OUTFIT,
+                lineHeight: 1.2,
+                mb: 0.5,
+              }}
+            >
+              {user?.name}
+            </Typography>
+
+            {/* Email */}
+            <Box
+              sx={{ display: "flex", alignItems: "center", gap: 0.6, mb: 4 }}
+            >
+              <EmailRounded sx={{ fontSize: 25, color: "#fff" }} />
+              <Typography
+                sx={{
+                  fontSize: "1.5rem",
+                  color: "#fff",
+                  fontFamily: OUTFIT,
+                }}
+              >
+                {user?.email}
+              </Typography>
+            </Box>
+
+            {/* Role chip */}
+            {/* <Box
                 sx={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -378,488 +379,488 @@ export default function AccountDefault() {
                 </Typography>
               </Box> */}
 
-              {/* ── FIRE CTA card ── */}
+            {/* ── FIRE CTA card ── */}
+            <Box
+              component={Link}
+              to="/welcome/fire"
+              sx={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                textDecoration: "none",
+                borderRadius: "18px",
+                overflow: "hidden",
+                position: "relative",
+                background:
+                  "linear-gradient(135deg,#0d47a1 0%,#1565c0 50%,#1e88e5 100%)",
+                // border: "1px solid rgba(126,184,255,0.25)",
+                p: 2.5,
+                // animation: `${softPulse} 3s ease-in-out infinite`,
+                transition: "all 0.35s cubic-bezier(0.34,1.56,0.64,1)",
+                "&:hover": {
+                  transform: "translateY(-4px) scale(1.01)",
+                  // boxShadow: "0 24px 60px rgba(25,118,210,0.55)",
+                  // borderColor: "rgba(126,184,255,0.5)",
+                  animation: "none",
+                },
+                "&:hover .fire-arrow": { transform: "translateX(4px)" },
+                "&:hover .fire-shimmer": { left: "120%" },
+              }}
+            >
+              {/* Shimmer sweep */}
               <Box
-                component={Link}
-                to="/welcome/fire"
+                className="fire-shimmer"
                 sx={{
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  textDecoration: "none",
-                  borderRadius: "18px",
-                  overflow: "hidden",
-                  position: "relative",
+                  position: "absolute",
+                  top: 0,
+                  bottom: 0,
+                  left: "-80%",
+                  width: "60%",
                   background:
-                    "linear-gradient(135deg,#0d47a1 0%,#1565c0 50%,#1e88e5 100%)",
-                  border: "1px solid rgba(126,184,255,0.25)",
-                  p: 2.5,
-                  animation: `${softPulse} 3s ease-in-out infinite`,
-                  transition: "all 0.35s cubic-bezier(0.34,1.56,0.64,1)",
-                  "&:hover": {
-                    transform: "translateY(-4px) scale(1.01)",
-                    boxShadow: "0 24px 60px rgba(25,118,210,0.55)",
-                    borderColor: "rgba(126,184,255,0.5)",
-                    animation: "none",
-                  },
-                  "&:hover .fire-arrow": { transform: "translateX(4px)" },
-                  "&:hover .fire-shimmer": { left: "120%" },
+                    "linear-gradient(90deg,transparent,rgba(255,255,255,0.09),transparent)",
+                  transform: "skewX(-15deg)",
+                  transition: "left 0.55s ease",
+                  pointerEvents: "none",
+                }}
+              />
+
+              {/* Icon + title */}
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1.5,
+                  mb: 1.5,
                 }}
               >
-                {/* Shimmer sweep */}
                 <Box
-                  className="fire-shimmer"
                   sx={{
-                    position: "absolute",
-                    top: 0,
-                    bottom: 0,
-                    left: "-80%",
-                    width: "60%",
-                    background:
-                      "linear-gradient(90deg,transparent,rgba(255,255,255,0.09),transparent)",
-                    transform: "skewX(-15deg)",
-                    transition: "left 0.55s ease",
-                    pointerEvents: "none",
+                    width: 44,
+                    height: 44,
+                    borderRadius: "12px",
+                    background: "rgba(255,255,255,0.15)",
+                    border: "1px solid rgba(255,255,255,0.2)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  <RocketLaunchRounded
+                    sx={{ fontSize: 22, color: "#ffffff" }}
+                  />
+                </Box>
+                <Box sx={{ textAlign: "left" }}>
+                  <Typography
+                    sx={{
+                      fontWeight: 700,
+                      fontSize: "1.5rem",
+                      color: "#ffffff",
+                      fontFamily: OUTFIT,
+                      lineHeight: 1.2,
+                    }}
+                  >
+                    Get Started with FIRE
+                  </Typography>
+                </Box>
+              </Box>
+
+              {/* Description */}
+              <Typography
+                sx={{
+                  fontSize: "1.1rem",
+                  color: "#fff",
+                  fontFamily: OUTFIT,
+                  lineHeight: 1.55,
+                  mb: 2,
+                  fontWeight: 400,
+                  textAlign: "left",
+                }}
+              >
+                Complete your training modules and become a certified Filipino
+                Homes agent.
+              </Typography>
+
+              {/* Bottom row */}
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: "1rem",
+                    fontWeight: 700,
+                    color: "#fff",
+                    fontFamily: OUTFIT,
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Begin Now
+                </Typography>
+                <Box
+                  sx={{
+                    width: 30,
+                    height: 30,
+                    borderRadius: "50%",
+                    // background: "rgba(255,255,255,0.15)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <ArrowForwardRounded
+                    className="fire-arrow"
+                    sx={{
+                      fontSize: 28,
+                      color: "#ffffff",
+                      transition: "transform 0.25s ease",
+                    }}
+                  />
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+        </Grid>
+
+        {/* ── RIGHT: Onboarding progress ── */}
+        <Grid size={{ md: 8, xs: 12 }} sx={{ height: "700px", pb: "85px" }}>
+          <Box
+            sx={{
+              p: { xs: 3, md: 5 },
+              display: "flex",
+              flexDirection: "column",
+              height: "100%",
+              animation: `${fadeInUp} 0.7s ease 0.1s both`,
+            }}
+          >
+            {/* Header */}
+            <Box sx={{ mb: 4 }}>
+              <Box
+                sx={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 0.8,
+                  mb: 1.5,
+                  px: 1.6,
+                  py: 0.5,
+                  borderRadius: "100px",
+                  border: "1px solid rgba(25,118,210,0.35)",
+                  background: "rgba(25,118,210,0.09)",
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 7,
+                    height: 7,
+                    borderRadius: "50%",
+                    background: "#7eb8ff",
                   }}
                 />
+                <Typography
+                  sx={{
+                    fontSize: "0.65rem",
+                    fontWeight: 700,
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                    color: "#7eb8ff",
+                    fontFamily: OUTFIT,
+                  }}
+                >
+                  Your Journey
+                </Typography>
+              </Box>
+              <Typography
+                sx={{
+                  fontSize: { xs: "1.5rem", md: "1.9rem" },
+                  fontWeight: 900,
+                  fontFamily: OUTFIT,
+                  letterSpacing: "-0.02em",
+                  lineHeight: 1.1,
+                  backgroundImage:
+                    "linear-gradient(90deg,#7eb8ff 0%,#ffffff 40%,#f0d98a 60%,#ffffff 80%,#7eb8ff 100%)",
+                  backgroundSize: "600px 100%",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  animation: `${shimmerTitle} 4s linear infinite`,
+                }}
+              >
+                Onboarding Progress
+              </Typography>
+            </Box>
 
-                {/* Icon + title */}
+            {/* Timeline */}
+            <Box sx={{ flex: 1, overflowY: "auto", pr: 0.5 }}>
+              {loading ? (
                 <Box
                   sx={{
                     display: "flex",
+                    justifyContent: "center",
                     alignItems: "center",
-                    gap: 1.5,
-                    mb: 1.5,
+                    py: 8,
                   }}
                 >
                   <Box
                     sx={{
                       width: 44,
                       height: 44,
-                      borderRadius: "12px",
-                      background: "rgba(255,255,255,0.15)",
-                      border: "1px solid rgba(255,255,255,0.2)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                    }}
-                  >
-                    <RocketLaunchRounded
-                      sx={{ fontSize: 22, color: "#ffffff" }}
-                    />
-                  </Box>
-                  <Box sx={{ textAlign: "left" }}>
-                    <Typography
-                      sx={{
-                        fontWeight: 700,
-                        fontSize: "1.5rem",
-                        color: "#ffffff",
-                        fontFamily: OUTFIT,
-                        lineHeight: 1.2,
-                      }}
-                    >
-                      Get Started with FIRE
-                    </Typography>
-                  </Box>
-                </Box>
-
-                {/* Description */}
-                <Typography
-                  sx={{
-                    fontSize: "1.1rem",
-                    color: "#fff",
-                    fontFamily: OUTFIT,
-                    lineHeight: 1.55,
-                    mb: 2,
-                    fontWeight: 400,
-                    textAlign: "left",
-                  }}
-                >
-                  Complete your training modules and become a certified Filipino
-                  Homes agent.
-                </Typography>
-
-                {/* Bottom row */}
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontSize: "1rem",
-                      fontWeight: 700,
-                      color: "#fff",
-                      fontFamily: OUTFIT,
-                      letterSpacing: "0.1em",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    Begin Now
-                  </Typography>
-                  <Box
-                    sx={{
-                      width: 30,
-                      height: 30,
                       borderRadius: "50%",
-                      background: "rgba(255,255,255,0.15)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <ArrowForwardRounded
-                      className="fire-arrow"
-                      sx={{
-                        fontSize: 16,
-                        color: "#ffffff",
-                        transition: "transform 0.25s ease",
-                      }}
-                    />
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-          </Grid>
-
-          {/* ── RIGHT: Onboarding progress ── */}
-          <Grid size={{ md: 8, xs: 12 }} sx={{ height: "700px", pb: "85px" }}>
-            <Box
-              sx={{
-                p: { xs: 3, md: 5 },
-                display: "flex",
-                flexDirection: "column",
-                height: "100%",
-                animation: `${fadeInUp} 0.7s ease 0.1s both`,
-              }}
-            >
-              {/* Header */}
-              <Box sx={{ mb: 4 }}>
-                <Box
-                  sx={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 0.8,
-                    mb: 1.5,
-                    px: 1.6,
-                    py: 0.5,
-                    borderRadius: "100px",
-                    border: "1px solid rgba(25,118,210,0.35)",
-                    background: "rgba(25,118,210,0.09)",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      width: 7,
-                      height: 7,
-                      borderRadius: "50%",
-                      background: "#7eb8ff",
+                      border: "3px solid rgba(255,255,255,0.08)",
+                      borderTopColor: "#7eb8ff",
+                      animation: `${spin} 0.8s linear infinite`,
                     }}
                   />
-                  <Typography
-                    sx={{
-                      fontSize: "0.65rem",
-                      fontWeight: 700,
-                      letterSpacing: "0.14em",
-                      textTransform: "uppercase",
-                      color: "#7eb8ff",
-                      fontFamily: OUTFIT,
-                    }}
-                  >
-                    Your Journey
-                  </Typography>
                 </Box>
-                <Typography
-                  sx={{
-                    fontSize: { xs: "1.5rem", md: "1.9rem" },
-                    fontWeight: 900,
-                    fontFamily: OUTFIT,
-                    letterSpacing: "-0.02em",
-                    lineHeight: 1.1,
-                    backgroundImage:
-                      "linear-gradient(90deg,#7eb8ff 0%,#ffffff 40%,#f0d98a 60%,#ffffff 80%,#7eb8ff 100%)",
-                    backgroundSize: "600px 100%",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    animation: `${shimmerTitle} 4s linear infinite`,
-                  }}
-                >
-                  Onboarding Progress
-                </Typography>
-              </Box>
+              ) : (
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                  {stepper.map((item, idx) => {
+                    const isLast = idx === stepper.length - 1;
+                    return (
+                      <Box
+                        key={item.id}
+                        sx={{
+                          display: "flex",
+                          gap: 2.5,
+                          position: "relative",
+                          pb: isLast ? 0 : "32px",
+                          alignItems: "flex-start",
+                        }}
+                      >
+                        {/* Connector line — runs from bottom of icon circle to bottom of padding gap */}
+                        {!isLast && (
+                          <Box
+                            sx={{
+                              position: "absolute",
+                              left: 33,
+                              top: 68,
+                              bottom: 0,
+                              width: 2,
+                              background: item.completed
+                                ? "linear-gradient(180deg,#1e88e5 0%,rgba(30,136,229,0.2) 100%)"
+                                : "rgba(255,255,255,0.07)",
+                              zIndex: 0,
+                            }}
+                          />
+                        )}
 
-              {/* Timeline */}
-              <Box sx={{ flex: 1, overflowY: "auto", pr: 0.5 }}>
-                {loading ? (
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      py: 8,
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        width: 44,
-                        height: 44,
-                        borderRadius: "50%",
-                        border: "3px solid rgba(255,255,255,0.08)",
-                        borderTopColor: "#7eb8ff",
-                        animation: `${spin} 0.8s linear infinite`,
-                      }}
-                    />
-                  </Box>
-                ) : (
-                  <Box sx={{ display: "flex", flexDirection: "column" }}>
-                    {stepper.map((item, idx) => {
-                      const isLast = idx === stepper.length - 1;
-                      return (
+                        {/* Icon circle */}
                         <Box
-                          key={item.id}
                           sx={{
+                            zIndex: 1,
+                            flexShrink: 0,
+                            width: 65,
+                            height: 65,
+                            borderRadius: "50%",
                             display: "flex",
-                            gap: 2.5,
-                            position: "relative",
-                            pb: isLast ? 0 : "32px",
-                            alignItems: "flex-start",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            background: item.completed
+                              ? "linear-gradient(135deg,rgba(30,136,229,0.22),rgba(13,71,161,0.12))"
+                              : "rgba(255,255,255,0.04)",
+                            border: "2px solid",
+                            borderColor: item.completed
+                              ? "rgba(30,136,229,0.45)"
+                              : "rgba(255,255,255,0.07)",
+                            color: item.completed
+                              ? "#7eb8ff"
+                              : "rgba(255,255,255,0.2)",
+                            boxShadow: item.completed
+                              ? "0 4px 16px rgba(30,136,229,0.18)"
+                              : "none",
                           }}
                         >
-                          {/* Connector line — runs from bottom of icon circle to bottom of padding gap */}
-                          {!isLast && (
-                            <Box
-                              sx={{
-                                position: "absolute",
-                                left: 33,
-                                top: 68,
-                                bottom: 0,
-                                width: 2,
-                                background: item.completed
-                                  ? "linear-gradient(180deg,#1e88e5 0%,rgba(30,136,229,0.2) 100%)"
-                                  : "rgba(255,255,255,0.07)",
-                                zIndex: 0,
-                              }}
-                            />
-                          )}
-
-                          {/* Icon circle */}
-                          <Box
-                            sx={{
-                              zIndex: 1,
-                              flexShrink: 0,
-                              width: 65,
-                              height: 65,
-                              borderRadius: "50%",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              background: item.completed
-                                ? "linear-gradient(135deg,rgba(30,136,229,0.22),rgba(13,71,161,0.12))"
-                                : "rgba(255,255,255,0.04)",
-                              border: "2px solid",
-                              borderColor: item.completed
-                                ? "rgba(30,136,229,0.45)"
-                                : "rgba(255,255,255,0.07)",
-                              color: item.completed
-                                ? "#7eb8ff"
-                                : "rgba(255,255,255,0.2)",
-                              boxShadow: item.completed
-                                ? "0 4px 16px rgba(30,136,229,0.18)"
-                                : "none",
-                            }}
-                          >
-                            {"moduleNumber" in item ? (
-                              <Typography
-                                sx={{
-                                  fontSize: "1rem",
-                                  fontWeight: 500,
-                                  color: "#7eb8ff",
-                                  fontFamily: OUTFIT,
-                                  lineHeight: 1,
-                                  letterSpacing: "-0.04em",
-                                }}
-                              >
-                                {String((item as any).moduleNumber).padStart(
-                                  2,
-                                  "0",
-                                )}
-                              </Typography>
-                            ) : (
-                              item.icon
-                            )}
-                          </Box>
-
-                          {/* Card */}
-                          <Box
-                            sx={{
-                              flex: 1,
-                              p: { xs: 2, md: 2.5 },
-                              borderRadius: "16px",
-                              background: item.completed
-                                ? "rgba(30,136,229,0.05)"
-                                : "rgba(255,255,255,0.02)",
-                              border: "1px solid",
-                              borderColor: item.completed
-                                ? "rgba(30,136,229,0.15)"
-                                : "rgba(255,255,255,0.05)",
-                            }}
-                          >
-                            {/* Title + badge */}
-                            <Box
-                              sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                flexWrap: "wrap",
-                                gap: 1,
-                                mb: 0.6,
-                              }}
-                            >
-                              <Typography
-                                sx={{
-                                  fontWeight: 700,
-                                  color: item.completed
-                                    ? "#ffffff"
-                                    : "rgba(255,255,255,0.3)",
-                                  fontSize: { xs: "0.95rem", md: "1.05rem" },
-                                  fontFamily: OUTFIT,
-                                  lineHeight: 1.2,
-                                }}
-                              >
-                                {item.title}
-                              </Typography>
-
-                              {item.completed && (
-                                <Box
-                                  sx={{
-                                    display: "inline-flex",
-                                    alignItems: "center",
-                                    gap: 0.4,
-                                    px: 1,
-                                    py: 0.2,
-                                    borderRadius: "100px",
-                                    background: "rgba(76,175,80,0.12)",
-                                    border: "1px solid rgba(76,175,80,0.28)",
-                                  }}
-                                >
-                                  <Box
-                                    sx={{
-                                      width: 6,
-                                      height: 6,
-                                      borderRadius: "50%",
-                                      background: "#66bb6a",
-                                      flexShrink: 0,
-                                    }}
-                                  />
-                                  <Typography
-                                    sx={{
-                                      fontSize: "0.58rem",
-                                      fontWeight: 700,
-                                      color: "#66bb6a",
-                                      letterSpacing: "0.08em",
-                                      textTransform: "uppercase",
-                                      fontFamily: OUTFIT,
-                                    }}
-                                  >
-                                    Completed
-                                  </Typography>
-                                </Box>
-                              )}
-
-                              {!item.completed && (
-                                <Box
-                                  sx={{
-                                    display: "inline-flex",
-                                    alignItems: "center",
-                                    gap: 0.4,
-                                    px: 1,
-                                    py: 0.2,
-                                    borderRadius: "100px",
-                                    background: "rgba(255,255,255,0.05)",
-                                    border: "1px solid rgba(255,255,255,0.09)",
-                                  }}
-                                >
-                                  <Box
-                                    sx={{
-                                      width: 6,
-                                      height: 6,
-                                      borderRadius: "50%",
-                                      background: "rgba(255,255,255,0.28)",
-                                      flexShrink: 0,
-                                    }}
-                                  />
-                                  <Typography
-                                    sx={{
-                                      fontSize: "0.58rem",
-                                      fontWeight: 700,
-                                      color: "rgba(255,255,255,0.28)",
-                                      letterSpacing: "0.08em",
-                                      textTransform: "uppercase",
-                                      fontFamily: OUTFIT,
-                                    }}
-                                  >
-                                    Pending
-                                  </Typography>
-                                </Box>
-                              )}
-                            </Box>
-
+                          {"moduleNumber" in item ? (
                             <Typography
                               sx={{
-                                color: "rgba(255,255,255,0.48)",
-                                fontWeight: 400,
-                                lineHeight: 1.65,
-                                fontSize: { xs: "0.8rem", md: "0.85rem" },
+                                fontSize: "1rem",
+                                fontWeight: 500,
+                                color: "#7eb8ff",
                                 fontFamily: OUTFIT,
+                                lineHeight: 1,
+                                letterSpacing: "-0.04em",
                               }}
                             >
-                              {item.description}
+                              {String((item as any).moduleNumber).padStart(
+                                2,
+                                "0",
+                              )}
                             </Typography>
+                          ) : (
+                            item.icon
+                          )}
+                        </Box>
+
+                        {/* Card */}
+                        <Box
+                          sx={{
+                            flex: 1,
+                            p: { xs: 2, md: 2.5 },
+                            borderRadius: "16px",
+                            background: item.completed
+                              ? "rgba(30,136,229,0.05)"
+                              : "rgba(255,255,255,0.02)",
+                            border: "1px solid",
+                            borderColor: item.completed
+                              ? "rgba(30,136,229,0.15)"
+                              : "rgba(255,255,255,0.05)",
+                          }}
+                        >
+                          {/* Title + badge */}
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              flexWrap: "wrap",
+                              gap: 1,
+                              mb: 0.6,
+                            }}
+                          >
+                            <Typography
+                              sx={{
+                                fontWeight: 700,
+                                color: item.completed
+                                  ? "#ffffff"
+                                  : "rgba(255,255,255,0.3)",
+                                fontSize: { xs: "0.95rem", md: "1.05rem" },
+                                fontFamily: OUTFIT,
+                                lineHeight: 1.2,
+                              }}
+                            >
+                              {item.title}
+                            </Typography>
+
+                            {item.completed && (
+                              <Box
+                                sx={{
+                                  display: "inline-flex",
+                                  alignItems: "center",
+                                  gap: 0.4,
+                                  px: 1,
+                                  py: 0.2,
+                                  borderRadius: "100px",
+                                  background: "rgba(76,175,80,0.12)",
+                                  border: "1px solid rgba(76,175,80,0.28)",
+                                }}
+                              >
+                                <Box
+                                  sx={{
+                                    width: 6,
+                                    height: 6,
+                                    borderRadius: "50%",
+                                    background: "#66bb6a",
+                                    flexShrink: 0,
+                                  }}
+                                />
+                                <Typography
+                                  sx={{
+                                    fontSize: "0.58rem",
+                                    fontWeight: 700,
+                                    color: "#66bb6a",
+                                    letterSpacing: "0.08em",
+                                    textTransform: "uppercase",
+                                    fontFamily: OUTFIT,
+                                  }}
+                                >
+                                  Completed
+                                </Typography>
+                              </Box>
+                            )}
 
                             {!item.completed && (
                               <Box
-                                component={Link}
-                                to="/welcome/fire"
                                 sx={{
-                                  mt: 1.5,
                                   display: "inline-flex",
                                   alignItems: "center",
-                                  gap: 0.8,
-                                  textDecoration: "none",
-                                  color: "#7eb8ff",
-                                  fontFamily: OUTFIT,
-                                  fontWeight: 700,
-                                  fontSize: "0.75rem",
-                                  letterSpacing: "0.08em",
-                                  textTransform: "uppercase",
-                                  "& .proceed-arrow": {
-                                    transition: "transform 0.2s",
-                                  },
-                                  "&:hover .proceed-arrow": {
-                                    transform: "translateX(4px)",
-                                  },
+                                  gap: 0.4,
+                                  px: 1,
+                                  py: 0.2,
+                                  borderRadius: "100px",
+                                  background: "rgba(255,255,255,0.05)",
+                                  border: "1px solid rgba(255,255,255,0.09)",
                                 }}
                               >
-                                Proceed Now
-                                <ArrowForwardRounded
-                                  className="proceed-arrow"
-                                  sx={{ fontSize: 15 }}
+                                <Box
+                                  sx={{
+                                    width: 6,
+                                    height: 6,
+                                    borderRadius: "50%",
+                                    background: "rgba(255,255,255,0.28)",
+                                    flexShrink: 0,
+                                  }}
                                 />
+                                <Typography
+                                  sx={{
+                                    fontSize: "0.58rem",
+                                    fontWeight: 700,
+                                    color: "rgba(255,255,255,0.28)",
+                                    letterSpacing: "0.08em",
+                                    textTransform: "uppercase",
+                                    fontFamily: OUTFIT,
+                                  }}
+                                >
+                                  Pending
+                                </Typography>
                               </Box>
                             )}
                           </Box>
+
+                          <Typography
+                            sx={{
+                              color: "rgba(255,255,255,0.48)",
+                              fontWeight: 400,
+                              lineHeight: 1.65,
+                              fontSize: { xs: "0.8rem", md: "0.85rem" },
+                              fontFamily: OUTFIT,
+                            }}
+                          >
+                            {item.description}
+                          </Typography>
+
+                          {!item.completed && (
+                            <Box
+                              component={Link}
+                              to="/welcome/fire"
+                              sx={{
+                                mt: 1.5,
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: 0.8,
+                                textDecoration: "none",
+                                color: "#7eb8ff",
+                                fontFamily: OUTFIT,
+                                fontWeight: 700,
+                                fontSize: "0.75rem",
+                                letterSpacing: "0.08em",
+                                textTransform: "uppercase",
+                                "& .proceed-arrow": {
+                                  transition: "transform 0.2s",
+                                },
+                                "&:hover .proceed-arrow": {
+                                  transform: "translateX(4px)",
+                                },
+                              }}
+                            >
+                              Proceed Now
+                              <ArrowForwardRounded
+                                className="proceed-arrow"
+                                sx={{ fontSize: 15 }}
+                              />
+                            </Box>
+                          )}
                         </Box>
-                      );
-                    })}
-                  </Box>
-                )}
-              </Box>
+                      </Box>
+                    );
+                  })}
+                </Box>
+              )}
             </Box>
-          </Grid>
+          </Box>
         </Grid>
-      </Container>
+      </Grid>
+      {/* </Container> */}
     </Box>
   );
 }
