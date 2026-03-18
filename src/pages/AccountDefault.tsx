@@ -562,7 +562,7 @@ export default function AccountDefault() {
                 />
                 <Typography
                   sx={{
-                    fontSize: "0.65rem",
+                    fontSize: "0.8rem",
                     fontWeight: 700,
                     letterSpacing: "0.14em",
                     textTransform: "uppercase",
@@ -575,7 +575,7 @@ export default function AccountDefault() {
               </Box>
               <Typography
                 sx={{
-                  fontSize: { xs: "1.5rem", md: "1.9rem" },
+                  fontSize: { xs: "1.5rem", md: "2.8rem" },
                   fontWeight: 900,
                   fontFamily: OUTFIT,
                   letterSpacing: "-0.02em",
@@ -667,9 +667,9 @@ export default function AccountDefault() {
                             color: item.completed
                               ? "#7eb8ff"
                               : "rgba(255,255,255,0.2)",
-                            boxShadow: item.completed
-                              ? "0 4px 16px rgba(30,136,229,0.18)"
-                              : "none",
+                            // boxShadow: item.completed
+                            //   ? "0 4px 16px rgba(30,136,229,0.18)"
+                            //   : "none",
                           }}
                         >
                           {"moduleNumber" in item ? (
@@ -724,7 +724,7 @@ export default function AccountDefault() {
                                 color: item.completed
                                   ? "#ffffff"
                                   : "rgba(255,255,255,0.3)",
-                                fontSize: { xs: "0.95rem", md: "1.05rem" },
+                                fontSize: { xs: "0.95rem", md: "1.3rem" },
                                 fontFamily: OUTFIT,
                                 lineHeight: 1.2,
                               }}
@@ -756,7 +756,7 @@ export default function AccountDefault() {
                                 />
                                 <Typography
                                   sx={{
-                                    fontSize: "0.58rem",
+                                    fontSize: "0.8rem",
                                     fontWeight: 700,
                                     color: "#66bb6a",
                                     letterSpacing: "0.08em",
@@ -793,7 +793,7 @@ export default function AccountDefault() {
                                 />
                                 <Typography
                                   sx={{
-                                    fontSize: "0.58rem",
+                                    fontSize: "0.8rem",
                                     fontWeight: 700,
                                     color: "rgba(255,255,255,0.28)",
                                     letterSpacing: "0.08em",
@@ -812,7 +812,7 @@ export default function AccountDefault() {
                               color: "rgba(255,255,255,0.48)",
                               fontWeight: 400,
                               lineHeight: 1.65,
-                              fontSize: { xs: "0.8rem", md: "0.85rem" },
+                              fontSize: { xs: "0.8rem", md: "1.1rem" },
                               fontFamily: OUTFIT,
                             }}
                           >
@@ -832,7 +832,7 @@ export default function AccountDefault() {
                                 color: "#7eb8ff",
                                 fontFamily: OUTFIT,
                                 fontWeight: 700,
-                                fontSize: "0.75rem",
+                                fontSize: "0.9rem",
                                 letterSpacing: "0.08em",
                                 textTransform: "uppercase",
                                 "& .proceed-arrow": {
