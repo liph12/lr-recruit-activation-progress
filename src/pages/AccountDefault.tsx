@@ -165,7 +165,7 @@ export default function AccountDefault() {
       try {
         setLoading(true);
         const response = await axios.get(
-          `/integration/agent/taken-courses?email=${user?.email}`,
+          `/integration/agent/taken-courses?email=${user?.email}`
         );
         const takenCourses = response.data.data;
 
@@ -192,11 +192,18 @@ export default function AccountDefault() {
         setStepper((prev) => {
           const existingIds = new Set(prev.map((item) => item.id));
           const newItems = coursesHistory.filter(
-            (item: any) => !existingIds.has(item.id),
+            (item: any) => !existingIds.has(item.id)
           );
-          // Mark FIRE Certification completed only once all 3 required modules are done
           if (newItems.length >= 3) {
             prev[2].completed = true;
+
+            newItems.push({
+              id: newItems.length,
+              title: "For Activation",
+              description: `Yay! You've completed all FIRE modules. Please contact your team Secretary for the activation process. Please be advised that you must provide a Proof of Transaction of your SALE to be recorded in order to activate your account. Thank you!`,
+              completed: false,
+              icon: <VerifiedRounded sx={{ fontSize: 22, color: "#fff" }} />,
+            });
           }
           return [...prev, ...newItems];
         });
@@ -685,7 +692,7 @@ export default function AccountDefault() {
                             >
                               {String((item as any).moduleNumber).padStart(
                                 2,
-                                "0",
+                                "0"
                               )}
                             </Typography>
                           ) : (
@@ -819,7 +826,7 @@ export default function AccountDefault() {
                             {item.description}
                           </Typography>
 
-                          {!item.completed && (
+                          {!item.completed && item.id === 2 && (
                             <Box
                               component={Link}
                               to="/welcome/fire"
