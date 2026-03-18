@@ -165,7 +165,7 @@ export default function AccountDefault() {
       try {
         setLoading(true);
         const response = await axios.get(
-          `/integration/agent/taken-courses?email=${user?.email}`
+          `/integration/agent/taken-courses?email=${user?.email}`,
         );
         const takenCourses = response.data.data;
 
@@ -192,7 +192,7 @@ export default function AccountDefault() {
         setStepper((prev) => {
           const existingIds = new Set(prev.map((item) => item.id));
           const newItems = coursesHistory.filter(
-            (item: any) => !existingIds.has(item.id)
+            (item: any) => !existingIds.has(item.id),
           );
           if (newItems.length >= 3) {
             prev[2].completed = true;
@@ -725,7 +725,7 @@ export default function AccountDefault() {
                             >
                               {String((item as any).moduleNumber).padStart(
                                 2,
-                                "0"
+                                "0",
                               )}
                             </Typography>
                           ) : (
