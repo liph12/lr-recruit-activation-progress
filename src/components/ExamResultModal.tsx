@@ -32,6 +32,8 @@ type Props = {
   onClose: () => void;
   onRetake: () => void;
   onNextModule?: () => void;
+  /** Optional explicit passing score (e.g. 12 for 12/15). If omitted, defaults to 7 when total=10, otherwise ceil(total*0.7). */
+  passScore?: number;
 };
 
 export default function ExamResultModal({
@@ -41,12 +43,18 @@ export default function ExamResultModal({
   onClose,
   onRetake,
   onNextModule,
+  passScore,
 }: Props) {
   const [showDetails, setShowDetails] = useState(false);
 
   const score = useMemo(() => results.filter((r) => r.correct).length, [results]);
   const wrong = total - score;
-  const passed = score >= 7; // 7/10 to pass
+  const required = useMemo(() => {
+    if (typeof passScore === "number" && !Number.isNaN(passScore)) return passScore;
+    // Preserve historical behavior: 7/10 when total is 10; else 70% rounded up
+    return total === 10 ? 7 : Math.ceil(total * 0.7);
+  }, [passScore, total]);
+  const passed = score >= required;
 
   // Subtle celebration when passed
   useEffect(() => {
@@ -174,8 +182,8 @@ export default function ExamResultModal({
 
         <Typography variant="body2" sx={{ color: "rgba(255,255,255,.7)", mb: 2 }}>
           {passed
-            ? "Great work — you met the passing score (7/10)."
-            : "You'll need 7/10 to pass. Give it another try."}
+            ? `Great work — you met the passing score (${required}/${total}).`
+            : `You'll need ${required}/${total} to pass. Give it another try.`}
         </Typography>
 
         {/* Progress bar */}

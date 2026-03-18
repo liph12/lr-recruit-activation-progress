@@ -107,7 +107,13 @@ const examStyles = `
 `;
 
 // ─── Header ───────────────────────────────────────────────────────────────────
-function CourseHeader({ course }: { course: Course }) {
+function CourseHeader({
+  course,
+  speakers,
+}: {
+  course: Course;
+  speakers?: { name: string; avatar: string }[];
+}) {
   return (
     <Box
       sx={{
@@ -176,54 +182,109 @@ function CourseHeader({ course }: { course: Course }) {
           <span className="exam-gold-line" style={{ margin: "14px auto 0" }} />
         </Box>
 
-        {/* Speaker */}
-        <Box
-          className="exam-fade-2"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 1.8,
-            mt: 3.5,
-            mb: 3.5,
-          }}
-        >
-          <Avatar
-            src={course.speaker.avatar}
+        {/* Speakers */}
+        {speakers && speakers.length > 0 ? (
+          <Box
+            className="exam-fade-2"
             sx={{
-              width: 58,
-              height: 58,
-              border: "2.5px solid rgba(126,184,255,0.45)",
-              boxShadow: "0 6px 24px rgba(0,0,0,0.4)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              justifyContent: "flex-start",
+              gap: 2,
+              mt: 3.5,
+              mb: 3.5,
             }}
-          />
-          <Box sx={{ textAlign: "left" }}>
-            <Typography
-              sx={{
-                fontWeight: 800,
-                fontSize: "1.05rem",
-                color: "#ffffff",
-                fontFamily: OUTFIT,
-                lineHeight: 1.2,
-              }}
-            >
-              {course.speaker.name}
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: "0.65rem",
-                fontWeight: 700,
-                color: "#7eb8ff",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                fontFamily: OUTFIT,
-                mt: 0.2,
-              }}
-            >
-              Speaker
-            </Typography>
+          >
+            {speakers.map((sp) => (
+              <Box key={sp.name} sx={{ display: "flex", alignItems: "center", gap: 1.4 }}>
+                <Avatar
+                  src={sp.avatar}
+                  sx={{
+                    width: 56,
+                    height: 56,
+                    border: "2.5px solid rgba(126,184,255,0.45)",
+                    boxShadow: "0 6px 24px rgba(0,0,0,0.4)",
+                  }}
+                />
+                <Box sx={{ textAlign: "left" }}>
+                  <Typography
+                    sx={{
+                      fontWeight: 800,
+                      fontSize: "1.0rem",
+                      color: "#ffffff",
+                      fontFamily: OUTFIT,
+                      lineHeight: 1.2,
+                    }}
+                  >
+                    {sp.name}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "0.62rem",
+                      fontWeight: 700,
+                      color: "#7eb8ff",
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                      fontFamily: OUTFIT,
+                      mt: 0.2,
+                    }}
+                  >
+                    Speaker
+                  </Typography>
+                </Box>
+              </Box>
+            ))}
           </Box>
-        </Box>
+        ) : (
+          <Box
+            className="exam-fade-2"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 1.8,
+              mt: 3.5,
+              mb: 3.5,
+            }}
+          >
+            <Avatar
+              src={course.speaker.avatar}
+              sx={{
+                width: 58,
+                height: 58,
+                border: "2.5px solid rgba(126,184,255,0.45)",
+                boxShadow: "0 6px 24px rgba(0,0,0,0.4)",
+              }}
+            />
+            <Box sx={{ textAlign: "left" }}>
+              <Typography
+                sx={{
+                  fontWeight: 800,
+                  fontSize: "1.05rem",
+                  color: "#ffffff",
+                  fontFamily: OUTFIT,
+                  lineHeight: 1.2,
+                }}
+              >
+                {course.speaker.name}
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "0.65rem",
+                  fontWeight: 700,
+                  color: "#7eb8ff",
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  fontFamily: OUTFIT,
+                  mt: 0.2,
+                }}
+              >
+                Speaker
+              </Typography>
+            </Box>
+          </Box>
+        )}
 
         {/* Presentation link */}
         <Box className="exam-fade-3">
@@ -758,6 +819,8 @@ export default function Exam({
   course,
   customSubmit,
   total: totalOverride,
+  passScore,
+  speakers,
 }: {
   exam: Questionaire[];
   course: Course;
@@ -766,6 +829,8 @@ export default function Exam({
     createResults: (results: Result[]) => void
   ) => Promise<void>;
   total?: number;
+  passScore?: number;
+  speakers?: { name: string; avatar: string }[];
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [selected, setSelected] = useState<Record<number, ChoiceValue>>({});
@@ -968,7 +1033,7 @@ export default function Exam({
             justifyContent: "center",
           }}
         >
-          <CourseHeader course={course} />
+          <CourseHeader course={course} speakers={speakers} />
         </Box>
 
         {/* ── RIGHT: Questions ── */}
@@ -1026,6 +1091,7 @@ export default function Exam({
         onClose={() => setShowResultModal(false)}
         onRetake={handleRetake}
         onNextModule={handleNextModule}
+        passScore={passScore}
       />
 
       {/* Global submit loader */}
