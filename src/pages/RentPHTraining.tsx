@@ -99,6 +99,12 @@ const softPulse = keyframes`
   50%       { box-shadow: 0 12px 48px rgba(25,118,210,0.55); }
 `;
 
+/** Little nudge animation to draw attention to the next arrow */
+const nudgeRight = keyframes`
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(4px); }
+`;
+
 // ─── Shared style objects ─────────────────────────────────────────────────────
 // Keeping repeated sx props as plain objects avoids duplication and makes
 // the JSX much easier to read at a glance.
@@ -129,12 +135,17 @@ const WHAT_YOU_LEARN = [
 const SPEAKERS = [
   {
     name: "Reynald Bamba",
-    photo: "/images/reynald-bamba.jpg",
+    photo: "/images/rent-ph.png", // default image for Rent PH
     bio: "Founder, RNB Management Consultancy and RNBP Cleaning Services",
   },
   {
+    name: "Anthony Leuterio",
+    photo: "/images/boss-ton.jpg", // existing image used in Webinar page
+    bio: "Founder of Filipino Homes and Leuterio Realty & Brokerage",
+  },
+  {
     name: "Eduardo Manahan",
-    photo: "/images/eduardo-manahan.jpg",
+    photo: "/images/rent-ph.png", // default image for Rent PH
     bio: "Chairman of BOMAP and Director of WislerV Cooperative. In‑house lecturer of REAP Academy, Inquirer Academy, and Prolinks Asia Education System on Property Management.",
   },
 ];
@@ -749,7 +760,7 @@ function VideoScreen({
             />
           </Box>
 
-          {/* Previous / title / Next video navigation */}
+          {/* Previous / title / Prominent next control */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 1, py: 1 }}>
             <IconButton
               onClick={onPrevVideo}
@@ -763,20 +774,61 @@ function VideoScreen({
               sx={{
                 color: "#c9a84c",
                 fontWeight: 700,
-                fontSize: "0.85rem",
+                fontSize: "0.95rem",
                 flex: 1,
+                pr: 1,
               }}
+              title={currentVideo.title}
             >
               {currentVideo.title}
             </Typography>
 
-            <IconButton
+            <Box
               onClick={onNextVideo}
-              disabled={videoIndex === totalVideos - 1}
-              sx={{ color: "#7eb8ff", p: 1 }}
+              role="button"
+              aria-label="Next video"
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 0.9,
+                px: 2.2,
+                py: 0.8,
+                borderRadius: "999px",
+                cursor: videoIndex === totalVideos - 1 ? "not-allowed" : "pointer",
+                userSelect: "none",
+                background:
+                  videoIndex === totalVideos - 1
+                    ? "rgba(255,255,255,0.06)"
+                    : "linear-gradient(135deg, rgba(201,168,76,0.28), rgba(240,217,138,0.18))",
+                border:
+                  videoIndex === totalVideos - 1
+                    ? "1px solid rgba(255,255,255,0.12)"
+                    : "1px solid rgba(240,217,138,0.5)",
+                color: videoIndex === totalVideos - 1 ? "rgba(255,255,255,0.5)" : "#f0d98a",
+                transition: "transform .2s, box-shadow .2s",
+                boxShadow:
+                  videoIndex === totalVideos - 1
+                    ? "none"
+                    : "0 0 14px rgba(240,217,138,.28)",
+                animation:
+                  videoIndex === totalVideos - 1
+                    ? "none"
+                    : `${nudgeRight} 1.6s ease-in-out infinite`,
+                pointerEvents: videoIndex === totalVideos - 1 ? "none" : "auto",
+                '&:hover': {
+                  transform: videoIndex === totalVideos - 1 ? "none" : "translateX(2px)",
+                  boxShadow:
+                    videoIndex === totalVideos - 1
+                      ? "none"
+                      : "0 0 18px rgba(240,217,138,.38)",
+                },
+              }}
             >
-              <ArrowForwardRounded fontSize="small" />
-            </IconButton>
+              <Typography sx={{ fontWeight: 800, fontSize: "0.9rem", letterSpacing: "0.1em" }}>
+                NEXT
+              </Typography>
+              <ArrowForwardRounded sx={{ fontSize: 22 }} />
+            </Box>
           </Box>
         </Box>
 
