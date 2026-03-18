@@ -14,10 +14,11 @@ export default function NavbarLayout({ children }: { children: ReactNode }) {
             justifyContent: "space-between",
             alignItems: "center",
             px: 5,
-            py: 2,
+            py: 3,
             // mb: -14,
             zIndex: 2,
             position: "relative",
+            background: "transparent",
           }}
         >
           <Box>
