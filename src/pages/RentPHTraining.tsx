@@ -8,11 +8,12 @@
 
 import useExternalAxios from "../hooks/useExternalAxios";
 import { useEffect, useRef, useState } from "react";
-import { Box, Typography, IconButton } from "@mui/material";
+import { Box, Typography, IconButton, Avatar } from "@mui/material";
 import {
   PlayArrowRounded,
   ArrowBackRounded,
   ArrowForwardRounded,
+  CheckCircleRounded,
 } from "@mui/icons-material";
 import { keyframes } from "@mui/material";
 import { useAppProvider } from "../providers/AppProvider";
@@ -61,7 +62,11 @@ const RENT_COURSE: Course = {
   title: "Become a Rent Manager",
   description: "",
   learning_descriptions: [],
-  speaker: { name: "Rent PH", avatar: "/images/rent-ph.png", contact: "" },
+  speaker: {
+    name: "Reynald Bamba & Eduardo Manahan",
+    avatar: "/images/rent-ph.png",
+    contact: "",
+  },
   presentation: "",
   video: "",
   status: "pending",
@@ -110,6 +115,29 @@ const modulePillSx = {
   background: "rgba(25,118,210,0.12)",
   mb: 2,
 };
+
+/** "What you'll learn" bullet points for the landing screen */
+const WHAT_YOU_LEARN = [
+  "Overview of property rental management in the Philippines",
+  "Roles and key responsibilities of a Rent Manager",
+  "Prospecting, tenant relations, and documentation basics",
+  "Essential leasing compliance and reporting practices",
+  "Practical tips, workflows, and industry best practices",
+];
+
+/** Speakers data — add/change image paths as needed */
+const SPEAKERS = [
+  {
+    name: "Reynald Bamba",
+    photo: "/images/reynald-bamba.jpg",
+    bio: "Founder, RNB Management Consultancy and RNBP Cleaning Services",
+  },
+  {
+    name: "Eduardo Manahan",
+    photo: "/images/eduardo-manahan.jpg",
+    bio: "Chairman of BOMAP and Director of WislerV Cooperative. In‑house lecturer of REAP Academy, Inquirer Academy, and Prolinks Asia Education System on Property Management.",
+  },
+];
 
 /** The animated gradient title text (used on both landing and video screens) */
 const gradientTitleSx = {
@@ -529,6 +557,8 @@ export default function RentPHTraining() {
               exam={examQ}
               course={RENT_COURSE}
               customSubmit={handleExamSubmit}
+              passScore={12}
+              speakers={SPEAKERS.map((s) => ({ name: s.name, avatar: s.photo }))}
             />
           ) : (
             <PageLoader title="loading questions" />
@@ -584,10 +614,21 @@ function LandingScreen({ onStart }: LandingScreenProps) {
           Complete this module to unlock your Rent Manager opportunities and
           learn essential rental property management skills.
         </Typography>
+
+        {/* Speakers card (below the title/description) */}
+        <SpeakersCard sx={{ mt: 3 }} />
       </Box>
 
-      {/* Right side: CTA button */}
-      <Box sx={{ alignSelf: { xs: "flex-start", md: "center" } }}>
+      {/* Right side: CTA + What you'll learn */}
+      <Box
+        sx={{
+          alignSelf: { xs: "flex-start", md: "center" },
+          display: "flex",
+          flexDirection: "column",
+          gap: 2.5,
+          minWidth: { md: 360 },
+        }}
+      >
         <Box onClick={onStart} sx={ctaButtonBaseSx}>
           <PlayArrowRounded sx={{ fontSize: 20, color: "#ffffff" }} />
           <Typography
@@ -602,6 +643,8 @@ function LandingScreen({ onStart }: LandingScreenProps) {
             Start Learning Now
           </Typography>
         </Box>
+
+        <WhatYouLearnCard items={WHAT_YOU_LEARN} />
       </Box>
     </Box>
   );
@@ -825,6 +868,84 @@ function AnimatedTitle({ fontSize }: { fontSize: object }) {
         Become a Rent Manager
       </Typography>
       <Box sx={accentLineSx} />
+    </Box>
+  );
+}
+
+// ── Extra UI blocks for landing screen ──
+
+function SpeakersCard({ sx = {} as any }: { sx?: any }) {
+  return (
+    <Box
+      sx={{
+        mt: 2,
+        p: 2,
+        borderRadius: 2,
+        background: "rgba(255,255,255,0.04)",
+        border: "1px solid rgba(255,255,255,0.08)",
+        backdropFilter: "blur(10px)",
+        ...sx,
+      }}
+    >
+      <Typography sx={{ fontWeight: 800, color: "#7eb8ff", mb: 1 }}>
+        Speakers
+      </Typography>
+
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
+        {SPEAKERS.map((sp) => (
+          <Box
+            key={sp.name}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+              p: 1.5,
+              borderRadius: 2,
+              background: "rgba(255,255,255,0.02)",
+              border: "1px solid rgba(255,255,255,0.08)",
+            }}
+         >
+            <Avatar
+              src={sp.photo}
+              alt={sp.name}
+              sx={{ width: { xs: 56, md: 64 }, height: { xs: 56, md: 64 }, flexShrink: 0, border: "2px solid rgba(25,118,210,0.45)" }}
+            />
+            <Box>
+              <Typography sx={{ fontWeight: 800, color: "#ffffff", fontSize: { xs: "1.05rem", md: "1.2rem" }, lineHeight: 1.15 }}>
+                {sp.name.toUpperCase()}
+              </Typography>
+              <Typography sx={{ color: "rgba(255,255,255,0.72)", mt: 0.3 }}>{sp.bio}</Typography>
+            </Box>
+          </Box>
+        ))}
+      </Box>
+    </Box>
+  );
+}
+
+function WhatYouLearnCard({ items }: { items: string[] }) {
+  return (
+    <Box
+      sx={{
+        p: 2,
+        borderRadius: 2,
+        background: "rgba(255,255,255,0.04)",
+        border: "1px solid rgba(255,255,255,0.08)",
+        backdropFilter: "blur(12px)",
+        minWidth: 320,
+      }}
+    >
+      <Typography sx={{ fontWeight: 900, mb: 1.2, color: "#ffffff" }}>
+        What you'll learn
+      </Typography>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 0.9 }}>
+        {items.map((it) => (
+          <Box key={it} sx={{ display: "flex", gap: 1, alignItems: "flex-start" }}>
+            <CheckCircleRounded sx={{ color: "#66bb6a", fontSize: 18, mt: "3px" }} />
+            <Typography sx={{ color: "rgba(255,255,255,0.85)" }}>{it}</Typography>
+          </Box>
+        ))}
+      </Box>
     </Box>
   );
 }
