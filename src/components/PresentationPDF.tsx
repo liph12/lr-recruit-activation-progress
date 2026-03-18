@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { Box, Typography, IconButton } from "@mui/material";
-import { ChevronLeft, ChevronRight } from "@mui/icons-material";
+import { ChevronLeft, ChevronRight, Fullscreen, FullscreenExit } from "@mui/icons-material";
 import { useAppProvider } from "../providers/AppProvider";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
@@ -10,12 +10,14 @@ type PDFLoadSuccess = {
   numPages: number;
 };
 
-export default function PresentationPDF({ document }: { document: string }) {
+export default function PresentationPDF({ src }: { src: string }) {
   const { desktop } = useAppProvider();
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(1);
+  const rootRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [pageWidth, setPageWidth] = useState<number>(desktop ? 900 : 360);
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
 
   const onDocumentLoadSuccess = ({ numPages }: PDFLoadSuccess) => {
     setNumPages(numPages);
@@ -41,8 +43,30 @@ export default function PresentationPDF({ document }: { document: string }) {
     return () => ro.disconnect();
   }, []);
 
+  useEffect(() => {
+    const onFsChange = () => {
+      setIsFullscreen(Boolean(window.document.fullscreenElement));
+    };
+    window.document.addEventListener("fullscreenchange", onFsChange);
+    return () => window.document.removeEventListener("fullscreenchange", onFsChange);
+  }, []);
+
+  const toggleFullscreen = async () => {
+    const el = rootRef.current;
+    if (!el) return;
+    try {
+      if (!window.document.fullscreenElement) {
+        await el.requestFullscreen();
+      } else {
+        await window.document.exitFullscreen();
+      }
+    } catch {
+      // Ignore Fullscreen API errors (user gesture requirements, etc.)
+    }
+  };
+
   return (
-    <Box textAlign="center" sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+    <Box ref={rootRef} textAlign="center" sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <Box
         sx={{
           my: 2,
@@ -87,6 +111,23 @@ export default function PresentationPDF({ document }: { document: string }) {
         >
           <ChevronRight />
         </IconButton>
+
+        <IconButton
+          onClick={toggleFullscreen}
+          sx={{
+            ml: 2,
+            color: "#c9a84c",
+            bgcolor: "rgba(201,168,76,0.08)",
+            border: "1px solid rgba(201,168,76,0.18)",
+            "&:hover": {
+              bgcolor: "rgba(201,168,76,0.18)",
+              boxShadow: "0 6px 18px rgba(201,168,76,0.25)",
+            },
+          }}
+          aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+        >
+          {isFullscreen ? <FullscreenExit /> : <Fullscreen />}
+        </IconButton>
       </Box>
 
       <Box
@@ -106,7 +147,7 @@ export default function PresentationPDF({ document }: { document: string }) {
           justifyContent: "center",
         }}
       >
-        <Document file={document} onLoadSuccess={onDocumentLoadSuccess}>
+        <Document file={src} onLoadSuccess={onDocumentLoadSuccess}>
           <Page
             pageNumber={pageNumber}
             width={pageWidth}

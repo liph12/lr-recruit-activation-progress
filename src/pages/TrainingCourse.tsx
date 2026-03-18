@@ -490,7 +490,7 @@ export default function TrainingCourse({ course, exam }: CourseProps) {
                   }}
                 >
                   <PresentationPDF
-                    document={`https://socket.leuteriorealty.com/proxy?url=${course.presentation}`}
+                    src={`https://socket.leuteriorealty.com/proxy?url=${course.presentation}`}
                   />
                 </Box>
               )}
