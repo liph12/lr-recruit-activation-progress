@@ -9,7 +9,11 @@
 import useExternalAxios from "../hooks/useExternalAxios";
 import { useEffect, useRef, useState } from "react";
 import { Box, Typography, IconButton } from "@mui/material";
-import { PlayArrowRounded, ArrowBackRounded, ArrowForwardRounded } from "@mui/icons-material";
+import {
+  PlayArrowRounded,
+  ArrowBackRounded,
+  ArrowForwardRounded,
+} from "@mui/icons-material";
 import { keyframes } from "@mui/material";
 import { useAppProvider } from "../providers/AppProvider";
 import PageLoader from "../components/PageLoader";
@@ -18,19 +22,17 @@ import type { Course, Questionaire, ChoiceValue } from "../types/course";
 import type { ExamResult as ExamResultType } from "../components/ExamResultModal";
 import Exam from "./Exam";
 
-
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 /** Raw question shape returned by the API */
 interface Question {
   id: number;
   question: string;
-  choices: string[]; 
+  choices: string[];
 }
 
 /** A single answer the user submits: which question number + which letter (A/B/C/D) */
 type AnswerSubmit = { question: number; answer: ChoiceValue };
-
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -66,7 +68,6 @@ const RENT_COURSE: Course = {
   scores: [],
 };
 
-
 // ─── Animations (MUI keyframes) ───────────────────────────────────────────────
 
 /** Slides content up + fades it in — used on first render */
@@ -92,7 +93,6 @@ const softPulse = keyframes`
   0%, 100% { box-shadow: 0 8px 32px rgba(25,118,210,0.35); }
   50%       { box-shadow: 0 12px 48px rgba(25,118,210,0.55); }
 `;
-
 
 // ─── Shared style objects ─────────────────────────────────────────────────────
 // Keeping repeated sx props as plain objects avoids duplication and makes
@@ -143,7 +143,8 @@ const ctaButtonBaseSx = {
   borderRadius: "12px",
   cursor: "pointer",
   userSelect: "none",
-  background: "linear-gradient(135deg,rgba(30,136,229,0.35),rgba(13,71,161,0.25))",
+  background:
+    "linear-gradient(135deg,rgba(30,136,229,0.35),rgba(13,71,161,0.25))",
   border: "1px solid rgba(30,136,229,0.4)",
   animation: `${softPulse} 3s ease-in-out infinite`,
   transition: "all 0.3s cubic-bezier(0.34,1.56,0.64,1)",
@@ -157,7 +158,6 @@ const ctaButtonBaseSx = {
   },
 };
 
-
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function RentPHTraining() {
@@ -165,11 +165,11 @@ export default function RentPHTraining() {
   const axios = useExternalAxios();
 
   // ── State ──
-  const [exam, setExam] = useState<Question[]>([]);             // raw API data (kept for reference)
-  const [examQ, setExamQ] = useState<Questionaire[]>([]);       // normalized data used by <Exam />
+  const [exam, setExam] = useState<Question[]>([]); // raw API data (kept for reference)
+  const [examQ, setExamQ] = useState<Questionaire[]>([]); // normalized data used by <Exam />
   const [results, setResults] = useState<ExamResultType[]>([]);
 
-  const [loading, setLoading] = useState(false);                // shows PageLoader while fetching
+  const [loading, setLoading] = useState(false); // shows PageLoader while fetching
   const [showResultModal, setShowResultModal] = useState(false);
 
   // Screen flow flags:
@@ -185,14 +185,12 @@ export default function RentPHTraining() {
   // Canvas ref for the animated background (floating blobs)
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-
   // ── Derived values ──
 
   const currentVideo = TRAINING_VIDEOS[videoIndex];
 
   // YouTube embeds use <iframe>; direct mp4 links use <video>
   const isYouTube = /youtube\.com\/embed/.test(currentVideo.video);
-
 
   // ── Helpers ──
 
@@ -203,7 +201,12 @@ export default function RentPHTraining() {
    * We need:        { question (number), answer (letter A/B/C/D), correct }
    */
   const normalizeResults = (
-    data: Array<{ id: number; question: string; choice: string; correct: boolean }>
+    data: Array<{
+      id: number;
+      question: string;
+      choice: string;
+      correct: boolean;
+    }>
   ): ExamResultType[] => {
     return data.map((result) => {
       // Find the matching question object using either id or question text
@@ -213,7 +216,8 @@ export default function RentPHTraining() {
 
       // Convert the choice description back to its letter value (A/B/C/D)
       const choiceLetter =
-        matchedQuestion?.choices.find((c) => c.description === result.choice)?.value ?? "A";
+        matchedQuestion?.choices.find((c) => c.description === result.choice)
+          ?.value ?? "A";
 
       return {
         question: matchedQuestion ? matchedQuestion.question_number : 0,
@@ -236,9 +240,12 @@ export default function RentPHTraining() {
   ) => {
     // Build the payload the API expects: { id, question (text), choice (text) }
     const payload = answers.map((answer) => {
-      const matchedQuestion = examQ.find((q) => q.question_number === answer.question);
+      const matchedQuestion = examQ.find(
+        (q) => q.question_number === answer.question
+      );
       const choiceDescription =
-        matchedQuestion?.choices.find((c) => c.value === answer.answer)?.description ?? "";
+        matchedQuestion?.choices.find((c) => c.value === answer.answer)
+          ?.description ?? "";
 
       return {
         id: matchedQuestion?.id,
@@ -250,7 +257,7 @@ export default function RentPHTraining() {
     try {
       const response = await axios.post(
         "/integration/agent/submit-rent-exam",
-        { answers: payload },
+        { answers: payload, email: user?.email },
         { headers: { "Content-Type": "application/json" } }
       );
 
@@ -270,7 +277,6 @@ export default function RentPHTraining() {
       throw error; // let <Exam /> handle the error state
     }
   };
-
 
   // ── Side Effects ──
 
@@ -292,13 +298,13 @@ export default function RentPHTraining() {
         const normalized: Questionaire[] = rawQuestions.map((q, index) => ({
           id: q.id,
           question: q.question,
-          question_number: index + 1,  // 1-based numbering
+          question_number: index + 1, // 1-based numbering
           choices: q.choices
-            .slice(0, 4)                // only use first 4 choices
+            .slice(0, 4) // only use first 4 choices
             .map((choiceText, i) => ({
               id: i + 1,
               description: choiceText,
-              value: "ABCD"[i] as ChoiceValue,   // map index → A, B, C, D
+              value: "ABCD"[i] as ChoiceValue, // map index → A, B, C, D
             })),
         }));
 
@@ -348,10 +354,42 @@ export default function RentPHTraining() {
     // Each blob: normalized position (0–1), radius (fraction of canvas size),
     // phase offsets (ox/oy) and speed for the sine/cosine drift animation
     const blobs = [
-      { x: 0.15, y: 0.15, r: 0.55, ox: 0, oy: 0, speed: 0.000035, color: [0, 85, 179]   as [number,number,number] },
-      { x: 0.82, y: 0.70, r: 0.50, ox: 1, oy: 2, speed: 0.000025, color: [0, 55, 140]   as [number,number,number] },
-      { x: 0.50, y: 0.50, r: 0.42, ox: 2, oy: 1, speed: 0.00002,  color: [220, 235, 255] as [number,number,number] },
-      { x: 0.20, y: 0.80, r: 0.38, ox: 3, oy: 3, speed: 0.000015, color: [200, 218, 255] as [number,number,number] },
+      {
+        x: 0.15,
+        y: 0.15,
+        r: 0.55,
+        ox: 0,
+        oy: 0,
+        speed: 0.000035,
+        color: [0, 85, 179] as [number, number, number],
+      },
+      {
+        x: 0.82,
+        y: 0.7,
+        r: 0.5,
+        ox: 1,
+        oy: 2,
+        speed: 0.000025,
+        color: [0, 55, 140] as [number, number, number],
+      },
+      {
+        x: 0.5,
+        y: 0.5,
+        r: 0.42,
+        ox: 2,
+        oy: 1,
+        speed: 0.00002,
+        color: [220, 235, 255] as [number, number, number],
+      },
+      {
+        x: 0.2,
+        y: 0.8,
+        r: 0.38,
+        ox: 3,
+        oy: 3,
+        speed: 0.000015,
+        color: [200, 218, 255] as [number, number, number],
+      },
     ];
 
     let tick = 0;
@@ -367,8 +405,10 @@ export default function RentPHTraining() {
 
       // Draw each blob as a radial gradient that slowly drifts
       blobs.forEach((blob) => {
-        const cx = (blob.x + Math.sin(tick * blob.speed * 1000 + blob.ox) * 0.1) * W;
-        const cy = (blob.y + Math.cos(tick * blob.speed * 800  + blob.oy) * 0.08) * H;
+        const cx =
+          (blob.x + Math.sin(tick * blob.speed * 1000 + blob.ox) * 0.1) * W;
+        const cy =
+          (blob.y + Math.cos(tick * blob.speed * 800 + blob.oy) * 0.08) * H;
         const radius = blob.r * Math.max(W, H);
         const [r, g, b] = blob.color;
 
@@ -376,9 +416,12 @@ export default function RentPHTraining() {
         const peakOpacity = r > 150 ? 0.06 : 0.2;
 
         const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
-        gradient.addColorStop(0,    `rgba(${r},${g},${b},${peakOpacity})`);
-        gradient.addColorStop(0.45, `rgba(${r},${g},${b},${peakOpacity * 0.35})`);
-        gradient.addColorStop(1,    `rgba(${r},${g},${b},0)`);
+        gradient.addColorStop(0, `rgba(${r},${g},${b},${peakOpacity})`);
+        gradient.addColorStop(
+          0.45,
+          `rgba(${r},${g},${b},${peakOpacity * 0.35})`
+        );
+        gradient.addColorStop(1, `rgba(${r},${g},${b},0)`);
 
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, W, H);
@@ -397,7 +440,6 @@ export default function RentPHTraining() {
     };
   }, []);
 
-
   // ── Reset helpers ──
   // Called by ExamResultModal buttons to go back to a previous screen
 
@@ -415,15 +457,14 @@ export default function RentPHTraining() {
     setVideoIndex(0);
   };
 
-
   // ── Early return ──
   if (loading) return <PageLoader title="loading exam" />;
 
-
   // ─── Render ────────────────────────────────────────────────────────────────
   return (
-    <Box sx={{ minHeight: "100vh", position: "relative", background: "#071020" }}>
-
+    <Box
+      sx={{ minHeight: "100vh", position: "relative", background: "#071020" }}
+    >
       {/* Google Fonts import — Outfit is used everywhere */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
@@ -434,9 +475,12 @@ export default function RentPHTraining() {
       <canvas
         ref={canvasRef}
         style={{
-          position: "absolute", inset: 0,
-          width: "100%", height: "100%",
-          zIndex: 0, pointerEvents: "none",
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 0,
+          pointerEvents: "none",
         }}
       />
 
@@ -451,14 +495,16 @@ export default function RentPHTraining() {
           zIndex: 1,
           ...(isTaking && !showExam
             ? { maxWidth: "100%", mx: 0, px: 0, py: 0 }
-            : { maxWidth: 1100, mx: "auto", px: { xs: 2, md: 4 }, py: { xs: 5, md: 7 } }),
+            : {
+                maxWidth: 1100,
+                mx: "auto",
+                px: { xs: 2, md: 4 },
+                py: { xs: 5, md: 7 },
+              }),
         }}
       >
-
         {/* ── SCREEN 1: Landing ─────────────────────────────────────────── */}
-        {!isTaking && (
-          <LandingScreen onStart={() => setIsTaking(true)} />
-        )}
+        {!isTaking && <LandingScreen onStart={() => setIsTaking(true)} />}
 
         {/* ── SCREEN 2: Video ───────────────────────────────────────────── */}
         {isTaking && !showExam && (
@@ -468,18 +514,25 @@ export default function RentPHTraining() {
             videoIndex={videoIndex}
             totalVideos={TRAINING_VIDEOS.length}
             onPrevVideo={() => setVideoIndex((v) => Math.max(0, v - 1))}
-            onNextVideo={() => setVideoIndex((v) => Math.min(TRAINING_VIDEOS.length - 1, v + 1))}
+            onNextVideo={() =>
+              setVideoIndex((v) => Math.min(TRAINING_VIDEOS.length - 1, v + 1))
+            }
             onStartQuiz={() => setShowExam(true)}
           />
         )}
 
         {/* ── SCREEN 3: Exam ────────────────────────────────────────────── */}
-        {isTaking && showExam && (
-          examQ.length > 0
-            ? <Exam exam={examQ} course={RENT_COURSE} customSubmit={handleExamSubmit} />
-            : <PageLoader title="loading questions" />
-        )}
-
+        {isTaking &&
+          showExam &&
+          (examQ.length > 0 ? (
+            <Exam
+              exam={examQ}
+              course={RENT_COURSE}
+              customSubmit={handleExamSubmit}
+            />
+          ) : (
+            <PageLoader title="loading questions" />
+          ))}
       </Box>
 
       {/* Result modal — shown after exam is submitted (controlled by <Exam />) */}
@@ -494,7 +547,6 @@ export default function RentPHTraining() {
     </Box>
   );
 }
-
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 // Extracted from the original monolith to make each screen easy to read/reason about.
@@ -520,9 +572,17 @@ function LandingScreen({ onStart }: LandingScreenProps) {
       {/* Left side: module badge + title + description */}
       <Box sx={{ flex: 1, minWidth: 0, pr: { md: 3 } }}>
         <ModuleBadge />
-        <AnimatedTitle fontSize={{ xs: "clamp(2.2rem,7vw,3rem)", md: "clamp(3.2rem,3.6vw,3.6rem)" }} />
-        <Typography sx={{ color: "rgba(255,255,255,0.72)", mt: 2, maxWidth: 760 }}>
-          Complete this module to unlock your Rent Manager opportunities and learn essential rental property management skills.
+        <AnimatedTitle
+          fontSize={{
+            xs: "clamp(2.2rem,7vw,3rem)",
+            md: "clamp(3.2rem,3.6vw,3.6rem)",
+          }}
+        />
+        <Typography
+          sx={{ color: "rgba(255,255,255,0.72)", mt: 2, maxWidth: 760 }}
+        >
+          Complete this module to unlock your Rent Manager opportunities and
+          learn essential rental property management skills.
         </Typography>
       </Box>
 
@@ -530,7 +590,15 @@ function LandingScreen({ onStart }: LandingScreenProps) {
       <Box sx={{ alignSelf: { xs: "flex-start", md: "center" } }}>
         <Box onClick={onStart} sx={ctaButtonBaseSx}>
           <PlayArrowRounded sx={{ fontSize: 20, color: "#ffffff" }} />
-          <Typography sx={{ fontWeight: 800, fontSize: "1.05rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "#ffffff" }}>
+          <Typography
+            sx={{
+              fontWeight: 800,
+              fontSize: "1.05rem",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              color: "#ffffff",
+            }}
+          >
             Start Learning Now
           </Typography>
         </Box>
@@ -539,11 +607,10 @@ function LandingScreen({ onStart }: LandingScreenProps) {
   );
 }
 
-
 // ── Video Screen ──
 
 interface VideoScreenProps {
-  currentVideo: typeof TRAINING_VIDEOS[number];
+  currentVideo: (typeof TRAINING_VIDEOS)[number];
   isYouTube: boolean;
   videoIndex: number;
   totalVideos: number;
@@ -573,7 +640,6 @@ function VideoScreen({
         flexDirection: "column",
       }}
     >
-
       <Box
         sx={{
           position: "relative",
@@ -601,7 +667,12 @@ function VideoScreen({
           }}
         >
           <ModuleBadge compact />
-          <AnimatedTitle fontSize={{ xs: "clamp(1.8rem,7vw,2.4rem)", md: "clamp(3.5rem,3.8vw,3rem)" }} />
+          <AnimatedTitle
+            fontSize={{
+              xs: "clamp(1.8rem,7vw,2.4rem)",
+              md: "clamp(3.5rem,3.8vw,3rem)",
+            }}
+          />
 
           {/* "Ready to Take Quiz?" button */}
           <Box
@@ -614,12 +685,24 @@ function VideoScreen({
             }}
           >
             <PlayArrowRounded sx={{ fontSize: 20, color: "#fff" }} />
-            <Typography sx={{ fontWeight: 800, fontSize: "1.4rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "#fff" }}>
+            <Typography
+              sx={{
+                fontWeight: 800,
+                fontSize: "1.4rem",
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                color: "#fff",
+              }}
+            >
               Ready to Take Quiz?
             </Typography>
             <ArrowForwardRounded
               className="cta-arrow"
-              sx={{ fontSize: 15, color: "rgba(255,255,255,0.7)", transition: "transform 0.2s" }}
+              sx={{
+                fontSize: 15,
+                color: "rgba(255,255,255,0.7)",
+                transition: "transform 0.2s",
+              }}
             />
           </Box>
 
@@ -633,7 +716,14 @@ function VideoScreen({
               <ArrowBackRounded fontSize="small" />
             </IconButton>
 
-            <Typography sx={{ color: "#c9a84c", fontWeight: 700, fontSize: "0.85rem", flex: 1 }}>
+            <Typography
+              sx={{
+                color: "#c9a84c",
+                fontWeight: 700,
+                fontSize: "0.85rem",
+                flex: 1,
+              }}
+            >
               {currentVideo.title}
             </Typography>
 
@@ -678,7 +768,11 @@ function VideoScreen({
                 style={{ width: "100%", height: "100%", border: 0 }}
               />
             ) : (
-              <video src={currentVideo.video} style={{ width: "100%", height: "100%" }} controls />
+              <video
+                src={currentVideo.video}
+                style={{ width: "100%", height: "100%" }}
+                controls
+              />
             )}
           </Box>
         </Box>
@@ -687,15 +781,36 @@ function VideoScreen({
   );
 }
 
-
 // ─── Tiny reusable pieces ─────────────────────────────────────────────────────
 
 /** The "• MODULE 12" pill badge */
 function ModuleBadge({ compact = false }: { compact?: boolean }) {
   return (
-    <Box sx={{ ...modulePillSx, px: compact ? 1.4 : 1.6, py: compact ? 0.4 : 0.5, mb: compact ? 0 : 2 }}>
-      <Box sx={{ width: compact ? 6 : 7, height: compact ? 6 : 7, borderRadius: "50%", background: "#7eb8ff" }} />
-      <Typography sx={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "#7eb8ff" }}>
+    <Box
+      sx={{
+        ...modulePillSx,
+        px: compact ? 1.4 : 1.6,
+        py: compact ? 0.4 : 0.5,
+        mb: compact ? 0 : 2,
+      }}
+    >
+      <Box
+        sx={{
+          width: compact ? 6 : 7,
+          height: compact ? 6 : 7,
+          borderRadius: "50%",
+          background: "#7eb8ff",
+        }}
+      />
+      <Typography
+        sx={{
+          fontSize: "0.7rem",
+          fontWeight: 700,
+          letterSpacing: "0.14em",
+          textTransform: "uppercase",
+          color: "#7eb8ff",
+        }}
+      >
         Module 12
       </Typography>
     </Box>
