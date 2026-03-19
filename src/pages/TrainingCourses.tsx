@@ -166,13 +166,13 @@ export default function TrainingCourses() {
       const res = await axios.post(
         `/integration/agent/${externalUser?.id}/reupload-endorsement`,
         fd,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        { headers: { "Content-Type": "multipart/form-data" } },
       );
       const { member } = res.data;
       setExternalUser((prev) =>
         prev
           ? { ...prev, requiresEndorsement: member?.endorsement === null }
-          : prev
+          : prev,
       );
       setUploaded(true);
     } catch {
@@ -197,7 +197,7 @@ export default function TrainingCourses() {
                 : `https://leuteriorealty.com/memberfiles/${user?.agent_id}/${user?.photo}`,
             invitedBy: user?.sponsor.name,
           },
-          { headers: { "Content-Type": "application/json" } }
+          { headers: { "Content-Type": "application/json" } },
         );
         const data = res.data;
         setExternalUser({
@@ -218,7 +218,7 @@ export default function TrainingCourses() {
       try {
         setLoading(true);
         const res = await axios.get(
-          `/integration/agent/current-courses?email=${externalUser.email}`
+          `/integration/agent/current-courses?email=${externalUser.email}`,
         );
         const { data } = res.data;
         const tmp: Course[] = data;
@@ -249,14 +249,14 @@ export default function TrainingCourses() {
                 ? index === c.id
                   ? "next"
                   : certCount === c.id
-                  ? "done"
-                  : certCount < c.id
-                  ? "pending"
-                  : "done"
+                    ? "done"
+                    : certCount < c.id
+                      ? "pending"
+                      : "done"
                 : certCount === k
-                ? "next"
-                : "pending",
-          }))
+                  ? "next"
+                  : "pending",
+          })),
         );
       } catch {
         /* to do */
@@ -462,13 +462,13 @@ export default function TrainingCourses() {
                   borderColor: dragOver
                     ? "rgba(126,184,255,0.7)"
                     : endorsement
-                    ? "rgba(76,175,80,0.45)"
-                    : "rgba(255,255,255,0.14)",
+                      ? "rgba(76,175,80,0.45)"
+                      : "rgba(255,255,255,0.14)",
                   background: dragOver
                     ? "rgba(126,184,255,0.06)"
                     : endorsement
-                    ? "rgba(76,175,80,0.05)"
-                    : "rgba(255,255,255,0.03)",
+                      ? "rgba(76,175,80,0.05)"
+                      : "rgba(255,255,255,0.03)",
                   backdropFilter: "blur(8px)",
                   transition: "all 0.3s ease",
                   "&:hover": {
@@ -549,14 +549,14 @@ export default function TrainingCourses() {
                   background: uploaded
                     ? "rgba(76,175,80,0.2)"
                     : endorsement
-                    ? "linear-gradient(135deg,#1e88e5 0%,#0d47a1 100%)"
-                    : "rgba(255,255,255,0.05)",
+                      ? "linear-gradient(135deg,#1e88e5 0%,#0d47a1 100%)"
+                      : "rgba(255,255,255,0.05)",
                   border: "1px solid",
                   borderColor: uploaded
                     ? "rgba(76,175,80,0.45)"
                     : endorsement
-                    ? "rgba(100,180,255,0.35)"
-                    : "rgba(255,255,255,0.08)",
+                      ? "rgba(100,180,255,0.35)"
+                      : "rgba(255,255,255,0.08)",
                   opacity: !endorsement && !uploaded ? 0.5 : 1,
                   animation:
                     endorsement && !uploading && !uploaded
@@ -601,8 +601,8 @@ export default function TrainingCourses() {
                   {uploading
                     ? "Uploading…"
                     : uploaded
-                    ? "Uploaded!"
-                    : "Upload Endorsement"}
+                      ? "Uploaded!"
+                      : "Upload Endorsement"}
                 </Typography>
               </Box>
             </Box>
@@ -623,8 +623,8 @@ export default function TrainingCourses() {
               const trainingPath = isRent
                 ? "/welcome/fire/training/rent"
                 : isLocked
-                ? undefined
-                : `/welcome/fire/training/${c.id}`;
+                  ? undefined
+                  : `/welcome/fire/training/${c.id}`;
 
               return (
                 <Grid
@@ -659,7 +659,7 @@ export default function TrainingCourses() {
                       transition: "all 0.3s cubic-bezier(0.34,1.56,0.64,1)",
                       textDecoration: "none",
                       animation: `${fadeInUp} 0.5s ease ${(k * 0.05).toFixed(
-                        2
+                        2,
                       )}s both`,
                     }}
                   >
@@ -671,8 +671,8 @@ export default function TrainingCourses() {
                         background: isDone
                           ? "linear-gradient(90deg,#4caf50,#81c784)"
                           : isNext
-                          ? "linear-gradient(90deg,#1e88e5,#7eb8ff)"
-                          : "rgba(255,255,255,0.06)",
+                            ? "linear-gradient(90deg,#1e88e5,#7eb8ff)"
+                            : "rgba(255,255,255,0.06)",
                       }}
                     />
 
@@ -808,20 +808,20 @@ export default function TrainingCourses() {
                           background: isLocked
                             ? "rgba(255,255,255,0.04)"
                             : isDone
-                            ? isHovered
-                              ? "rgba(76,175,80,0.2)"
-                              : "rgba(76,175,80,0.1)"
-                            : isHovered
-                            ? "linear-gradient(135deg,#1e88e5,#0d47a1)"
-                            : "rgba(255,255,255,0.08)",
+                              ? isHovered
+                                ? "rgba(76,175,80,0.2)"
+                                : "rgba(76,175,80,0.1)"
+                              : isHovered
+                                ? "linear-gradient(135deg,#1e88e5,#0d47a1)"
+                                : "rgba(255,255,255,0.08)",
                           border: "1px solid",
                           borderColor: isLocked
                             ? "rgba(255,255,255,0.06)"
                             : isDone
-                            ? "rgba(76,175,80,0.3)"
-                            : isHovered
-                            ? "rgba(126,184,255,0.5)"
-                            : "rgba(255,255,255,0.12)",
+                              ? "rgba(76,175,80,0.3)"
+                              : isHovered
+                                ? "rgba(126,184,255,0.5)"
+                                : "rgba(255,255,255,0.12)",
                           boxShadow:
                             isHovered && !isLocked
                               ? isDone
@@ -855,8 +855,8 @@ export default function TrainingCourses() {
                             color: isLocked
                               ? "rgba(255,255,255,0.2)"
                               : isDone
-                              ? "#66bb6a"
-                              : "#ffffff",
+                                ? "#66bb6a"
+                                : "#ffffff",
                             letterSpacing: "0.08em",
                             textTransform: "uppercase",
                             fontFamily: OUTFIT,
@@ -865,8 +865,8 @@ export default function TrainingCourses() {
                           {isLocked
                             ? "Locked"
                             : isDone
-                            ? "Review"
-                            : "Take Course"}
+                              ? "Review"
+                              : "Take Course"}
                         </Typography>
                         {!isLocked && (
                           <ArrowForwardRounded
