@@ -544,7 +544,7 @@ export default function Welcome() {
               // borderBottom: "1px solid rgba(201,168,76,0.2)",
               width: "100%",
               overflow: "hidden",
-              minHeight: 60,
+              minHeight: 90,
             }}
           >
             <img
@@ -583,10 +583,9 @@ export default function Welcome() {
               {/* Headline */}
               <Box className="anim-3">
                 <Typography
-                  component={desktop ? "h1" : "h3"}
-                  className="welcome-headline"
                   sx={{
                     fontFamily: "'Outfit', sans-serif",
+                    fontSize: "40px",
                     fontWeight: 700,
                     lineHeight: 1.07,
                     color: "var(--text-dark)",
