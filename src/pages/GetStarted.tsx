@@ -7,37 +7,40 @@ import NavbarLayout from "../components/layouts/NavbarLayout";
 import AccountDefault from "./AccountDefault";
 import UploadAvatar from "./UploadAvatar";
 import BackToLogin from "./BackToLogin";
+import type { User } from "../types/user";
 
 export default function GetStarted() {
   const { user } = useAppProvider();
 
-  let content;
+  const RenderPage = ({ user }: { user: User | null }) => {
+    if (!user) return <BackToLogin />;
 
-  if (user) {
-    if (user?.photo) {
-      if (user?.confirmation === "yes") {
-        if (user?.webinar_progress === 100) {
-          content = <AccountDefault />;
-        } else if (user?.uploaded_attendance) {
-          content = <WebinarConfirmationContacts />;
+    if (user.photo) {
+      if (user.confirmation === "yes") {
+        if (user.webinar_progress === 100) {
+          return <AccountDefault />;
+        } else if (user.uploaded_attendance) {
+          return <WebinarConfirmationContacts />;
         } else {
-          content = <WebinarUploadAttendance />;
+          return <WebinarUploadAttendance />;
         }
-      } else if (user?.confirmation === "no") {
-        if (user?.webinar_progress === 100) {
-          content = <AccountDefault />;
+      } else if (user.confirmation === "no") {
+        if (user.webinar_progress === 100) {
+          return <AccountDefault />;
         } else {
-          content = <Webinar />;
+          return <Webinar />;
         }
       } else {
-        content = <WebinarConfirmation />;
+        return <WebinarConfirmation />;
       }
     } else {
-      content = <UploadAvatar />;
+      return <UploadAvatar />;
     }
-  } else {
-    content = <BackToLogin />;
-  }
+  };
 
-  return <NavbarLayout>{content}</NavbarLayout>;
+  return (
+    <NavbarLayout>
+      <RenderPage user={user} />
+    </NavbarLayout>
+  );
 }

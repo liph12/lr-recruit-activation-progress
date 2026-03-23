@@ -8,11 +8,13 @@ import {
   EmailRounded,
   HowToRegRounded,
   CoPresentRounded,
+  OpenInNewRounded,
 } from "@mui/icons-material";
 import { keyframes } from "@mui/material";
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import useExternalAxios from "../hooks/useExternalAxios";
+import StyledButton from "../components/utils/StyledButton";
 
 // ── Keyframes ───────────────────────────────────────────────────────────────
 const fadeInUp = keyframes`
@@ -35,6 +37,7 @@ const spin = keyframes`
 const OUTFIT = "'Outfit', sans-serif";
 
 export default function AccountDefault() {
+  const defaultUserRoute = localStorage.getItem("defaultUserRoute") ?? "/";
   const { user } = useAppProvider();
   const axios = useExternalAxios();
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -224,7 +227,9 @@ export default function AccountDefault() {
       }
     };
 
-    getFireProgressAsync();
+    if (user) {
+      getFireProgressAsync();
+    }
   }, []);
 
   return (
@@ -380,6 +385,18 @@ export default function AccountDefault() {
                 {user?.email}
               </Typography>
             </Box>
+            {user?.status === "active" && (
+              <Box sx={{ my: 2 }}>
+                <a href={defaultUserRoute}>
+                  <StyledButton
+                    variant="contained"
+                    endIcon={<OpenInNewRounded />}
+                  >
+                    Dashboard
+                  </StyledButton>
+                </a>
+              </Box>
+            )}
 
             {/* Role chip */}
             {/* <Box

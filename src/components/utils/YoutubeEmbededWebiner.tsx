@@ -2,10 +2,12 @@ import { Box, Slider, Typography } from "@mui/material";
 import { SaveRounded, CheckCircleRounded } from "@mui/icons-material";
 import { useEffect, useRef, useState } from "react";
 import { useAppProvider } from "../../providers/AppProvider";
+import { useNavigate } from "react-router-dom";
 import useAxios from "../../hooks/useAxios";
 
 export default function YoutubeEmbedWebinar() {
-  const { user, setUserData } = useAppProvider();
+  const navigate = useNavigate();
+  const { user } = useAppProvider();
   const axios = useAxios();
   const playerRef = useRef<any>(null);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
@@ -31,11 +33,9 @@ export default function YoutubeEmbedWebinar() {
           },
         }
       );
-
       const { data } = response.data;
 
       if (data) {
-        setUserData(data);
         setIsSaved(true);
 
         const t = setTimeout(() => {
@@ -92,6 +92,7 @@ export default function YoutubeEmbedWebinar() {
               setMaxWatchedPercent((prev) => {
                 if (percent > prev) {
                   localStorage.setItem(STORAGE_KEY, String(percent));
+
                   return percent;
                 }
                 return prev;
@@ -102,6 +103,17 @@ export default function YoutubeEmbedWebinar() {
       });
     };
   }, []);
+
+  useEffect(() => {
+    const saveFinishedAsync = async () => {
+      await saveProgressAsync();
+      navigate("/get-started/fire");
+    };
+
+    if (maxWatchedPercent >= 100) {
+      saveFinishedAsync();
+    }
+  }, [maxWatchedPercent]);
 
   const handleSeek = (_: any, value: number | number[]) => {
     const time = value as number;

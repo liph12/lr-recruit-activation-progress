@@ -3,6 +3,7 @@ import StyledButton from "../components/utils/StyledButton";
 import { ArrowForward } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
+import { useAppProvider } from "../providers/AppProvider";
 
 // ── Slider images ──────────────────────────────────────────────────────────────
 const SLIDE_IMAGES = [
@@ -385,6 +386,7 @@ export default function Welcome() {
   // ── logo slider state ────────────────────────────────────────────────────
   const [logoIndex, setLogoIndex] = useState(0);
   const [logoAnim, setLogoAnim] = useState<"in" | "out">("in");
+  const { desktop } = useAppProvider();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -581,7 +583,7 @@ export default function Welcome() {
               {/* Headline */}
               <Box className="anim-3">
                 <Typography
-                  component="h1"
+                  component={desktop ? "h1" : "h3"}
                   className="welcome-headline"
                   sx={{
                     fontFamily: "'Outfit', sans-serif",

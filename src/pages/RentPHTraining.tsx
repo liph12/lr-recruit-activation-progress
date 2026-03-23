@@ -43,10 +43,10 @@ const TRAINING_VIDEOS = [
     title: "CREATING RENTAL OPPORTUNITIES AMIDST COVID19",
     video: "https://www.youtube.com/embed/FPTwL4WOQ-o?si=CVgl4ycqD3vtl9TL",
   },
-  {
-    title: "PROPERTY RENTAL MANAGEMENT",
-    video: "https://realestatetraining.ph/video/eduardoManahan.mp4",
-  },
+  // {
+  //   title: "PROPERTY RENTAL MANAGEMENT",
+  //   video: "https://realestatetraining.ph/video/eduardoManahan.mp4",
+  // },
   {
     title: "RENT MANAGER OPPORTUNITY",
     video: "https://realestatetraining.ph/video/eduardoManahan.mp4",
@@ -138,11 +138,11 @@ const SPEAKERS = [
     photo: "/images/rent-ph.png", // default image for Rent PH
     bio: "Founder, RNB Management Consultancy and RNBP Cleaning Services",
   },
-  {
-    name: "Anthony Leuterio",
-    photo: "/images/boss-ton.jpg", // existing image used in Webinar page
-    bio: "Founder of Filipino Homes and Leuterio Realty & Brokerage",
-  },
+  // {
+  //   name: "Anthony Leuterio",
+  //   photo: "/images/boss-ton.jpg", // existing image used in Webinar page
+  //   bio: "Founder of Filipino Homes and Leuterio Realty & Brokerage",
+  // },
   {
     name: "Eduardo Manahan",
     photo: "/images/rent-ph.png", // default image for Rent PH
@@ -569,7 +569,10 @@ export default function RentPHTraining() {
               course={RENT_COURSE}
               customSubmit={handleExamSubmit}
               passScore={12}
-              speakers={SPEAKERS.map((s) => ({ name: s.name, avatar: s.photo }))}
+              speakers={SPEAKERS.map((s) => ({
+                name: s.name,
+                avatar: s.photo,
+              }))}
             />
           ) : (
             <PageLoader title="loading questions" />
@@ -794,7 +797,8 @@ function VideoScreen({
                 px: 2.2,
                 py: 0.8,
                 borderRadius: "999px",
-                cursor: videoIndex === totalVideos - 1 ? "not-allowed" : "pointer",
+                cursor:
+                  videoIndex === totalVideos - 1 ? "not-allowed" : "pointer",
                 userSelect: "none",
                 background:
                   videoIndex === totalVideos - 1
@@ -804,7 +808,10 @@ function VideoScreen({
                   videoIndex === totalVideos - 1
                     ? "1px solid rgba(255,255,255,0.12)"
                     : "1px solid rgba(240,217,138,0.5)",
-                color: videoIndex === totalVideos - 1 ? "rgba(255,255,255,0.5)" : "#f0d98a",
+                color:
+                  videoIndex === totalVideos - 1
+                    ? "rgba(255,255,255,0.5)"
+                    : "#f0d98a",
                 transition: "transform .2s, box-shadow .2s",
                 boxShadow:
                   videoIndex === totalVideos - 1
@@ -815,8 +822,9 @@ function VideoScreen({
                     ? "none"
                     : `${nudgeRight} 1.6s ease-in-out infinite`,
                 pointerEvents: videoIndex === totalVideos - 1 ? "none" : "auto",
-                '&:hover': {
-                  transform: videoIndex === totalVideos - 1 ? "none" : "translateX(2px)",
+                "&:hover": {
+                  transform:
+                    videoIndex === totalVideos - 1 ? "none" : "translateX(2px)",
                   boxShadow:
                     videoIndex === totalVideos - 1
                       ? "none"
@@ -824,7 +832,13 @@ function VideoScreen({
                 },
               }}
             >
-              <Typography sx={{ fontWeight: 800, fontSize: "0.9rem", letterSpacing: "0.1em" }}>
+              <Typography
+                sx={{
+                  fontWeight: 800,
+                  fontSize: "0.9rem",
+                  letterSpacing: "0.1em",
+                }}
+              >
                 NEXT
               </Typography>
               <ArrowForwardRounded sx={{ fontSize: 22 }} />
@@ -956,17 +970,31 @@ function SpeakersCard({ sx = {} as any }: { sx?: any }) {
               background: "rgba(255,255,255,0.02)",
               border: "1px solid rgba(255,255,255,0.08)",
             }}
-         >
+          >
             <Avatar
               src={sp.photo}
               alt={sp.name}
-              sx={{ width: { xs: 56, md: 64 }, height: { xs: 56, md: 64 }, flexShrink: 0, border: "2px solid rgba(25,118,210,0.45)" }}
+              sx={{
+                width: { xs: 56, md: 64 },
+                height: { xs: 56, md: 64 },
+                flexShrink: 0,
+                border: "2px solid rgba(25,118,210,0.45)",
+              }}
             />
             <Box>
-              <Typography sx={{ fontWeight: 800, color: "#ffffff", fontSize: { xs: "1.05rem", md: "1.2rem" }, lineHeight: 1.15 }}>
+              <Typography
+                sx={{
+                  fontWeight: 800,
+                  color: "#ffffff",
+                  fontSize: { xs: "1.05rem", md: "1.2rem" },
+                  lineHeight: 1.15,
+                }}
+              >
                 {sp.name.toUpperCase()}
               </Typography>
-              <Typography sx={{ color: "rgba(255,255,255,0.72)", mt: 0.3 }}>{sp.bio}</Typography>
+              <Typography sx={{ color: "rgba(255,255,255,0.72)", mt: 0.3 }}>
+                {sp.bio}
+              </Typography>
             </Box>
           </Box>
         ))}
@@ -992,9 +1020,16 @@ function WhatYouLearnCard({ items }: { items: string[] }) {
       </Typography>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 0.9 }}>
         {items.map((it) => (
-          <Box key={it} sx={{ display: "flex", gap: 1, alignItems: "flex-start" }}>
-            <CheckCircleRounded sx={{ color: "#66bb6a", fontSize: 18, mt: "3px" }} />
-            <Typography sx={{ color: "rgba(255,255,255,0.85)" }}>{it}</Typography>
+          <Box
+            key={it}
+            sx={{ display: "flex", gap: 1, alignItems: "flex-start" }}
+          >
+            <CheckCircleRounded
+              sx={{ color: "#66bb6a", fontSize: 18, mt: "3px" }}
+            />
+            <Typography sx={{ color: "rgba(255,255,255,0.85)" }}>
+              {it}
+            </Typography>
           </Box>
         ))}
       </Box>
