@@ -16,22 +16,26 @@ export default function GetStarted() {
     if (!user) return <BackToLogin />;
 
     if (user.photo) {
-      if (user.confirmation === "yes") {
-        if (user.webinar_progress === 100) {
-          return <AccountDefault />;
-        } else if (user.uploaded_attendance) {
-          return <WebinarConfirmationContacts />;
-        } else {
-          return <WebinarUploadAttendance />;
-        }
-      } else if (user.confirmation === "no") {
-        if (user.webinar_progress === 100) {
-          return <AccountDefault />;
-        } else {
-          return <Webinar />;
-        }
-      } else {
+      if (user.confirmation === "disapproved") {
         return <WebinarConfirmation />;
+      } else {
+        if (user.confirmation === "yes") {
+          if (user.webinar_progress === 100) {
+            return <AccountDefault />;
+          } else if (user.uploaded_attendance) {
+            return <WebinarConfirmationContacts />;
+          } else {
+            return <WebinarUploadAttendance />;
+          }
+        } else if (user.confirmation === "no") {
+          if (user.webinar_progress === 100) {
+            return <AccountDefault />;
+          } else {
+            return <Webinar />;
+          }
+        } else {
+          return <WebinarConfirmation />;
+        }
       }
     } else {
       return <UploadAvatar />;

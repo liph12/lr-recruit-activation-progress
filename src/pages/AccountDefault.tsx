@@ -398,42 +398,6 @@ export default function AccountDefault() {
               </Box>
             )}
 
-            {/* Role chip */}
-            {/* <Box
-                sx={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 0.6,
-                  px: 1.6,
-                  py: 0.45,
-                  borderRadius: "100px",
-                  mb: 4,
-                  background: "rgba(30,136,229,0.1)",
-                  border: "1px solid rgba(30,136,229,0.28)",
-                }}
-              >
-                <Box
-                  sx={{
-                    width: 6,
-                    height: 6,
-                    borderRadius: "50%",
-                    background: "#7eb8ff",
-                  }}
-                />
-                <Typography
-                  sx={{
-                    fontSize: "0.65rem",
-                    fontWeight: 700,
-                    color: "#7eb8ff",
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                    fontFamily: OUTFIT,
-                  }}
-                >
-                  Certified Salesperson
-                </Typography>
-              </Box> */}
-
             {/* ── FIRE CTA card ── */}
             <Box
               component={Link}

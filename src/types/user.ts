@@ -1,5 +1,5 @@
-type AccountType = "national" | "international";
-type Confirmation = "yes" | "no" | "disapproved" | null;
+export type AccountType = "national" | "international";
+export type Confirmation = "yes" | "no" | "disapproved" | null;
 
 export interface Sponsor {
   id: number;
