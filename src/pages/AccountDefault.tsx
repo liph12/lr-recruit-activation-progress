@@ -15,6 +15,15 @@ import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import useExternalAxios from "../hooks/useExternalAxios";
 import StyledButton from "../components/utils/StyledButton";
+import DownloadFIRECertButton from "../components/DownloadFIRECertButton";
+
+interface Module {
+  id: number;
+  label: string;
+  description: string;
+  certificateImage: string;
+  yCoordinate: number;
+}
 
 // ── Keyframes ───────────────────────────────────────────────────────────────
 const fadeInUp = keyframes`
@@ -33,8 +42,41 @@ const spin = keyframes`
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 `;
-
 const OUTFIT = "'Outfit', sans-serif";
+const MODULES: Module[] = [
+  {
+    id: 4,
+    label: "RESA Law",
+    description: "Real Estate Service Act",
+    certificateImage:
+      "https://socket.leuteriorealty.com/proxy?url=https://realestatetraining.ph/cert/resa-law.jpg",
+    yCoordinate: 450,
+  },
+  {
+    id: 5,
+    label: "Documentation & Titling",
+    description: "Property Documentation Fundamentals",
+    certificateImage:
+      "https://socket.leuteriorealty.com/proxy?url=https://realestatetraining.ph/cert/documentation-titling.jpg",
+    yCoordinate: 450,
+  },
+  {
+    id: 6,
+    label: "Code of Ethics",
+    description: "Professional Ethics in Real Estate",
+    certificateImage:
+      "https://socket.leuteriorealty.com/proxy?url=https://realestatetraining.ph/cert/code-of-ethics.jpg",
+    yCoordinate: 450,
+  },
+  {
+    id: 12,
+    label: "Rent Manager",
+    description: "Property & Rental Management",
+    certificateImage:
+      "https://socket.leuteriorealty.com/proxy?url=https://realestatetraining.ph/cert/rentmanager.png",
+    yCoordinate: 550,
+  },
+];
 
 export default function AccountDefault() {
   const defaultUserRoute = localStorage.getItem("defaultUserRoute") ?? "/";
@@ -49,6 +91,7 @@ export default function AccountDefault() {
       description: `Your account is officially registered on ${user?.registeredAt}. Welcome to the Filipino Homes community.`,
       completed: true,
       icon: <HowToRegRounded sx={{ fontSize: 22 }} />,
+      cert: false,
     },
     {
       id: 1,
@@ -57,6 +100,7 @@ export default function AccountDefault() {
         "Webinar orientation successfully completed. You are ready for the next phase.",
       completed: true,
       icon: <CoPresentRounded sx={{ fontSize: 22 }} />,
+      cert: false,
     },
     {
       id: 2,
@@ -64,6 +108,7 @@ export default function AccountDefault() {
       description:
         "Start your professional journey by completing Modules 1, 2, and 3.",
       completed: false,
+      cert: false,
       icon: (
         <img
           src="/images/fire-icon-badge.png"
@@ -182,6 +227,7 @@ export default function AccountDefault() {
             c.scores[0].dateTaken
           }`,
           completed: true,
+          cert: true,
           icon: (
             <Typography
               sx={{
@@ -649,6 +695,10 @@ export default function AccountDefault() {
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
                   {stepper.map((item, idx) => {
                     const isLast = idx === stepper.length - 1;
+                    const module = MODULES.find(
+                      (m) => m.id === item.id && item.cert
+                    );
+
                     return (
                       <Box
                         key={item.id}
@@ -849,6 +899,14 @@ export default function AccountDefault() {
                           >
                             {item.description}
                           </Typography>
+                          {item.completed && item.cert && module && (
+                            <DownloadFIRECertButton
+                              certificateImage={module?.certificateImage}
+                              moduleId={module.id}
+                              userName={`${user?.first_name} ${user?.last_name}`}
+                              yCoordinate={module.yCoordinate}
+                            />
+                          )}
 
                           {!item.completed && item.id === 2 && (
                             <Box

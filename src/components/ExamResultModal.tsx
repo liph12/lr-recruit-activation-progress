@@ -47,10 +47,14 @@ export default function ExamResultModal({
 }: Props) {
   const [showDetails, setShowDetails] = useState(false);
 
-  const score = useMemo(() => results.filter((r) => r.correct).length, [results]);
+  const score = useMemo(
+    () => results.filter((r) => r.correct).length,
+    [results]
+  );
   const wrong = total - score;
   const required = useMemo(() => {
-    if (typeof passScore === "number" && !Number.isNaN(passScore)) return passScore;
+    if (typeof passScore === "number" && !Number.isNaN(passScore))
+      return passScore;
     // Preserve historical behavior: 7/10 when total is 10; else 70% rounded up
     return total === 10 ? 7 : Math.ceil(total * 0.7);
   }, [passScore, total]);
@@ -106,7 +110,7 @@ export default function ExamResultModal({
           color: "#fff",
           animation: "popIn .18s ease-out",
           position: "relative",
-          '::before': {
+          "::before": {
             content: '""',
             position: "absolute",
             inset: 0,
@@ -180,7 +184,10 @@ export default function ExamResultModal({
           <Typography color="rgba(255,255,255,.65)">score</Typography>
         </Box>
 
-        <Typography variant="body2" sx={{ color: "rgba(255,255,255,.7)", mb: 2 }}>
+        <Typography
+          variant="body2"
+          sx={{ color: "rgba(255,255,255,.7)", mb: 2 }}
+        >
           {passed
             ? `Great work — you met the passing score (${required}/${total}).`
             : `You'll need ${required}/${total} to pass. Give it another try.`}
@@ -222,7 +229,10 @@ export default function ExamResultModal({
               border: "1px solid rgba(76,175,80,.25)",
             }}
           >
-            <Typography variant="caption" sx={{ color: "rgba(255,255,255,.65)" }}>
+            <Typography
+              variant="caption"
+              sx={{ color: "rgba(255,255,255,.65)" }}
+            >
               Correct
             </Typography>
             <Typography fontWeight={900}>{score}</Typography>
@@ -231,9 +241,15 @@ export default function ExamResultModal({
             flex={1}
             p={1.5}
             borderRadius={2}
-            sx={{ background: "rgba(244,67,54,.08)", border: "1px solid rgba(244,67,54,.25)" }}
+            sx={{
+              background: "rgba(244,67,54,.08)",
+              border: "1px solid rgba(244,67,54,.25)",
+            }}
           >
-            <Typography variant="caption" sx={{ color: "rgba(255,255,255,.65)" }}>
+            <Typography
+              variant="caption"
+              sx={{ color: "rgba(255,255,255,.65)" }}
+            >
               Wrong
             </Typography>
             <Typography fontWeight={900}>{wrong}</Typography>
@@ -265,7 +281,10 @@ export default function ExamResultModal({
                   }}
                 >
                   <Typography fontWeight={800}>Q{r.question}</Typography>
-                  <Typography color={r.correct ? "#66bb6a" : "#ef5350"} fontWeight={800}>
+                  <Typography
+                    color={r.correct ? "#66bb6a" : "#ef5350"}
+                    fontWeight={800}
+                  >
                     {r.correct ? "Correct" : "Wrong"} ({r.answer})
                   </Typography>
                 </Box>
@@ -293,7 +312,7 @@ export default function ExamResultModal({
               background: "linear-gradient(135deg,#c9a84c,#f0d98a)",
               color: "#0b1222",
               fontWeight: 800,
-              '&:hover': { filter: "brightness(1.05)" },
+              "&:hover": { filter: "brightness(1.05)" },
             }}
           >
             Next Module
@@ -306,7 +325,7 @@ export default function ExamResultModal({
               background: "linear-gradient(135deg,#1e88e5,#0d47a1)",
               boxShadow: "0 6px 20px rgba(25,118,210,.45)",
               fontWeight: 800,
-              '&:hover': { filter: "brightness(1.05)" },
+              "&:hover": { filter: "brightness(1.05)" },
             }}
             endIcon={<ReplayRounded />}
           >

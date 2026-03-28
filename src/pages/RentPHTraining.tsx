@@ -568,7 +568,7 @@ export default function RentPHTraining() {
               exam={examQ}
               course={RENT_COURSE}
               customSubmit={handleExamSubmit}
-              passScore={12}
+              passScore={8}
               speakers={SPEAKERS.map((s) => ({
                 name: s.name,
                 avatar: s.photo,
