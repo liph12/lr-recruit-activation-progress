@@ -15,7 +15,7 @@ import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import useExternalAxios from "../hooks/useExternalAxios";
 import StyledButton from "../components/utils/StyledButton";
-import DownloadFIRECertButton from "../components/DownloadFIRECertButton";
+import DownloadFIRECertButton from "../components/DownloadFIRECertificateButton";
 
 interface Module {
   id: number;
@@ -48,32 +48,28 @@ const MODULES: Module[] = [
     id: 4,
     label: "RESA Law",
     description: "Real Estate Service Act",
-    certificateImage:
-      "https://socket.leuteriorealty.com/proxy?url=https://realestatetraining.ph/cert/resa-law.jpg",
+    certificateImage: "/images/resa-law.jpg",
     yCoordinate: 450,
   },
   {
     id: 5,
     label: "Documentation & Titling",
     description: "Property Documentation Fundamentals",
-    certificateImage:
-      "https://socket.leuteriorealty.com/proxy?url=https://realestatetraining.ph/cert/documentation-titling.jpg",
+    certificateImage: "/images/documentation-titling.jpg",
     yCoordinate: 450,
   },
   {
     id: 6,
     label: "Code of Ethics",
     description: "Professional Ethics in Real Estate",
-    certificateImage:
-      "https://socket.leuteriorealty.com/proxy?url=https://realestatetraining.ph/cert/code-of-ethics.jpg",
+    certificateImage: "/images/code-of-ethics.jpg",
     yCoordinate: 450,
   },
   {
     id: 12,
     label: "Rent Manager",
     description: "Property & Rental Management",
-    certificateImage:
-      "https://socket.leuteriorealty.com/proxy?url=https://realestatetraining.ph/cert/rentmanager.png",
+    certificateImage: "/images/rentmanager.png",
     yCoordinate: 550,
   },
 ];
@@ -212,7 +208,7 @@ export default function AccountDefault() {
       try {
         setLoading(true);
         const response = await axios.get(
-          `/integration/agent/taken-courses?email=${user?.email}`
+          `/integration/agent/taken-courses?email=${user?.email}`,
         );
         const takenCourses = response.data.data;
 
@@ -247,7 +243,7 @@ export default function AccountDefault() {
         setStepper((prev) => {
           const existingIds = new Set(prev.map((item) => item.id));
           const newItems = coursesHistory.filter(
-            (item: any) => !existingIds.has(item.id)
+            (item: any) => !existingIds.has(item.id),
           );
           if (newItems.length >= 3) {
             prev[2].completed = true;
@@ -273,8 +269,22 @@ export default function AccountDefault() {
       }
     };
 
+    // const getFireRentalScoreAsync = async () => {
+    //   try {
+    //     const response = await axios.get(
+    //       `/integration/agent/rental-score?email=${user?.email}`,
+    //     );
+    //     const data = response.data.data;
+
+    //     console.log(data);
+    //   } catch (e) {
+    //     return null;
+    //   }
+    // };
+
     if (user) {
       getFireProgressAsync();
+      // getFireRentalScoreAsync();
     }
   }, []);
 
@@ -696,7 +706,7 @@ export default function AccountDefault() {
                   {stepper.map((item, idx) => {
                     const isLast = idx === stepper.length - 1;
                     const module = MODULES.find(
-                      (m) => m.id === item.id && item.cert
+                      (m) => m.id === item.id && item.cert,
                     );
 
                     return (
@@ -766,7 +776,7 @@ export default function AccountDefault() {
                             >
                               {String((item as any).moduleNumber).padStart(
                                 2,
-                                "0"
+                                "0",
                               )}
                             </Typography>
                           ) : (
