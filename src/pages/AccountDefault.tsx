@@ -204,9 +204,24 @@ export default function AccountDefault() {
   }, []);
 
   useEffect(() => {
+    const getFireRentalScoreAsync = async () => {
+      try {
+        const response = await axios.get(
+          `/integration/agent/rental-score?email=${user?.email}`,
+        );
+        const data = response.data.score;
+
+        return data;
+      } catch (e) {
+        return null;
+      }
+    };
+
     const getFireProgressAsync = async () => {
       try {
         setLoading(true);
+
+        const rentalScore = await getFireRentalScoreAsync();
         const response = await axios.get(
           `/integration/agent/taken-courses?email=${user?.email}`,
         );
@@ -246,6 +261,33 @@ export default function AccountDefault() {
             (item: any) => !existingIds.has(item.id),
           );
           if (newItems.length >= 3) {
+            if (rentalScore) {
+              newItems.push({
+                id: 12,
+                title: "FIRE Certificate — Module 12: Become a Rent Manager",
+                description: `Congratulations! You successfully passed Module 12: Become a Rent Manager, achieving a ${
+                  rentalScore.score === 15 ? "perfect score" : "score"
+                } of ${rentalScore.score} out of 15, completed on ${
+                  rentalScore.dateTaken
+                }`,
+                completed: true,
+                cert: true,
+                icon: (
+                  <Typography
+                    sx={{
+                      fontSize: "1.4rem",
+                      fontWeight: 500,
+                      color: "inherit",
+                      fontFamily: "'Outfit', sans-serif",
+                      lineHeight: 1,
+                    }}
+                  >
+                    12
+                  </Typography>
+                ),
+              });
+            }
+
             prev[2].completed = true;
 
             const finalStepperMsg = userActive
@@ -269,22 +311,8 @@ export default function AccountDefault() {
       }
     };
 
-    // const getFireRentalScoreAsync = async () => {
-    //   try {
-    //     const response = await axios.get(
-    //       `/integration/agent/rental-score?email=${user?.email}`,
-    //     );
-    //     const data = response.data.data;
-
-    //     console.log(data);
-    //   } catch (e) {
-    //     return null;
-    //   }
-    // };
-
     if (user) {
       getFireProgressAsync();
-      // getFireRentalScoreAsync();
     }
   }, []);
 

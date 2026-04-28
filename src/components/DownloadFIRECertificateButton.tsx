@@ -9,11 +9,6 @@ import { keyframes } from "@mui/material";
 
 const OUTFIT = "'Outfit', sans-serif";
 
-const shimmer = keyframes`
-  0%   { left: -80%; }
-  100% { left: 120%; }
-`;
-
 const spin = keyframes`
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
